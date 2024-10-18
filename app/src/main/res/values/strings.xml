@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Convertit</string>
+    <string name="label_file_size">%.1f %s</string>
+    <string name="converting_audio_files">Converting audio files</string>
+    <string name="label_about_title">About App</string>
+    <string name="label_about_app">ConvertIt is a fully ad-free audio converter that allows users to convert audio files between various formats, including FLAC, MP3, WAV, AAC, OGG, and M4A. With support for different bitrates such as 128k, 192k, 256k, and 320k, ConvertIt provides a seamless and flexible audio conversion experience.</string>
+    <string name="label_contact">Contact</string>
+    <string name="label_bio">Designed and developed by Tamim Hossain</string>
+    <string name="label_converting_audio">Converting audio files in background</string>
+
+    <string name="discord_group_link">https://discord.gg/wzkDG2jDDS</string>
+    <string name="telegram_group_link">https://t.me/officialnasahacker</string>
+    <string name="github_link">https://github.com/codewithtamim</string>
+
+
+    <string-array name="bitrate_options">
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+    </string-array>
+
+    <string-array name="file_format_options">
+        <item>.flac</item>
+        <item>.mp3</item>
+        <item>.wav</item>
+        <item>.aac</item>
+        <item>.ogg</item>
+        <item>.m4a</item>
+    </string-array>
+</resources>

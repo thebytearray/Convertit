@@ -1,0 +1,157 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.nasahacker.convertit",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "UNIVERSAL",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 4000001,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_universal.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "x86_64"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 4000001,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_x86_64.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "mips"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 1,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_mips.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "mips64"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 1,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_mips64.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "armeabi"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 1,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_armeabi.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "riscv64"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 1,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_riscv64.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "arm64-v8a"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 4000001,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_arm64-v8a.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "x86"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 4000001,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_x86.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "armeabi-v7a"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 4000001,
+      "versionName": "1.0",
+      "outputFile": "ConvertIt1.0_armeabi-v7a.apk"
+    }
+  ],
+  "elementType": "File",
+  "baselineProfiles": [
+    {
+      "minApi": 28,
+      "maxApi": 30,
+      "baselineProfiles": [
+        "baselineProfiles/1/ConvertIt1.0_universal.dm",
+        "baselineProfiles/1/ConvertIt1.0_x86_64.dm",
+        "baselineProfiles/1/ConvertIt1.0_mips.dm",
+        "baselineProfiles/1/ConvertIt1.0_mips64.dm",
+        "baselineProfiles/1/ConvertIt1.0_armeabi.dm",
+        "baselineProfiles/1/ConvertIt1.0_riscv64.dm",
+        "baselineProfiles/1/ConvertIt1.0_arm64-v8a.dm",
+        "baselineProfiles/1/ConvertIt1.0_x86.dm",
+        "baselineProfiles/1/ConvertIt1.0_armeabi-v7a.dm"
+      ]
+    },
+    {
+      "minApi": 31,
+      "maxApi": 2147483647,
+      "baselineProfiles": [
+        "baselineProfiles/0/ConvertIt1.0_universal.dm",
+        "baselineProfiles/0/ConvertIt1.0_x86_64.dm",
+        "baselineProfiles/0/ConvertIt1.0_mips.dm",
+        "baselineProfiles/0/ConvertIt1.0_mips64.dm",
+        "baselineProfiles/0/ConvertIt1.0_armeabi.dm",
+        "baselineProfiles/0/ConvertIt1.0_riscv64.dm",
+        "baselineProfiles/0/ConvertIt1.0_arm64-v8a.dm",
+        "baselineProfiles/0/ConvertIt1.0_x86.dm",
+        "baselineProfiles/0/ConvertIt1.0_armeabi-v7a.dm"
+      ]
+    }
+  ],
+  "minSdkVersionForDexing": 21
+}
