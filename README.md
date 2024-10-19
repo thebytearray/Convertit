@@ -59,7 +59,7 @@ Contributions to the **ConvertIt** app are welcome! If you'd like to contribute,
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE_Apache2.0.md) file for more details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for more details.
 
 ---
 
