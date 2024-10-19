@@ -17,9 +17,11 @@
 
 Here are some screenshots of the **ConvertIt** app:
 
-![Screenshot 1](images/img1.png)
-![Screenshot 2](images/img2.png)
-![Screenshot 3](images/img3.png)
+<p align="center">
+  <img src="images/img1.png" alt="Screenshot 1" width="250"/>
+  <img src="images/img2.png" alt="Screenshot 2" width="250"/>
+  <img src="images/img3.png" alt="Screenshot 3" width="250"/>
+</p>
 
 ## Requirements
 
