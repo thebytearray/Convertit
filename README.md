@@ -23,6 +23,16 @@ Here are some screenshots of the **ConvertIt** app:
   <img src="images/img3.png" alt="Screenshot 3" width="250"/>
 </p>
 
+## Get It on Play Store
+
+You can download **ConvertIt** from the Play Store:
+
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.nasahacker.convertit">
+    <img alt="Get it on Google Play" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="200"/>
+  </a>
+</p>
+
 ## Requirements
 
 - **Android**: 5.0 (Lollipop) or later
