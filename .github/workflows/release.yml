@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release APK
 
 on:
   workflow_dispatch:
@@ -34,18 +34,13 @@ jobs:
         run: ./gradlew assembleRelease
 
       - name: List APK Directory (Debugging Step)
-        run: ls -R app/build/outputs/apk/
-
-      - name: Rename APK
-        run: |
-          TAG_NAME=${{ github.event.inputs.tag_name }}
-          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/convertit-${TAG_NAME}-release.apk
+        run: ls -R app/release/
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: convertit-${{ github.event.inputs.tag_name }}-release.apk
-          path: app/build/outputs/apk/release/convertit-${{ github.event.inputs.tag_name }}-release.apk
+          name: app-release.apk
+          path: app/release/app-release.apk
 
   create_release:
     needs: build
@@ -70,7 +65,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/release/convertit-${{ github.event.inputs.tag_name }}-release.apk
-          asset_name: convertit-${{ github.event.inputs.tag_name }}-release.apk
+          asset_path: app/release/app-release.apk
+          asset_name: app-release.apk
           asset_content_type: application/vnd.android.package-archive
 
