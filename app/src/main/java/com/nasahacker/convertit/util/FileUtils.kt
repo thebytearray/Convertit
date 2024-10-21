@@ -223,6 +223,95 @@ object FileUtils {
         }
     }
 
+    fun editAudioMetadata(
+        context: Context,
+        inputUri: Uri,                // Accept a single Uri
+        title: String? = null,
+        artist: String? = null,
+        album: String? = null,
+        genre: String? = null,
+        track: String? = null,
+        year: String? = null,
+        coverArtUri: Uri? = null,       // Cover art as Uri
+        onSuccess: (String) -> Unit,    // Success callback with output file path
+        onFailure: (String) -> Unit     // Failure callback with error message
+    ) {
+        // Create a directory named "ConvertIt" inside the device's default Music directory
+        val musicDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
+            "ConvertIt"
+        )
+        if (!musicDir.exists()) {
+            musicDir.mkdirs() // Create the directory if it doesn't exist
+        }
+
+        // Copy the file to the app's internal storage
+        val inputPath = copyUriToInternalStorage(context, inputUri)
+        if (inputPath == null) {
+            Log.e("AudioMetadataUtil", "Failed to copy file from Uri: $inputUri")
+            onFailure("Failed to copy file from Uri: $inputUri")
+            return
+        }
+
+        // Extract file name and create output path
+        val fileNameWithoutExtension = File(inputPath).nameWithoutExtension
+        val outputFilePath = File(musicDir, "$fileNameWithoutExtension-output.mp3").absolutePath
+
+        // Build the FFmpeg command dynamically based on provided metadata
+        val command = mutableListOf<String>()
+        command.add("-y") // Overwrite output file if it exists
+        command.add("-i")
+        command.add(inputPath)
+
+        // Add cover art if provided
+        coverArtUri?.let {
+            val coverArtPath = copyUriToInternalStorage(context, it)
+            if (coverArtPath != null) {
+                command.add("-i")
+                command.add(coverArtPath)
+                command.add("-map")
+                command.add("0:0")
+                command.add("-map")
+                command.add("1:0")
+                command.add("-disposition:v:0")
+                command.add("attached_pic")
+            }
+        }
+
+        // Add metadata fields only if they are provided
+        if (title != null) command.addAll(listOf("-metadata", "title=\"$title\""))
+        if (artist != null) command.addAll(listOf("-metadata", "artist=\"$artist\""))
+        if (album != null) command.addAll(listOf("-metadata", "album=\"$album\""))
+        if (genre != null) command.addAll(listOf("-metadata", "genre=\"$genre\""))
+        if (track != null) command.addAll(listOf("-metadata", "track=\"$track\""))
+        if (year != null) command.addAll(listOf("-metadata", "date=\"$year\""))
+
+        // Specify the output file path
+        command.add(outputFilePath)
+
+        try {
+            // Run the FFmpeg command asynchronously
+            FFmpeg.executeAsync(command.toTypedArray()) { _, returnCode ->
+                if (returnCode == Config.RETURN_CODE_SUCCESS) {
+                    Log.d(
+                        "AudioMetadataUtil",
+                        "Metadata updated successfully, file saved to: $outputFilePath"
+                    )
+                    onSuccess(outputFilePath)
+                } else {
+                    Log.e(
+                        "AudioMetadataUtil",
+                        "Metadata update failed with return code: $returnCode"
+                    )
+                    onFailure("Metadata update failed with return code: $returnCode")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("AudioMetadataUtil", "Exception during metadata update: ${e.message}")
+            onFailure("Exception during metadata update: ${e.message}")
+        }
+    }
+
 
     fun convertAudio(
         context: Context,

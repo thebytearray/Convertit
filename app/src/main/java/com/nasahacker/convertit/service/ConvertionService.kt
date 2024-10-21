@@ -50,7 +50,7 @@ class ConvertionService : Service() {
                     uris = listOfUri,
                     outputFormat = format,
                     bitrate = bitrate,
-                    onSuccess = { msg ->
+                    onSuccess = {
                         isSuccess = true
                         broadcastIntent.putExtra(IS_SUCCESS, isSuccess)
                         sendBroadcast(broadcastIntent)
