@@ -1,4 +1,4 @@
-name: Build and Release APK with Debug Key
+name: Build, Upload, and Release Debug APK
 
 on:
   workflow_dispatch:
@@ -30,19 +30,19 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build APK (Signed with Debug Key)
-        run: ./gradlew assembleRelease
+      - name: Build APK (Debug)
+        run: ./gradlew assembleDebug
 
       - name: Verify APK Directory
         run: |
           echo "Listing APK directory:"
-          ls -R app/build/outputs/apk/release/
+          ls -R build/outputs/apk/debug/
 
-      - name: Upload APK as Artifact
+      - name: Upload Debug APK as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: app-release.apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: app-debug.apk
+          path: build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
   create_release:
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/release/app-release.apk
-          asset_name: app-release.apk
+          asset_path: build/outputs/apk/debug/app-debug.apk
+          asset_name: app-debug.apk
           asset_content_type: application/vnd.android.package-archive
 
