@@ -1,4 +1,4 @@
-name: Build and Release APK
+name: Build, Test, and Log Directories
 
 on:
   workflow_dispatch:
@@ -33,95 +33,44 @@ jobs:
       - name: Build with Gradle (Release)
         run: ./gradlew assembleRelease
 
-      - name: List Root Directory (Debugging Step)
-        run: ls -R
+      - name: Run Unit Tests
+        run: ./gradlew test
 
-      - name: List Contents of app/release Directory (Debugging Step)
+      - name: Log Root Directory (Debugging Step)
         run: |
-          if [ -d "app/release/" ]; then
-            echo "Listing contents of app/release:"
-            ls -R app/release/
-          else
-            echo "app/release directory does not exist"
-          fi
+          echo "Listing all directories in root:"
+          ls -R
 
-      - name: List Contents of app/build/outputs/apk/release Directory (Debugging Step)
+      - name: Log app Directory (Debugging Step)
         run: |
-          if [ -d "app/build/outputs/apk/release/" ]; then
-            echo "Listing contents of app/build/outputs/apk/release:"
-            ls -R app/build/outputs/apk/release/
-          else
-            echo "app/build/outputs/apk/release directory does not exist"
-          fi
+          echo "Listing all directories in app/:"
+          ls -R app/
+
+      - name: Log app/build Directory (Debugging Step)
+        run: |
+          echo "Listing all directories in app/build/:"
+          ls -R app/build/
+
+      - name: Log app/build/outputs Directory (Debugging Step)
+        run: |
+          echo "Listing all directories in app/build/outputs/:"
+          ls -R app/build/outputs/
+
+      - name: Log app/build/outputs/apk Directory (Debugging Step)
+        run: |
+          echo "Listing all directories in app/build/outputs/apk/:"
+          ls -R app/build/outputs/apk/
+
+      - name: Log app/build/test-results Directory (Debugging Step)
+        run: |
+          echo "Listing all directories in app/build/test-results/:"
+          ls -R app/build/test-results/
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: app-release.apk
-          path: app/release/app-release.apk
-          if-no-files-found: error
-
-name: Build and Release APK
-
-on:
-  workflow_dispatch:
-    inputs:
-      tag_name:
-        description: 'Tag name for the release'
-        required: true
-        default: 'v1.0.0'
-      release_title:
-        description: 'Release title'
-        required: true
-        default: 'Initial Release'
-      release_description:
-        description: 'Release description'
-        required: true
-        default: 'Description of the release'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Build with Gradle (Release)
-        run: ./gradlew assembleRelease
-
-      - name: List Root Directory (Debugging Step)
-        run: ls -R
-
-      - name: List Contents of app/release Directory (Debugging Step)
-        run: |
-          if [ -d "app/release/" ]; then
-            echo "Listing contents of app/release:"
-            ls -R app/release/
-          else
-            echo "app/release directory does not exist"
-          fi
-
-      - name: List Contents of app/build/outputs/apk/release Directory (Debugging Step)
-        run: |
-          if [ -d "app/build/outputs/apk/release/" ]; then
-            echo "Listing contents of app/build/outputs/apk/release:"
-            ls -R app/build/outputs/apk/release/
-          else
-            echo "app/build/outputs/apk/release directory does not exist"
-          fi
-
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release.apk
-          path: app/release/app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
 
   create_release:
@@ -147,7 +96,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/release/app-release.apk
+          asset_path: app/build/outputs/apk/release/app-release.apk
           asset_name: app-release.apk
           asset_content_type: application/vnd.android.package-archive
 
