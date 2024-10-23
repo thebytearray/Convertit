@@ -8,13 +8,23 @@
     android:orientation="vertical"
     tools:context=".view.fragment.ConvertsFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:background="@drawable/search_bg"
+        android:layout_margin="10dp"
+        android:paddingHorizontal="10dp"
+        app:queryHint="Search any audio name"
+        app:iconifiedByDefault="false"
+        android:layout_height="wrap_content" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_converted_tracks"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        tools:listitem="@layout/item_audio"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_margin="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_audio" />
 
 
 </LinearLayout>
