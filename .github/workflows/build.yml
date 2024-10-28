@@ -57,7 +57,7 @@ jobs:
       - name: Upload APK to Release
         uses: svenstaro/upload-release-action@v2
         with:
-        file: $GITHUB_WORKSPACE/app/build/outputs/apk/release/app-release.apk
-        tag: ${{ github.event.inputs.release_tag }}
-        release_id: ${{ steps.create_release.outputs.id }}
-        file_glob: true
+          file: $GITHUB_WORKSPACE/app/build/outputs/apk/release/app-release.apk
+          tag: ${{ github.event.inputs.release_tag }}
+          release_id: ${{ steps.create_release.outputs.id }}
+          file_glob: true
