@@ -32,13 +32,12 @@ jobs:
 
       - name: Decode and save keystore
         run: |
-          mkdir -p app
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/keystore.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
 
       - name: Build APK with signing
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=app/keystore.jks \
+          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=$rootDir/keystore.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
