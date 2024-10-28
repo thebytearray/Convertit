@@ -10,29 +10,31 @@ import com.nasahacker.convertit.util.Constants.CHANNEL_ID
 import com.nasahacker.convertit.util.Constants.CHANNEL_NAME
 
 class ConvertItApplication : Application() {
+
     companion object {
-        lateinit var application: Application
-    }
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        application = this
+        lateinit var instance: ConvertItApplication
+            private set
     }
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        instance = this
+    }
 
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
+        initializeNotificationChannel()
     }
 
-    private fun createNotificationChannel() {
+    private fun initializeNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val manager = NotificationManagerCompat.from(this)
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManagerCompat.from(this).createNotificationChannel(
+                NotificationChannel(
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
             )
-            manager.createNotificationChannel(channel)
         }
     }
 }

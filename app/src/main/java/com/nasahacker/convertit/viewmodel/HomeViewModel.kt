@@ -7,27 +7,21 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nasahacker.convertit.ConvertItApplication
-import com.nasahacker.convertit.adapter.HomeAdapter
-import com.nasahacker.convertit.model.AudioBitrate
-import com.nasahacker.convertit.model.AudioFormat
-import com.nasahacker.convertit.util.FileUtils
+import com.nasahacker.convertit.util.AppUtils
+import com.nasahacker.convertit.util.Constants.CONVERT_BROADCAST_ACTION
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import kotlin.math.acos
 
-class HomeViewModel :ViewModel() {
+class HomeViewModel : ViewModel() {
+
     private val _message = MutableLiveData<String>()
-    val message get() = _message
+    val message: LiveData<String> get() = _message
 
     private val _selectedUris = MutableLiveData<List<Uri>>()
     val selectedUris: LiveData<List<Uri>> get() = _selectedUris
@@ -38,12 +32,11 @@ class HomeViewModel :ViewModel() {
     private val _isSuccess = MutableLiveData<Boolean?>()
     val isSuccess: LiveData<Boolean?> get() = _isSuccess
 
-    private val mMsgReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val conversionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val isSuccess = intent?.getBooleanExtra("isSuccess", false)
             _isSuccess.postValue(isSuccess)
         }
-
     }
 
     fun clearSelectedFiles() {
@@ -51,26 +44,17 @@ class HomeViewModel :ViewModel() {
         _selectedFiles.postValue(emptyList())
     }
 
-
     fun startListenBroadcast(context: Context) {
+        val intentFilter = IntentFilter(CONVERT_BROADCAST_ACTION)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.registerReceiver(
-                mMsgReceiver,
-                IntentFilter("com.nasahacker.convertit.ACTION_CONVERSION_COMPLETE"),
-                Context.RECEIVER_EXPORTED
-            )
+            context.registerReceiver(conversionReceiver, intentFilter, Context.RECEIVER_EXPORTED)
         } else {
-            context.registerReceiver(
-                mMsgReceiver,
-                IntentFilter("com.nasahacker.convertit.ACTION_CONVERSION_COMPLETE")
-            )
+            context.registerReceiver(conversionReceiver, intentFilter)
         }
-
     }
 
-
     fun openPicker(activity: Activity, pickFileLauncher: ActivityResultLauncher<Intent>) {
-        FileUtils.openFilePicker(activity, pickFileLauncher)
+        AppUtils.openFilePicker(activity, pickFileLauncher)
     }
 
     fun setSelectedUris(activity: Activity, uris: List<Uri>) {
@@ -80,41 +64,15 @@ class HomeViewModel :ViewModel() {
 
     private fun setFilesListFromUri(activity: Activity, uris: List<Uri>) {
         viewModelScope.launch(Dispatchers.IO) {
-            _selectedFiles.postValue(FileUtils.getFilesFromUris(activity, uris))
+            _selectedFiles.postValue(AppUtils.getFilesFromUris(activity, uris))
         }
     }
 
-   /* fun convertAudio(
-        context: Context,
-        uris: List<Uri>,
-        format: AudioFormat,
-        bitrate: AudioBitrate,
-        adapter: HomeAdapter
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FileUtils.convertAudio(
-                context, uris, format, bitrate,
-                onSuccess = { filepaths ->
-                    _message.postValue("Successfully converted !")
-                    _selectedUris.postValue(emptyList())
-                    adapter.clearAll()
-                },
-                onFailure = { error ->
-                    _message.postValue("Failed to convert, error: $error")
-                    _selectedUris.postValue(emptyList())
-                    adapter.clearAll()
-                },
-
-                )
-        }
-    }*/
     fun unregister(context: Context) {
-        context.unregisterReceiver(mMsgReceiver)
+        context.unregisterReceiver(conversionReceiver)
     }
 
     override fun onCleared() {
         super.onCleared()
     }
-
-
 }

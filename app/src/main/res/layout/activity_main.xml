@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_color"
     tools:context=".view.activity.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -14,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:title="@string/app_name"
-        app:titleTextColor="@color/white" />
+        app:title="@string/app_name" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -34,9 +32,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_menu"
-        app:itemActiveIndicatorStyle="@style/App.CustomIndicator"
-        android:background="@color/default_color"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white" />
+        app:menu="@menu/bottom_menu" />
 </RelativeLayout>

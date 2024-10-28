@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_color"
     tools:context=".view.fragment.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        app:tint="@color/default_color"
         android:id="@+id/fabPick"
         android:contentDescription="Select audio"
         android:layout_margin="30dp"

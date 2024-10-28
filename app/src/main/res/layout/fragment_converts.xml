@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_color"
     android:orientation="vertical"
     tools:context=".view.fragment.ConvertsFragment">
 
@@ -12,6 +11,7 @@
         android:layout_width="match_parent"
         android:background="@drawable/search_bg"
         android:layout_margin="10dp"
+        android:id="@+id/search_view"
         android:paddingHorizontal="10dp"
         app:queryHint="Search any audio name"
         app:iconifiedByDefault="false"
