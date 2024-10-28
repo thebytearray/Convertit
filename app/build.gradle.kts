@@ -11,8 +11,8 @@ android {
         applicationId = "com.nasahacker.convertit"
         minSdk = 21
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.3-beta"
+        versionCode = 5
+        versionName = "1.0.4-beta"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,6 +36,21 @@ android {
     }
 }
 
+tasks.register("cleanArtifacts") {
+    group = "build"
+    description = "Cleans the release and build folders."
+
+    doLast {
+        delete(fileTree("$rootDir/app/release").files)
+        delete(fileTree("$rootDir/app/build").files)
+    }
+}
+
+// Make cleanArtifacts part of the clean task
+tasks.named("clean") {
+    dependsOn("cleanArtifacts")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -52,3 +67,5 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.nasacircleimageview)
 }
+
+

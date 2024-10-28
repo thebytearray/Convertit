@@ -30,10 +30,17 @@ jobs:
       - name: Set up Android environment
         uses: android-actions/setup-android@v3
 
-      - name: Build APK
+      - name: Decode and save keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
+
+      - name: Build APK with signing
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=keystore.jks \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
       - name: Create GitHub Release
         id: create_release
@@ -50,7 +57,7 @@ jobs:
       - name: Upload APK to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: app/build/outputs/apk/debug/app-debug.apk
+          file: app/release/app-release.apk
           tag: ${{ github.event.inputs.release_tag }}
           release_id: ${{ steps.create_release.outputs.id }}
           file_glob: true
