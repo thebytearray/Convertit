@@ -16,6 +16,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildFeatures { viewBinding = true }
     buildTypes {
         release {
@@ -25,6 +26,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.create("release").apply {
+                storeFile = file("app/keystore.jks")
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
         }
     }
     compileOptions {
@@ -35,6 +42,7 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
+
 
 tasks.register("cleanArtifacts") {
     group = "build"
