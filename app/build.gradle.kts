@@ -34,7 +34,6 @@ android {
             }
 
 
-
         }
     }
     compileOptions {
@@ -45,9 +44,8 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
-
-
-tasks.register("cleanArtifacts") {
+// Make cleanArtifacts part of the clean task
+tasks.named("clean") {
     group = "build"
     description = "Cleans the release and build folders."
 
@@ -55,11 +53,6 @@ tasks.register("cleanArtifacts") {
         delete(fileTree("$rootDir/app/release").files)
         delete(fileTree("$rootDir/app/build").files)
     }
-}
-
-// Make cleanArtifacts part of the clean task
-tasks.named("clean") {
-    dependsOn("cleanArtifacts")
 }
 
 dependencies {

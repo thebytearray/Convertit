@@ -20,6 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-
 rootProject.name = "Convertit"
 include(":app")
