@@ -20,7 +20,7 @@ class ConvertsViewModel : ViewModel() {
 
     fun loadAllFiles(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val files = AppUtils.getAudioFilesFromConvertedFolder(context)
+            val files = AppUtils.getAudioFilesFromConvertedFolder()
             _audioFiles.postValue(files)
         }
     }

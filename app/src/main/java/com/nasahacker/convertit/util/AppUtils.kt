@@ -6,7 +6,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -27,7 +26,6 @@ import com.nasahacker.convertit.util.Constants.FORMAT_ARRAY
 import com.nasahacker.convertit.util.Constants.STORAGE_PERMISSION_CODE
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import kotlin.math.log10
 import kotlin.math.pow
 
@@ -122,7 +120,7 @@ object AppUtils {
         } else File(uri.path!!).name
     }
 
-    fun getAudioFilesFromConvertedFolder(context: Context): List<File> {
+    fun getAudioFilesFromConvertedFolder(): List<File> {
         val convertedDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), "ConvertIt")
         return convertedDir.takeIf { it.exists() && it.isDirectory }?.listFiles()?.filter { file ->
             FORMAT_ARRAY.any { file.extension.equals(it.trimStart('.'), ignoreCase = true) }
@@ -171,7 +169,7 @@ object AppUtils {
             return
         }
         val outputFilePath = File(musicDir, "${File(inputPath).nameWithoutExtension}-output.mp3").absolutePath
-        val command = mutableListOf<String>("-y", "-i", inputPath).apply {
+        val command = mutableListOf("-y", "-i", inputPath).apply {
             coverArtUri?.let {
                 val coverArtPath = copyUriToInternalStorage(context, it)
                 if (coverArtPath != null) {

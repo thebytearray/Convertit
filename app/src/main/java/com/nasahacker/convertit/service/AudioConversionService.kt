@@ -42,20 +42,25 @@ class AudioConversionService : Service() {
         if (uriList != null) {
             startForeground(1, createNotification())
             CoroutineScope(Dispatchers.IO).launch {
-                AppUtils.convertAudio(
-                    context = this@AudioConversionService,
-                    uris = uriList,
-                    outputFormat = format,
-                    bitrate = bitrate,
-                    onSuccess = {
-                        broadcastConversionResult(broadcastIntent, true)
-                        stopSelf()
-                    },
-                    onFailure = {
-                        broadcastConversionResult(broadcastIntent, false)
-                        stopSelf()
-                    }
-                )
+                try {
+                    AppUtils.convertAudio(
+                        context = this@AudioConversionService,
+                        uris = uriList,
+                        outputFormat = format,
+                        bitrate = bitrate,
+                        onSuccess = {
+                            broadcastConversionResult(broadcastIntent, true)
+                            stopSelf()
+                        },
+                        onFailure = {
+                            broadcastConversionResult(broadcastIntent, false)
+                            stopSelf()
+                        }
+                    )
+                } catch (e: Exception) {
+                    broadcastConversionResult(broadcastIntent, false)
+                    e.printStackTrace()
+                }
             }
         } else {
             broadcastConversionResult(broadcastIntent, false)
@@ -80,7 +85,10 @@ class AudioConversionService : Service() {
 
     private fun updateNotification(progress: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
         ) return
 
         NotificationManagerCompat.from(this).notify(
