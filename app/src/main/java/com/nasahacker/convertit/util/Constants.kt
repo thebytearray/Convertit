@@ -4,7 +4,7 @@ object Constants {
     const val STORAGE_PERMISSION_CODE = 101
     const val PICK_FILE_REQUEST_CODE = 102
     val BITRATE_ARRAY = arrayOf("128k", "192k", "256k", "320k")
-    val FORMAT_ARRAY = arrayOf(".flac", ".mp3", ".wav", ".aac", ".ogg", ".m4a")
+    val FORMAT_ARRAY = arrayOf(".mp3", ".wav", ".aac", ".ogg", ".m4a")
     const val URI_LIST = "uri_list"
     const val BITRATE = "bitrate"
     const val AUDIO_FORMAT = "audio_format"

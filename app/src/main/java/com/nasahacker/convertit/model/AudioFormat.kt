@@ -1,7 +1,6 @@
 package com.nasahacker.convertit.model
 
 enum class AudioFormat(val extension: String) {
-    FLAC(".flac"),
     MP3(".mp3"),
     WAV(".wav"),
     AAC(".aac"),

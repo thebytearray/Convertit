@@ -68,7 +68,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.selectedUris.observe(viewLifecycleOwner) { uris ->
             if (uris.isNotEmpty()) {
-                showConversionDialog(ArrayList(uris), adapter)
+                showConversionDialog(ArrayList(uris))
             }
         }
 
@@ -89,7 +89,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showConversionDialog(uriList: ArrayList<Uri>, adapter: HomeAdapter) {
+    private fun showConversionDialog(uriList: ArrayList<Uri>) {
         val dialog = Dialog(requireContext()).apply {
             setContentView(R.layout.dialog_audio)
             window?.setBackgroundDrawableResource(R.drawable.blank_bg)
@@ -147,12 +147,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun getSelectedFormat(selectedItem: String): AudioFormat = when (selectedItem) {
-        FORMAT_ARRAY[0] -> AudioFormat.FLAC
-        FORMAT_ARRAY[1] -> AudioFormat.MP3
-        FORMAT_ARRAY[2] -> AudioFormat.WAV
-        FORMAT_ARRAY[3] -> AudioFormat.AAC
-        FORMAT_ARRAY[4] -> AudioFormat.OGG
-        FORMAT_ARRAY[5] -> AudioFormat.M4A
+        FORMAT_ARRAY[0] -> AudioFormat.MP3
+        FORMAT_ARRAY[1] -> AudioFormat.WAV
+        FORMAT_ARRAY[2] -> AudioFormat.AAC
+        FORMAT_ARRAY[3] -> AudioFormat.OGG
+        FORMAT_ARRAY[4] -> AudioFormat.M4A
         else -> AudioFormat.MP3
     }
 
