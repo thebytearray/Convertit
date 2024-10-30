@@ -1,5 +1,9 @@
 # 🎵 ConvertIt - Audio Converter App
 ![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
+![License](https://img.shields.io/badge/License-Apache%202.0-4E9CAF?style=for-the-badge&logo=open-source-initiative&logoColor=white)
+![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
+![Stars](https://img.shields.io/github/stars/CodeWithTamim/ConvertIt?style=for-the-badge&logo=star)
+![Issues](https://img.shields.io/github/issues/CodeWithTamim/ConvertIt?style=for-the-badge&logo=issue-tracking)
 
 **ConvertIt** is an **ad-free** and **easy-to-use** audio converter app that helps users convert audio files across different formats seamlessly. With **support for popular audio formats** and **customizable bitrates**, ConvertIt delivers high-quality conversions, powered by FFmpeg, all within a clean, user-friendly interface.
 
@@ -33,7 +37,7 @@ Download **ConvertIt** directly from the Play Store:
 
 <p align="left">
   <a href="https://play.google.com/store/apps/details?id=com.nasahacker.convertit" target="_blank">
-    <img alt="Get it on Google Play" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="200"/>
+    <img alt="Get it on Google Play" src="https://img.shields.io/badge/Get%20it%20on-Google%20Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white" width="200"/>
   </a>
 </p>
 
