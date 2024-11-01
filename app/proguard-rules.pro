@@ -19,3 +19,18 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Remove all classes, fields, and methods that are unused
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontpreverify
+
+# Remove debugging information for further shrinking
+-renamesourcefileattribute SourceFile
+-keepattributes *Annotation*
+
+# Enable aggressive optimization (R8 does this by default)
+-optimizationpasses 5
+-dontoptimize
+-allowaccessmodification
+-mergeinterfacesaggressively
