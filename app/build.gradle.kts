@@ -11,8 +11,8 @@ android {
         applicationId = "com.nasahacker.convertit"
         minSdk = 21
         targetSdk = 34
-        versionCode = 5
-        versionName = "1.0.4-beta"
+        versionCode = 6
+        versionName = "1.0.5-beta"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,12 +26,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.create("release").apply {
+            /*signingConfig = signingConfigs.create("release").apply {
                 storeFile = file("$rootDir/keystore.jks")
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEY_ALIAS")
                 keyPassword = System.getenv("KEY_PASSWORD")
-            }
+            }*/
 
 
         }

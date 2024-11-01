@@ -20,6 +20,13 @@
         <item>320k</item>
     </string-array>
 
+    <string-array name="video_options">
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+    </string-array>
+
     <string-array name="file_format_options">
         <item>.flac</item>
         <item>.mp3</item>
