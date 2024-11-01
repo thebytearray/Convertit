@@ -24,10 +24,10 @@
 ## 🖼️ Screenshots
 
 <p align="left">
-  <img src="images/img1.png" alt="Screenshot 1" width="250"/>
-  <img src="images/img2.png" alt="Screenshot 2" width="250"/>
-  <img src="images/img3.png" alt="Screenshot 3" width="250"/>
- <img src="images/img4.png" alt="Screenshot 3" width="250"/>
+  <img src="images/img1.png" alt="Screenshot 1" width="200"/>
+  <img src="images/img2.png" alt="Screenshot 2" width="200"/>
+  <img src="images/img3.png" alt="Screenshot 3" width="200"/>
+ <img src="images/img4.png" alt="Screenshot 3" width="200"/>
 </p>
 
 ---
