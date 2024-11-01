@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.databinding.ActivityMainBinding
+import com.nasahacker.convertit.util.AppUtils
 import com.nasahacker.convertit.util.AppUtils.handleNotificationPermission
 import com.nasahacker.convertit.viewmodel.MainViewModel
 
@@ -41,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             )
             WindowInsetsCompat.CONSUMED
         }
-
         setupNavigation()
         handleNotificationPermission(this)
         setupToolbarMenu()
@@ -53,7 +53,11 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.showRestartSnackbar.observe(this) { show ->
             if (show) {
-                Snackbar.make(binding.main, "Update downloaded. Restart to complete.", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(
+                    binding.main,
+                    "Update downloaded. Restart to complete.",
+                    Snackbar.LENGTH_INDEFINITE
+                )
                     .setAction("Restart") {
                         mainViewModel.completeUpdate()
                     }

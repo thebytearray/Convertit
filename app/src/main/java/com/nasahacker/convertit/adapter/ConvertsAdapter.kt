@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 class ConvertsAdapter(
     private val context: Context,
     private var fileList: List<File>,
-    private val onLongPressListener: OnLongPressListener
+    private val onLongPressListener: OnLongPressListener,
 ) : RecyclerView.Adapter<ConvertsAdapter.ConvertsViewHolder>() {
 
     private var fullFileList: List<File> = ArrayList(fileList)

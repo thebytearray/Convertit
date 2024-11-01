@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/about"
-            app:showAsAction="ifRoom"
-            android:icon="@drawable/baseline_info_outline_24"
-            android:title="About" />
-    </group>
+    <item
+        android:id="@+id/about"
+        android:icon="@drawable/baseline_info_outline_24"
+        android:title="About"
+        app:showAsAction="ifRoom" />
 </menu>

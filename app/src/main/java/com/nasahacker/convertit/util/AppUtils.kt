@@ -2,6 +2,7 @@ package com.nasahacker.convertit.util
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -154,9 +155,6 @@ object AppUtils {
             null
         }
     }
-
-
-
     fun editAudioMetadata(
         context: Context,
         inputUri: Uri,
