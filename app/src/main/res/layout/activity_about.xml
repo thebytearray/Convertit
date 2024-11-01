@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,113 +15,156 @@
         android:gravity="center"
         app:title="About" />
 
-    <!-- Circle Image centered -->
-    <com.nasahacker.library.NasaCircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/main"
-        app:borderColor="?attr/colorPrimary"
-        app:borderWidth="1dp" />
-
-    <!-- Bio Text -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_bio"
-        android:textSize="16sp" />
-
-    <!-- Contact Information -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="12dp"
-        android:text="@string/label_contact"
-        android:textSize="16sp" />
-
-    <!-- Social Icons Row -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <com.nasahacker.library.NasaCircleImageView
-            android:id="@+id/discord_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:tooltipText="Discord"
-            android:src="@drawable/discord_ic" />
-
-        <com.nasahacker.library.NasaCircleImageView
-            android:id="@+id/github_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:tooltipText="GitHub"
-            android:src="@drawable/github_ic" />
-
-        <com.nasahacker.library.NasaCircleImageView
-            android:id="@+id/telegram_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:tooltipText="Telegram"
-            android:src="@drawable/telegram_ic" />
-    </LinearLayout>
-
-    <!-- About Section Title -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:text="@string/label_about_title"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- About Description Card -->
-    <com.google.android.material.card.MaterialCardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="24dp"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/label_about_app"
-            android:textSize="14sp" />
-    </com.google.android.material.card.MaterialCardView>
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <!-- Apache License Section -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:padding="16dp"
-        android:text="Apache 2.0 LICENSE"
-        android:textSize="12sp"
-        android:gravity="center" />
+            <!-- Circle Image centered -->
+            <com.nasahacker.library.NasaCircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/main"
+                app:borderColor="?attr/colorPrimary"
+                app:borderWidth="1dp" />
+
+            <!-- Bio Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_bio"
+                android:textSize="16sp" />
+
+            <!-- Contact Information -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="@string/label_contact"
+                android:textSize="16sp" />
+
+            <!-- Social Icons Row -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
+
+                <com.nasahacker.library.NasaCircleImageView
+                    android:id="@+id/discord_btn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/discord_ic"
+                    android:tooltipText="Discord" />
+
+                <com.nasahacker.library.NasaCircleImageView
+                    android:id="@+id/github_btn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/github_ic"
+                    android:tooltipText="GitHub" />
+
+                <com.nasahacker.library.NasaCircleImageView
+                    android:id="@+id/telegram_btn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/telegram_ic"
+                    android:tooltipText="Telegram" />
+            </LinearLayout>
+
+            <!-- About Section Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:text="@string/label_about_title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- About Description Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/label_about_app"
+                    android:textSize="14sp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Contributors Section Title -->
+            <TextView
+                android:id="@+id/contributors_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:text="Contributors"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Loading ProgressBar -->
+            <ProgressBar
+                android:id="@+id/loading_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:visibility="visible" />
+
+            <!-- Contributors GridLayout, initially hidden -->
+            <GridLayout
+                android:id="@+id/contributors_grid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:alignmentMode="alignMargins"
+                android:columnCount="5"
+                android:visibility="gone" />
+
+            <!-- Apache License Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="Apache 2.0 LICENSE"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
