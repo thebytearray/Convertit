@@ -66,14 +66,14 @@ class AboutActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         // Observe bitmaps and add them to the GridLayout
-        viewModel.bitmaps.observe(this, Observer { bitmaps ->
+        viewModel.bitmaps.observe(this) { bitmaps ->
             // Clear any existing views in the GridLayout to avoid duplicates
             binding.contributorsGrid.removeAllViews()
 
             // Populate the GridLayout with contributor images
             bitmaps.forEach { bitmap ->
                 val imageView = NasaCircleImageView(this).apply {
-                    layoutParams = ViewGroup.MarginLayoutParams(150, 150).apply {
+                    layoutParams = ViewGroup.MarginLayoutParams(130, 130).apply {
                         setMargins(16, 16, 16, 16)
                     }
                     scaleType = ImageView.ScaleType.CENTER_CROP
@@ -94,9 +94,8 @@ class AboutActivity : AppCompatActivity() {
                         .setListener(null)
                 }
             }
-        })
+        }
     }
-
 
 
 }
