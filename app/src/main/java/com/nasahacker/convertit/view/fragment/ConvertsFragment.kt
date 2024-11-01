@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.nasahacker.convertit.R
 import com.nasahacker.convertit.adapter.ConvertsAdapter
 import com.nasahacker.convertit.databinding.FragmentConvertsBinding
 import com.nasahacker.convertit.listener.OnLongPressListener
@@ -28,27 +27,48 @@ class ConvertsFragment : Fragment(), OnLongPressListener {
     ): View {
         binding = FragmentConvertsBinding.inflate(inflater, container, false)
         setupRecyclerView()
+        setupSearchView()
         observeViewModel()
         convertsViewModel.loadAllFiles(requireContext())
         return binding.root
     }
 
     private fun setupRecyclerView() {
+        // Initialize the adapter for both views
         adapter = ConvertsAdapter(requireContext(), emptyList(), this)
         binding.rvConvertedTracks.adapter = adapter
-        binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                // Perform the final search
-                query?.let { adapter.filter(it) }
-                return true
-            }
+        binding.rvFilteredFiles.adapter = adapter
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                // Perform real-time filtering as the user types
-                adapter.filter(newText ?: "")
-                return true
-            }
-        })
+    private fun setupSearchView() {
+        val searchView = binding.searchView
+        searchView.editText.setOnEditorActionListener { _, _, _ ->
+            val query = searchView.text.toString()
+            performSearch(query)
+            searchView.hide()
+            true
+        }
+
+        searchView.editText.addTextChangedListener { text ->
+            performSuggestionSearch(text.toString())
+        }
+    }
+
+    private fun performSearch(query: String) {
+        adapter.filter(query)
+        binding.rvConvertedTracks.visibility = View.VISIBLE
+        binding.rvFilteredFiles.visibility = View.GONE
+    }
+
+    private fun performSuggestionSearch(query: String) {
+        if (query.isNotEmpty()) {
+            adapter.filter(query) // Filter suggestions using the adapter's filter method
+            binding.rvConvertedTracks.visibility = View.GONE
+            binding.rvFilteredFiles.visibility = View.VISIBLE
+        } else {
+            binding.rvConvertedTracks.visibility = View.VISIBLE
+            binding.rvFilteredFiles.visibility = View.GONE
+        }
     }
 
     private fun observeViewModel() {
@@ -57,7 +77,7 @@ class ConvertsFragment : Fragment(), OnLongPressListener {
         }
 
         convertsViewModel.audioFiles.observe(viewLifecycleOwner) { files ->
-            adapter.updateData(files)
+            adapter.updateData(files) // Load the full list of files initially
         }
     }
 
