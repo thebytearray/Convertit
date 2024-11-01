@@ -51,7 +51,8 @@ object AppUtils {
 
     fun shareMusicFile(context: Context, file: File) {
         if (file.exists()) {
-            val fileUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+            val fileUri =
+                FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "audio/*"
                 putExtra(Intent.EXTRA_STREAM, fileUri)
@@ -122,7 +123,10 @@ object AppUtils {
     }
 
     fun getAudioFilesFromConvertedFolder(): List<File> {
-        val convertedDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), "ConvertIt")
+        val convertedDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
+            "ConvertIt"
+        )
         return convertedDir.takeIf { it.exists() && it.isDirectory }?.listFiles()?.filter { file ->
             FORMAT_ARRAY.any { file.extension.equals(it.trimStart('.'), ignoreCase = true) }
         }?.toList() ?: emptyList()
@@ -164,19 +168,34 @@ object AppUtils {
         year: String? = null,
         coverArtUri: Uri? = null,
         onSuccess: (String) -> Unit,
-        onFailure: (String) -> Unit
+        onFailure: (String) -> Unit,
     ) {
-        val musicDir = File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), "ConvertIt").apply { mkdirs() }
+        val musicDir = File(
+            context.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
+            "ConvertIt"
+        ).apply { mkdirs() }
         val inputPath = copyUriToInternalStorage(context, inputUri) ?: run {
             onFailure("Failed to copy file from Uri: $inputUri")
             return
         }
-        val outputFilePath = File(musicDir, "${File(inputPath).nameWithoutExtension}-output.mp3").absolutePath
+        val outputFilePath =
+            File(musicDir, "${File(inputPath).nameWithoutExtension}-output.mp3").absolutePath
         val command = mutableListOf("-y", "-i", inputPath).apply {
             coverArtUri?.let {
                 val coverArtPath = copyUriToInternalStorage(context, it)
                 if (coverArtPath != null) {
-                    addAll(listOf("-i", coverArtPath, "-map", "0:0", "-map", "1:0", "-disposition:v:0", "attached_pic"))
+                    addAll(
+                        listOf(
+                            "-i",
+                            coverArtPath,
+                            "-map",
+                            "0:0",
+                            "-map",
+                            "1:0",
+                            "-disposition:v:0",
+                            "attached_pic"
+                        )
+                    )
                 }
             }
             title?.let { addAll(listOf("-metadata", "title=\"$it\"")) }
@@ -200,17 +219,38 @@ object AppUtils {
         outputFormat: AudioFormat,
         bitrate: AudioBitrate = AudioBitrate.BITRATE_192K,
         onSuccess: (List<String>) -> Unit,
-        onFailure: (String) -> Unit
+        onFailure: (String) -> Unit,
     ) {
-        val musicDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), "ConvertIt").apply { mkdirs() }
+        val musicDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
+            "ConvertIt"
+        ).apply { mkdirs() }
         val outputPaths = mutableListOf<String>()
         uris.forEach { uri ->
             val inputPath = copyUriToInternalStorage(context, uri) ?: run {
                 onFailure("Failed to copy file from Uri: $uri")
                 return
             }
-            val outputFilePath = File(musicDir, "${File(inputPath).nameWithoutExtension}${outputFormat.extension}").absolutePath
-            val command = arrayOf("-y", "-i", inputPath, "-map", "0", "-map_metadata", "0", "-c:a", AudioCodec.fromFormat(outputFormat).codec, "-b:a", bitrate.bitrate, "-c:v", "copy", outputFilePath)
+            val outputFilePath = File(
+                musicDir,
+                "${File(inputPath).nameWithoutExtension}${outputFormat.extension}"
+            ).absolutePath
+            val command = arrayOf(
+                "-y",
+                "-i",
+                inputPath,
+                "-map",
+                "0",
+                "-map_metadata",
+                "0",
+                "-c:a",
+                AudioCodec.fromFormat(outputFormat).codec,
+                "-b:a",
+                bitrate.bitrate,
+                "-c:v",
+                "copy",
+                outputFilePath
+            )
             FFmpeg.executeAsync(command) { _, returnCode ->
                 if (returnCode == Config.RETURN_CODE_SUCCESS) {
                     outputPaths.add(outputFilePath)
@@ -224,18 +264,34 @@ object AppUtils {
 
     fun handleNotificationPermission(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ActivityCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1011)
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1011
+            )
         }
     }
 
     private fun isStoragePermissionGranted(activity: Activity): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.READ_MEDIA_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED
         } else {
-            ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(
+                        activity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) == PackageManager.PERMISSION_GRANTED
         }
     }
 
@@ -244,11 +300,15 @@ object AppUtils {
             val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
             } else {
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
             }
             ActivityCompat.requestPermissions(activity, permissions, STORAGE_PERMISSION_CODE)
         } else {
-            Toast.makeText(activity, "Storage permissions are already granted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Storage permissions are already granted", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }
