@@ -41,6 +41,7 @@ class ConvertsAdapter(
         val currentItem = fileList[position]
         with(holder.binding) {
             songName.text = currentItem.name
+            songName.isSelected = true
             songSize.text = AppUtils.getFileSizeInReadableFormat(context, currentItem)
             btnPlay.setOnClickListener { AppUtils.openMusicFileInPlayer(context, currentItem) }
             btnShare.setOnClickListener { AppUtils.shareMusicFile(context, currentItem) }
