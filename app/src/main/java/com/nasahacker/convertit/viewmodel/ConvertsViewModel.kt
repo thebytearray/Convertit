@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nasahacker.convertit.R
 import com.nasahacker.convertit.util.AppUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,9 +31,9 @@ class ConvertsViewModel : ViewModel() {
             val success = file.delete()
             val resultMessage = if (success) {
                 loadAllFiles(context)
-                "File deleted successfully."
+                context.getString(R.string.label_file_deleted_successfully)
             } else {
-                "Something went wrong, status: Failed!"
+                context.getString(R.string.label_something_went_wrong_status_failed)
             }
             _message.postValue(resultMessage)
         }

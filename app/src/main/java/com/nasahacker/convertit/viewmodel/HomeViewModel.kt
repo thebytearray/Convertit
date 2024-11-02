@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -70,9 +71,5 @@ class HomeViewModel : ViewModel() {
 
     fun unregister(context: Context) {
         context.unregisterReceiver(conversionReceiver)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 }

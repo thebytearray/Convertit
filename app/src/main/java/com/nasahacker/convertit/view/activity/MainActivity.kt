@@ -55,10 +55,10 @@ class MainActivity : AppCompatActivity() {
             if (show) {
                 Snackbar.make(
                     binding.main,
-                    "Update downloaded. Restart to complete.",
+                    getString(R.string.label_update_downloaded_restart_to_complete),
                     Snackbar.LENGTH_INDEFINITE
                 )
-                    .setAction("Restart") {
+                    .setAction(getString(R.string.label_restart)) {
                         mainViewModel.completeUpdate()
                     }
                     .show()
@@ -72,9 +72,9 @@ class MainActivity : AppCompatActivity() {
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
             val message = if (result.resultCode == RESULT_OK) {
-                "Update completed successfully!"
+                getString(R.string.label_update_completed_successfully)
             } else {
-                "Update canceled or failed. Try again later."
+                getString(R.string.label_update_canceled_or_failed_try_again_later)
             }
             Snackbar.make(binding.main, message, Snackbar.LENGTH_SHORT).show()
         }

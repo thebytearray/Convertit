@@ -9,6 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.nasahacker.convertit.R
 import com.nasahacker.convertit.adapter.ConvertsAdapter
 import com.nasahacker.convertit.databinding.FragmentConvertsBinding
 import com.nasahacker.convertit.listener.OnLongPressListener
@@ -83,12 +84,12 @@ class ConvertsFragment : Fragment(), OnLongPressListener {
 
     override fun onLongPressed(item: File) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Delete?")
-            .setMessage("Are you sure you want to delete this?")
-            .setPositiveButton("Yes") { _, _ ->
+            .setTitle(getString(R.string.label_delete))
+            .setMessage(getString(R.string.label_are_you_sure_you_want_to_delete_this))
+            .setPositiveButton(getString(R.string.label_yes)) { _, _ ->
                 convertsViewModel.deleteFile(requireContext(), item)
             }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.label_cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 }

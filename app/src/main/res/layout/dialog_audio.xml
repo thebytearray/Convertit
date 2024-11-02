@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bitrate Options"
+            android:text="@string/label_bitrate_options"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Format Options"
+            android:text="@string/label_format_options"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
@@ -56,7 +56,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Convert"
+            android:text="@string/label_convert"
             android:id="@+id/btnConvert"
             android:textStyle="bold"
             android:layout_marginTop="16dp" />

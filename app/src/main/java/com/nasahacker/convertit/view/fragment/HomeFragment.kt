@@ -75,7 +75,9 @@ class HomeFragment : Fragment() {
         homeViewModel.isSuccess.observe(viewLifecycleOwner) { success ->
             Toast.makeText(
                 requireContext(),
-                if (success == true) "Successfully converted" else "Failed to convert",
+                if (success == true) getString(R.string.label_successfully_converted) else getString(
+                    R.string.label_failed_to_convert
+                ),
                 Toast.LENGTH_SHORT
             ).show()
             adapter.clearAll()
@@ -118,7 +120,11 @@ class HomeFragment : Fragment() {
 
             Toast.makeText(
                 requireContext(),
-                "Conversion started with $selectedBitrate bitrate and $selectedFormat format. Please wait.",
+                getString(
+                    R.string.label_conversion_started_with_bitrate_and_format_please_wait,
+                    selectedBitrate,
+                    selectedFormat
+                ),
                 Toast.LENGTH_SHORT
             ).show()
         }

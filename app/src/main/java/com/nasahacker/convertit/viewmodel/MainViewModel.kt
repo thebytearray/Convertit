@@ -12,6 +12,7 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.nasahacker.convertit.R
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,19 +29,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         when (state.installStatus()) {
             InstallStatus.DOWNLOADED -> {
-                _updateStatus.postValue("Update downloaded. Restart to complete.")
+                _updateStatus.postValue(application.getString(R.string.label_update_downloaded_restart_to_complete))
                 _showRestartSnackbar.postValue(true)
             }
-            InstallStatus.FAILED -> _updateStatus.postValue("Update failed. Try again later.")
-            InstallStatus.CANCELED -> _updateStatus.postValue("Update canceled. You can update later.")
+            InstallStatus.FAILED -> _updateStatus.postValue(application.getString(R.string.label_update_failed_try_again_later))
+            InstallStatus.CANCELED -> _updateStatus.postValue(application.getString(R.string.label_update_canceled_you_can_update_later))
             InstallStatus.DOWNLOADING -> {
                //TODO
             }
-            InstallStatus.INSTALLED -> _updateStatus.postValue("Update installed successfully!")
-            InstallStatus.INSTALLING -> _updateStatus.postValue("Installing update...")
-            InstallStatus.PENDING -> _updateStatus.postValue("Update pending. It will start soon.")
-            InstallStatus.REQUIRES_UI_INTENT -> _updateStatus.postValue("Update requires additional user action.")
-            InstallStatus.UNKNOWN -> _updateStatus.postValue("Update status unknown. Please check again later.")
+            InstallStatus.INSTALLED -> _updateStatus.postValue(application.getString(R.string.label_update_installed_successfully))
+            InstallStatus.INSTALLING -> _updateStatus.postValue(application.getString(R.string.label_installing_update))
+            InstallStatus.PENDING -> _updateStatus.postValue(application.getString(R.string.label_update_pending_it_will_start_soon))
+            InstallStatus.REQUIRES_UI_INTENT -> _updateStatus.postValue(application.getString(R.string.label_update_requires_additional_user_action))
+            InstallStatus.UNKNOWN -> _updateStatus.postValue(application.getString(R.string.label_update_status_unknown_please_check_again_later))
         }
     }
 

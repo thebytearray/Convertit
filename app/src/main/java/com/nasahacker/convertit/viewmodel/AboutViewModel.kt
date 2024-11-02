@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nasahacker.convertit.util.Constants.AVATAR_URL
+import com.nasahacker.convertit.util.Constants.GITHUB_URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,7 +26,7 @@ class AboutViewModel : ViewModel() {
     // Fetch the contributors from the GitHub API
     fun loadContributors() {
         viewModelScope.launch(Dispatchers.IO) {
-            val url = URL("https://api.github.com/repos/CodeWithTamim/Convertit/contributors")
+            val url = URL(GITHUB_URL)
             val urlConnection = url.openConnection() as HttpURLConnection
             val response = urlConnection.inputStream.bufferedReader().use { it.readText() }
 
@@ -33,7 +35,7 @@ class AboutViewModel : ViewModel() {
 
             for (i in 0 until contributorsArray.length()) {
                 val contributor = contributorsArray.getJSONObject(i)
-                avatarUrlsList.add(contributor.getString("avatar_url"))
+                avatarUrlsList.add(contributor.getString(AVATAR_URL))
             }
 
             // Update the avatar URLs list
@@ -46,7 +48,7 @@ class AboutViewModel : ViewModel() {
 
     // Load Bitmaps from the avatar URLs
     private fun loadBitmaps(urls: List<String>) {
-       viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val bitmapsList = urls.mapNotNull { url -> loadBitmap(url) }
             withContext(Dispatchers.Main) {
                 _bitmaps.value = bitmapsList

@@ -96,6 +96,4 @@ class AboutActivity : AppCompatActivity() {
             }
         }
     }
-
-
 }

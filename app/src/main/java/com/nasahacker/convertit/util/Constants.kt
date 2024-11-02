@@ -12,4 +12,7 @@ object Constants {
     const val IS_SUCCESS = "isSuccess"
     const val CHANNEL_ID = "CONVERT_IT_CHANNEL_ID"
     const val CHANNEL_NAME = "CONVERT_IT_CHANNEL_NAME"
+    const val FOLDER_DIR = "ConvertIt"
+    const val GITHUB_URL = "https://api.github.com/repos/CodeWithTamim/Convertit/contributors"
+    const val AVATAR_URL = "avatar_url"
 }

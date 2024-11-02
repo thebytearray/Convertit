@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:title="About" />
+        app:title="@string/label_about" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/discord_ic"
-                    android:tooltipText="Discord" />
+                    android:tooltipText="@string/label_discord" />
 
                 <com.nasahacker.library.NasaCircleImageView
                     android:id="@+id/github_btn"
@@ -83,7 +83,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/github_ic"
-                    android:tooltipText="GitHub" />
+                    android:tooltipText="@string/label_github" />
 
                 <com.nasahacker.library.NasaCircleImageView
                     android:id="@+id/telegram_btn"
@@ -94,7 +94,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/telegram_ic"
-                    android:tooltipText="Telegram" />
+                    android:tooltipText="@string/label_telegram" />
             </LinearLayout>
 
             <!-- About Section Title -->
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
-                android:text="Contributors"
+                android:text="@string/label_contributors"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -162,7 +162,7 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="Apache 2.0 LICENSE"
+                android:text="@string/label_apache_2_0_license"
                 android:textSize="12sp" />
         </LinearLayout>
     </ScrollView>

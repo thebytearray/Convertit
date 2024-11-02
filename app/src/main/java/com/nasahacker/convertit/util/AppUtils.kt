@@ -24,6 +24,7 @@ import com.nasahacker.convertit.R
 import com.nasahacker.convertit.model.AudioBitrate
 import com.nasahacker.convertit.model.AudioCodec
 import com.nasahacker.convertit.model.AudioFormat
+import com.nasahacker.convertit.util.Constants.FOLDER_DIR
 import com.nasahacker.convertit.util.Constants.FORMAT_ARRAY
 import com.nasahacker.convertit.util.Constants.STORAGE_PERMISSION_CODE
 import java.io.File
@@ -59,9 +60,11 @@ object AppUtils {
                 putExtra(Intent.EXTRA_STREAM, fileUri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            context.startActivity(Intent.createChooser(shareIntent, "Share Music File"))
+            context.startActivity(Intent.createChooser(shareIntent,
+                context.getString(R.string.label_share_music_file)))
         } else {
-            Toast.makeText(context, "File does not exist.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,
+                context.getString(R.string.label_file_does_not_exist), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -89,7 +92,8 @@ object AppUtils {
             }
             context.startActivity(intent)
         } else {
-            Toast.makeText(context, "No app found to open the file.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,
+                context.getString(R.string.label_no_app_found_to_open_the_file), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -126,7 +130,7 @@ object AppUtils {
     fun getAudioFilesFromConvertedFolder(): List<File> {
         val convertedDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-            "ConvertIt"
+            FOLDER_DIR
         )
         return convertedDir.takeIf { it.exists() && it.isDirectory }?.listFiles()?.filter { file ->
             FORMAT_ARRAY.any { file.extension.equals(it.trimStart('.'), ignoreCase = true) }
@@ -170,10 +174,10 @@ object AppUtils {
     ) {
         val musicDir = File(
             context.getExternalFilesDir(Environment.DIRECTORY_MUSIC),
-            "ConvertIt"
+            FOLDER_DIR
         ).apply { mkdirs() }
         val inputPath = copyUriToInternalStorage(context, inputUri) ?: run {
-            onFailure("Failed to copy file from Uri: $inputUri")
+            onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri,inputUri))
             return
         }
         val outputFilePath =
@@ -207,7 +211,11 @@ object AppUtils {
 
         FFmpeg.executeAsync(command.toTypedArray()) { _, returnCode ->
             if (returnCode == Config.RETURN_CODE_SUCCESS) onSuccess(outputFilePath)
-            else onFailure("Metadata update failed with return code: $returnCode")
+            else onFailure(
+                context.getString(
+                    R.string.label_metadata_update_failed_with_return_code,
+                    returnCode
+                ))
         }
     }
 
@@ -221,12 +229,12 @@ object AppUtils {
     ) {
         val musicDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-            "ConvertIt"
+            FOLDER_DIR
         ).apply { mkdirs() }
         val outputPaths = mutableListOf<String>()
         uris.forEach { uri ->
             val inputPath = copyUriToInternalStorage(context, uri) ?: run {
-                onFailure("Failed to copy file from Uri: $uri")
+                onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri, uri))
                 return
             }
             val outputFilePath = File(
@@ -254,7 +262,12 @@ object AppUtils {
                     outputPaths.add(outputFilePath)
                     if (outputPaths.size == uris.size) onSuccess(outputPaths)
                 } else {
-                    onFailure("Conversion failed for file: $inputPath with return code: $returnCode")
+                    onFailure(
+                        context.getString(
+                            R.string.label_conversion_failed_for_file_with_return_code,
+                            inputPath,
+                            returnCode
+                        ))
                 }
             }
         }
@@ -305,7 +318,8 @@ object AppUtils {
             }
             ActivityCompat.requestPermissions(activity, permissions, STORAGE_PERMISSION_CODE)
         } else {
-            Toast.makeText(activity, "Storage permissions are already granted", Toast.LENGTH_SHORT)
+            Toast.makeText(activity,
+                activity.getString(R.string.label_storage_permissions_are_already_granted), Toast.LENGTH_SHORT)
                 .show()
         }
     }

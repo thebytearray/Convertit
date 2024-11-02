@@ -16,7 +16,7 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search any audio files"
+            android:hint="@string/label_search_any_audio_files"
             app:layout_scrollFlags="scroll|enterAlways" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         app:layout_anchor="@id/search_bar"
         android:id="@+id/search_view"
-        android:hint="Search any audio files">
+        android:hint="@string/label_search_any_audio_files">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_filtered_files"
