@@ -8,11 +8,13 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.adapter.ConvertsAdapter
 import com.nasahacker.convertit.databinding.FragmentConvertsBinding
 import com.nasahacker.convertit.listener.OnLongPressListener
+import com.nasahacker.convertit.util.AppUtils
 import com.nasahacker.convertit.viewmodel.ConvertsViewModel
 import java.io.File
 
@@ -24,7 +26,7 @@ class ConvertsFragment : Fragment(), OnLongPressListener {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentConvertsBinding.inflate(inflater, container, false)
         setupRecyclerView()
@@ -84,9 +86,12 @@ class ConvertsFragment : Fragment(), OnLongPressListener {
 
     override fun onLongPressed(item: File) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.label_delete))
-            .setMessage(getString(R.string.label_are_you_sure_you_want_to_delete_this))
-            .setPositiveButton(getString(R.string.label_yes)) { _, _ ->
+            .setTitle(getString(R.string.label_title_action_dialog))
+            .setMessage(getString(R.string.label_choose_action))
+            .setNeutralButton(getString(R.string.label_view_metadata)) { _, _ ->
+                AppUtils.showAudioInfoDialog(requireContext(), lifecycleScope, item)
+            }
+            .setPositiveButton(getString(R.string.label_delete)) { _, _ ->
                 convertsViewModel.deleteFile(requireContext(), item)
             }
             .setNegativeButton(getString(R.string.label_cancel)) { dialog, _ -> dialog.dismiss() }

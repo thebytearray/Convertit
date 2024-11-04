@@ -73,7 +73,7 @@ class AboutActivity : AppCompatActivity() {
             // Populate the GridLayout with contributor images
             bitmaps.forEach { bitmap ->
                 val imageView = NasaCircleImageView(this).apply {
-                    layoutParams = ViewGroup.MarginLayoutParams(130, 130).apply {
+                    layoutParams = ViewGroup.MarginLayoutParams(100, 100).apply {
                         setMargins(16, 16, 16, 16)
                     }
                     scaleType = ImageView.ScaleType.CENTER_CROP

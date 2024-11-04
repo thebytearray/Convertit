@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Cover Art -->
+        <ImageView
+            android:id="@+id/ivCoverArt"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            tools:src="@drawable/github_ic" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="12dp"
+            tools:text="Title: Song Title" />
+
+        <!-- Artist -->
+        <TextView
+            android:id="@+id/tvArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="4dp"
+            tools:text="Artist: Artist Name" />
+
+        <!-- Album -->
+        <TextView
+            android:id="@+id/tvAlbum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="4dp"
+            tools:text="Album: Album Name" />
+
+        <!-- Genre -->
+        <TextView
+            android:id="@+id/tvGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="4dp"
+            tools:text="Genre: Pop" />
+
+        <!-- Track -->
+        <TextView
+            android:id="@+id/tvTrack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="4dp"
+            tools:text="Track: 1" />
+
+        <!-- Year -->
+        <TextView
+            android:id="@+id/tvYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_marginTop="4dp"
+            tools:text="Year: 2024" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

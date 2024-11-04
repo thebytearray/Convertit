@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.GONE
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.databinding.ItemAudioBinding
+import com.nasahacker.convertit.listener.OnLongPressListener
 import com.nasahacker.convertit.util.AppUtils
 import java.io.File
 
 class HomeAdapter(
     private val context: Context,
-    private var fileList: List<File>
+    private var fileList: List<File>,
+    private val onLongPressListener: OnLongPressListener,
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,8 +34,10 @@ class HomeAdapter(
         with(holder.binding) {
             btnPlay.visibility = GONE
             btnShare.visibility = GONE
+            songName.isSelected = true
             songName.text = currentItem.name
             songSize.text = AppUtils.getFileSizeInReadableFormat(context, currentItem)
+            holder.itemView.setOnLongClickListener { onLongPressListener.onLongPressed(currentItem); true }
         }
     }
 

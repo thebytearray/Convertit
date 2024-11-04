@@ -22,9 +22,10 @@
     <string name="label_update_canceled_or_failed_try_again_later">Update canceled or failed. Try again later.</string>
     <string name="label_restart">Restart</string>
     <string name="label_update_downloaded_restart_to_complete">Update downloaded. Restart to complete.</string>
-    <string name="label_delete">Delete?</string>
-    <string name="label_are_you_sure_you_want_to_delete_this">Are you sure you want to delete this?</string>
-    <string name="label_yes">Yes</string>
+    <string name="label_title_action_dialog">Quick Action</string>
+    <string name="label_choose_action">Please choose an action.</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_view_metadata">Metadata</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_successfully_converted">Successfully converted</string>
     <string name="label_failed_to_convert">Failed to convert</string>
@@ -51,6 +52,14 @@
     <string name="label_select_audio">Select audio</string>
     <string name="label_dummy_10_mb">10 Mb</string>
     <string name="label_dummysome_audio_mp3">Some audio.mp3</string>
+    <string name="label_dialog_title">Title: %1$s</string>
+    <string name="label_dialog_artist">Artist: %1$s</string>
+    <string name="label_dialog_album">Album: %1$s</string>
+    <string name="label_dialog_genre">Genre: %1$s</string>
+    <string name="label_dialog_track">Track: %1$s</string>
+    <string name="label_dialog_year">Year: %1$s</string>
+    <string name="label_dialog_unknown">Unknown</string>
+
 
 
     <string-array name="bitrate_options">
