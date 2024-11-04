@@ -11,8 +11,8 @@ android {
         applicationId = "com.nasahacker.convertit"
         minSdk = 21
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.0.6-beta"
+        versionCode = 8
+        versionName = "1.0.7-beta"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
