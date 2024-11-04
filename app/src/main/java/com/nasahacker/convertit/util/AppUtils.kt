@@ -243,10 +243,25 @@ object AppUtils {
                     visibility = if (it.year != null) View.VISIBLE else View.GONE
                 }
 
-                // Show the dialog once the data is populated
-                dialog.show()
+                // Check if all views are invisible (GONE)
+                if (ivCoverArt.visibility == View.GONE &&
+                    tvTitle.visibility == View.GONE &&
+                    tvArtist.visibility == View.GONE &&
+                    tvAlbum.visibility == View.GONE &&
+                    tvGenre.visibility == View.GONE &&
+                    tvTrack.visibility == View.GONE &&
+                    tvYear.visibility == View.GONE
+                ) {
+                    dialog.dismiss()
+                    Toast.makeText(context,
+                        context.getString(R.string.label_no_metadata_found), Toast.LENGTH_SHORT).show()
+                } else {
+                    // Show the dialog once the data is populated
+                    dialog.show()
+                }
             } ?: run {
                 Log.e("AppUtils", "Failed to retrieve audio metadata.")
+                Toast.makeText(context, context.getString(R.string.label_no_metadata_found), Toast.LENGTH_SHORT).show()
             }
         }
     }

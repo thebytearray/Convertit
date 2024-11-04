@@ -26,6 +26,7 @@
     <string name="label_choose_action">Please choose an action.</string>
     <string name="label_delete">Delete</string>
     <string name="label_view_metadata">Metadata</string>
+    <string name="label_version">Version: %1$s</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_successfully_converted">Successfully converted</string>
     <string name="label_failed_to_convert">Failed to convert</string>
@@ -59,7 +60,7 @@
     <string name="label_dialog_track">Track: %1$s</string>
     <string name="label_dialog_year">Year: %1$s</string>
     <string name="label_dialog_unknown">Unknown</string>
-
+    <string name="label_no_metadata_found">No metadata found</string>
 
 
     <string-array name="bitrate_options">

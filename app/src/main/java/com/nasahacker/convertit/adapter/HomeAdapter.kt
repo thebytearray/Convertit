@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.GONE
+import androidx.recyclerview.widget.RecyclerView.VISIBLE
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.databinding.ItemAudioBinding
 import com.nasahacker.convertit.listener.OnLongPressListener
@@ -34,8 +35,8 @@ class HomeAdapter(
         with(holder.binding) {
             btnPlay.visibility = GONE
             btnShare.visibility = GONE
-            songName.isSelected = true
             songName.text = currentItem.name
+            songName.isSelected = true
             songSize.text = AppUtils.getFileSizeInReadableFormat(context, currentItem)
             holder.itemView.setOnLongClickListener { onLongPressListener.onLongPressed(currentItem); true }
         }

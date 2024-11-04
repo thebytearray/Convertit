@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
+import com.nasahacker.convertit.BuildConfig
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.databinding.ActivityAboutBinding
 import com.nasahacker.convertit.util.AppUtils
@@ -41,9 +42,12 @@ class AboutActivity : AppCompatActivity() {
         }
 
         setupToolbar()
+        binding.appVersion.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
+
         setupButtonListeners()
         observeViewModel()
         viewModel.loadContributors()
+
     }
 
     private fun setupToolbar() {

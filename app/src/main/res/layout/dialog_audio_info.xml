@@ -7,6 +7,7 @@
     android:layout_margin="16dp"
     app:cardCornerRadius="16dp"
     android:clickable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
     android:focusable="true">
 
     <LinearLayout
@@ -22,7 +23,6 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:background="?attr/selectableItemBackgroundBorderless"
             tools:src="@drawable/github_ic" />
 
         <!-- Title -->
