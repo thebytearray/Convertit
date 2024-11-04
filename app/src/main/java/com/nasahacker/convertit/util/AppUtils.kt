@@ -253,15 +253,21 @@ object AppUtils {
                     tvYear.visibility == View.GONE
                 ) {
                     dialog.dismiss()
-                    Toast.makeText(context,
-                        context.getString(R.string.label_no_metadata_found), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.label_no_metadata_found), Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     // Show the dialog once the data is populated
                     dialog.show()
                 }
             } ?: run {
                 Log.e("AppUtils", "Failed to retrieve audio metadata.")
-                Toast.makeText(context, context.getString(R.string.label_no_metadata_found), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.label_no_metadata_found),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
