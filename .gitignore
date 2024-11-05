@@ -1,15 +1,33 @@
-*.iml
-.gradle
-/local.properties
+# Ignore Gradle files
+.gradle/
+/build/
+app/build/
+
+# Ignore local configuration
+local.properties
+
+# Ignore IDE-specific files
+.idea/
 /.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Ignore Kotlin-specific files
+.kotlinc/
+.kotlinc_caches/
+
+# Ignore system-specific files
 .DS_Store
-/build
+
+# Ignore Android Studio captures
 /captures
+
+# Ignore native build folders
 .externalNativeBuild
 .cxx
-local.properties
+
+# Ignore IntelliJ IDEA project files
+*.iml
