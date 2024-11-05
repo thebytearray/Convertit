@@ -46,39 +46,7 @@ class MainActivity : AppCompatActivity() {
         handleNotificationPermission(this)
         setupToolbarMenu()
 
-        // Observe ViewModel for update status messages
-        mainViewModel.updateStatus.observe(this) { message ->
-            Snackbar.make(binding.main, message, Snackbar.LENGTH_SHORT).show()
-        }
-
-        mainViewModel.showRestartSnackbar.observe(this) { show ->
-            if (show) {
-                Snackbar.make(
-                    binding.main,
-                    getString(R.string.label_update_downloaded_restart_to_complete),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction(getString(R.string.label_restart)) {
-                        mainViewModel.completeUpdate()
-                    }
-                    .show()
-            }
-        }
-
-        // Trigger update check
-        mainViewModel.checkForUpdate(activityResultLauncher)
     }
-
-    private val activityResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
-            val message = if (result.resultCode == RESULT_OK) {
-                getString(R.string.label_update_completed_successfully)
-            } else {
-                getString(R.string.label_update_canceled_or_failed_try_again_later)
-            }
-            Snackbar.make(binding.main, message, Snackbar.LENGTH_SHORT).show()
-        }
-
     private fun setupNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment

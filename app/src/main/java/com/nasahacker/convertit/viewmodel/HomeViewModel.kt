@@ -48,9 +48,15 @@ class HomeViewModel : ViewModel() {
     fun startListenBroadcast(context: Context) {
         val intentFilter = IntentFilter(CONVERT_BROADCAST_ACTION)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.registerReceiver(conversionReceiver, intentFilter, Context.RECEIVER_EXPORTED)
+            ContextCompat.registerReceiver(
+                context, conversionReceiver, intentFilter,
+                ContextCompat.RECEIVER_EXPORTED
+            )
         } else {
-            context.registerReceiver(conversionReceiver, intentFilter)
+            ContextCompat.registerReceiver(
+                context, conversionReceiver, intentFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
         }
     }
 
