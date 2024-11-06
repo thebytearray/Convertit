@@ -490,8 +490,7 @@ object AppUtils {
                 activity,
                 activity.getString(R.string.label_storage_permissions_are_already_granted),
                 Toast.LENGTH_SHORT
-            )
-                .show()
+            ).show()
         }
     }
 }

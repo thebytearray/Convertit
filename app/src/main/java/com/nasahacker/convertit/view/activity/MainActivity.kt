@@ -3,8 +3,6 @@ package com.nasahacker.convertit.view.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,10 +10,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.databinding.ActivityMainBinding
-import com.nasahacker.convertit.util.AppUtils
 import com.nasahacker.convertit.util.AppUtils.handleNotificationPermission
 import com.nasahacker.convertit.viewmodel.MainViewModel
 
@@ -47,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         setupToolbarMenu()
 
     }
+
     private fun setupNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
