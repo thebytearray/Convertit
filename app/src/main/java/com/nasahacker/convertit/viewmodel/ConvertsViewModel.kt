@@ -19,7 +19,7 @@ class ConvertsViewModel : ViewModel() {
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> get() = _message
 
-    fun loadAllFiles(context: Context) {
+    fun loadAllFiles() {
         viewModelScope.launch(Dispatchers.IO) {
             val files = AppUtils.getAudioFilesFromConvertedFolder()
             _audioFiles.postValue(files)
@@ -30,7 +30,7 @@ class ConvertsViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val success = file.delete()
             val resultMessage = if (success) {
-                loadAllFiles(context)
+                loadAllFiles()
                 context.getString(R.string.label_file_deleted_successfully)
             } else {
                 context.getString(R.string.label_something_went_wrong_status_failed)

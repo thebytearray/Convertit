@@ -32,7 +32,7 @@ class ConvertsFragment : Fragment(), OnLongPressListener {
         setupRecyclerView()
         setupSearchView()
         observeViewModel()
-        convertsViewModel.loadAllFiles(requireContext())
+        convertsViewModel.loadAllFiles()
         return binding.root
     }
 
