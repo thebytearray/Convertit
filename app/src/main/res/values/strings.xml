@@ -14,6 +14,7 @@
     <string name="label_storage_permissions_are_already_granted">Storage permissions are already granted</string>
     <string name="label_conversion_failed_for_file_with_return_code">Conversion failed for file: %1$s with return code: %2$d</string>
     <string name="label_failed_to_copy_file_from_uri">Failed to copy file from Uri: %1$s</string>
+    <string name="label_metadata_update_failed_with_return_code">Metadata update failed with return code: %1$d</string>
     <string name="label_no_app_found_to_open_the_file">No app found to open the file.</string>
     <string name="label_file_does_not_exist">File does not exist.</string>
     <string name="label_share_music_file">Share Music File</string>
