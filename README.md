@@ -4,7 +4,6 @@
 ![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
 ![Stars](https://img.shields.io/github/stars/CodeWithTamim/ConvertIt?style=for-the-badge&logo=star)
 ![Downloads](https://img.shields.io/github/downloads/CodeWithTamim/ConvertIt/total?style=for-the-badge&logo=download)
-![Platform](https://img.shields.io/badge/Platform-Android-green?style=for-the-badge&logo=android&logoColor=white)
 ![Version](https://img.shields.io/github/v/release/CodeWithTamim/ConvertIt?style=for-the-badge&logo=semver&logoColor=white)
 
 
