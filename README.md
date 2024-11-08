@@ -50,7 +50,7 @@ Download **ConvertIt** directly from the Play Store:
 
 - **Android**: Version **5.0 (Lollipop)** or later
 - **Kotlin**: Version **1.3** or later
-- **Android Studio**: Version **4.0** or later
+- **Android Studio**: Version **Ladybug** or later
 
 ---
 
