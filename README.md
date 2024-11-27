@@ -3,7 +3,6 @@
 ![License](https://img.shields.io/badge/License-Apache%202.0-4E9CAF?style=for-the-badge&logo=open-source-initiative&logoColor=white)
 ![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
 ![Downloads](https://img.shields.io/github/downloads/CodeWithTamim/ConvertIt/total?style=for-the-badge&logo=download)
-![Version](https://img.shields.io/github/v/release/CodeWithTamim/ConvertIt?style=for-the-badge&logo=semver&logoColor=white)
 
 
 **ConvertIt** is an **ad-free** and **easy-to-use** audio converter app that helps users convert audio files across different formats seamlessly. With **support for popular audio formats** and **customizable bitrates**, ConvertIt delivers high-quality conversions, powered by FFmpeg, all within a clean, user-friendly interface.
