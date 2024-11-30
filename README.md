@@ -20,7 +20,7 @@
 
 ---
 
-## 🖼️ Screenshots
+## 🖼️ Screenshots Of App
 
 <p align="left">
   <img src="images/img1.png" alt="Screenshot 1" width="200"/>
