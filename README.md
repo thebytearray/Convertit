@@ -46,7 +46,7 @@ Download **ConvertIt** directly from the Play Store:
 ## 🛠️ Requirements
 
 - **Android**: Version **5.0 (Lollipop)** or later
-- **Kotlin**: Version **1.3** or later
+- **Kotlin**: Version **2.0.21** or later
 - **Android Studio**: Version **Ladybug** or later
 
 ---
