@@ -12,7 +12,7 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 mobileFfmpegFullGpl = "4.4.LTS"
 nasacircleimageview = "1.0.0"
-navigationFragmentKtx = "2.8.3"
+navigationFragmentKtx = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
