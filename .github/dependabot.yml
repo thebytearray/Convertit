@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/V2rayNG" # Location of package manifests
+    directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions"
