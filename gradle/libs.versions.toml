@@ -1,6 +1,6 @@
 [versions]
-agp = "8.7.2"
-kotlin = "2.0.21"
+agp = "8.7.3"
+kotlin = "2.1.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -10,9 +10,9 @@ lifecycleViewmodelKtx = "2.8.7"
 material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
-mobileFfmpegFullGpl = "4.4.LTS"
-nasacircleimageview = "1.0.0"
-navigationFragmentKtx = "2.8.3"
+mobileFfmpegFullGpl = "4.4"
+nasacircleimageview = "1.0.5"
+navigationFragmentKtx = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
