@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nasahacker.convertit.App
-import com.nasahacker.convertit.dto.Constant
-import com.nasahacker.convertit.dto.Constant.IS_SUCCESS
+import com.nasahacker.convertit.util.Constant
+import com.nasahacker.convertit.util.Constant.IS_SUCCESS
 import com.nasahacker.convertit.util.AppUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

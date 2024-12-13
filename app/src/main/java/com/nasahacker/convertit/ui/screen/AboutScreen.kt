@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.dto.Constant
+import com.nasahacker.convertit.util.Constant
 import com.nasahacker.convertit.util.AppUtil
 
 @Composable
