@@ -1,0 +1,55 @@
+<resources>
+
+    <string name="app_name">Convertit</string>
+    <string name="label_file_size">%1$.1f %2$s</string>
+    <string name="converting_audio_files">Converting files</string>
+    <string name="label_about_title">About</string>
+    <string name="label_about_app">ConvertIt is a free and easy-to-use audio converter app. It supports popular audio formats like MP3 and M4A. With options for high-quality bitrates ranging from 128k to 320k, ConvertIt offers a seamless conversion experience tailored to your needs.</string>
+    <string name="label_contact">Contact</string>
+    <string name="label_bio">Developed by Tamim Hossain</string>
+    <string name="label_converting_audio">Running in background</string>
+    <string name="label_storage_permissions_are_already_granted">Storage permissions granted</string>
+    <string name="label_conversion_failed_for_file_with_return_code">Conversion failed: %1$s (code: %2$d)</string>
+    <string name="label_failed_to_copy_file_from_uri">Failed to copy file: %1$s</string>
+    <string name="label_metadata_update_failed_with_return_code">Metadata update failed (code: %1$d)</string>
+    <string name="label_no_app_found_to_open_the_file">No app to open the file</string>
+    <string name="label_file_does_not_exist">File not found</string>
+    <string name="label_share_music_file">Share File</string>
+    <string name="label_restart">Restart</string>
+    <string name="label_title_action_dialog">Quick Action</string>
+    <string name="label_choose_action">Choose an action</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_view_metadata">Metadata</string>
+    <string name="label_version">Version: %1$s</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_successfully_converted">Conversion successful</string>
+    <string name="label_failed_to_convert">Conversion failed</string>
+    <string name="label_conversion_started_with_bitrate_and_format_please_wait">Starting conversion: %1$s bitrate, %2$s format</string>
+    <string name="label_file_deleted_successfully">File deleted</string>
+    <string name="label_something_went_wrong_status_failed">Error occurred: Failed</string>
+    <string name="label_about">About</string>
+    <string name="label_discord">Discord</string>
+    <string name="label_github">GitHub</string>
+    <string name="label_telegram">Telegram</string>
+    <string name="label_contributors">Contributors</string>
+    <string name="label_apache_2_0_license">Apache 2.0 License</string>
+    <string name="label_bitrate_options">Bitrate</string>
+    <string name="label_format_options">Format</string>
+    <string name="label_convert">Convert</string>
+    <string name="label_search_any_audio_files">Search files</string>
+    <string name="label_select_audio">Select audio</string>
+    <string name="label_dialog_title">Title: %1$s</string>
+    <string name="label_dialog_artist">Artist: %1$s</string>
+    <string name="label_dialog_album">Album: %1$s</string>
+    <string name="label_dialog_genre">Genre: %1$s</string>
+    <string name="label_dialog_track">Track: %1$s</string>
+    <string name="label_dialog_year">Year: %1$s</string>
+    <string name="label_dialog_unknown">Unknown</string>
+    <string name="label_no_metadata_found">No metadata</string>
+    <string name="conversion_success">Conversion Successful</string>
+    <string name="conversion_failed">Conversion Failed</string>
+    <string name="conversion_status">Status</string>
+
+
+
+</resources>
