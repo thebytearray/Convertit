@@ -62,8 +62,6 @@ class HomeViewModel : ViewModel() {
     }
 
 
-
-
     override fun onCleared() {
         super.onCleared()
         App.application.unregisterReceiver(mMsgReceiver)
