@@ -62,18 +62,6 @@ class HomeViewModel : ViewModel() {
     }
 
 
-    fun setConversionStatus(status: Boolean) {
-        viewModelScope.launch {
-            _conversionStatus.value = status
-        }
-    }
-
-
-    fun resetConversionStatus() {
-        viewModelScope.launch {
-            _conversionStatus.value = null
-        }
-    }
 
 
     override fun onCleared() {
