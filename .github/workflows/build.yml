@@ -39,7 +39,7 @@ jobs:
         id: android_keystore
         with:
           fileName: "android_keystore.jks"
-          encodedString: ${{ secrets.KEYSTORE_FILE_BASE64 }}
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
       - name: Build APK and AAB
         run: |
@@ -47,8 +47,8 @@ jobs:
           ./gradlew clean assembleRelease bundleRelease \
             -Pandroid.injected.signing.store.file=${{ steps.android_keystore.outputs.filePath }} \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTORE_KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
       - name: Create 'whatsnew' Directory and Add Localized Release Notes
         run: |
