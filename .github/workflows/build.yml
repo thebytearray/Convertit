@@ -68,7 +68,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: com.nasahacker.nasavolumecontrol
+          packageName: com.nasahacker.convertit
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: production
           releaseName: ${{ github.event.inputs.release_name }}
