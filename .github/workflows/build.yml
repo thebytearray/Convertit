@@ -1,0 +1,75 @@
+name: Build & deploy Android app
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag name for the release (e.g., v1.0.0)"
+        required: true
+      release_name:
+        description: "Release name (optional)"
+        required: false
+        default: ""
+      description:
+        description: "What's new in this release (Release Notes)"
+        required: true
+
+jobs:
+  deployAndroid:
+    permissions:
+      contents: write
+    name: Build & deploy Android release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android environment
+        uses: android-actions/setup-android@v3
+
+      - name: Decode Keystore
+        uses: timheuer/base64-to-file@v1.2.4
+        id: android_keystore
+        with:
+          fileName: "android_keystore.jks"
+          encodedString: ${{ secrets.KEYSTORE_FILE_BASE64 }}
+
+      - name: Build APK and AAB
+        run: |
+          chmod 755 gradlew
+          ./gradlew clean assembleRelease bundleRelease \
+            -Pandroid.injected.signing.store.file=${{ steps.android_keystore.outputs.filePath }} \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTORE_KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+
+      - name: Create 'whatsnew' Directory and Add Localized Release Notes
+        run: |
+          mkdir -p distribution/whatsnew
+          echo "${{ github.event.inputs.description }}" > distribution/whatsnew/whatsnew-en-US
+
+      - name: Upload APKs to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.tag_name }}
+          files: |
+            app/build/outputs/apk/release/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload AAB to Play Store
+        uses: r0adkll/upload-google-play@v1.1.3
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.nasahacker.nasavolumecontrol
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: production
+          releaseName: ${{ github.event.inputs.release_name }}
+          whatsNewDirectory: distribution/whatsnew
