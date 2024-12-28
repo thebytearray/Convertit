@@ -44,9 +44,7 @@ fun HomeScreen(
             }
         }
 
-    LaunchedEffect(Unit) {
-        viewModel.startListening()
-    }
+    
 
     LaunchedEffect(conversionStatus) {
         conversionStatus?.let {
