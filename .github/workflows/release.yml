@@ -13,6 +13,10 @@ on:
       description:
         description: "What's new in this release (Release Notes)"
         required: true
+      prerelease:
+        description: "Is this a pre-release? (true/false)"
+        required: false
+        default: "false"
 
 jobs:
   buildAndUpload:
@@ -41,7 +45,7 @@ jobs:
           fileName: "android_keystore.jks"
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Build APK and AAB
+      - name: Build APK
         run: |
           chmod 755 gradlew
           ./gradlew clean assembleRelease \
@@ -61,5 +65,6 @@ jobs:
           body_path: release_notes.txt
           files: |
             app/build/outputs/apk/release/app-release.apk
+          prerelease: ${{ github.event.inputs.prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
