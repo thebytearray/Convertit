@@ -36,6 +36,13 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun resetConversionStatus() {
+        viewModelScope.launch {
+            _conversionStatus.value = null
+        }
+    }
+
+
     init {
         // Start listening for broadcast messages
         startListeningForBroadcasts()

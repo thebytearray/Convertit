@@ -9,7 +9,7 @@
     import androidx.compose.runtime.Composable
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.tooling.preview.Preview
-    import com.nasahacker.convertit.ui.composable.AboutAppBar
+    import com.nasahacker.convertit.ui.component.AboutAppBar
     import com.nasahacker.convertit.ui.screen.AboutScreen
     import com.nasahacker.convertit.ui.theme.AppTheme
 

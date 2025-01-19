@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.nasahacker.convertit.ui.composable.AppNavHost
-import com.nasahacker.convertit.ui.composable.BottomNavigationBar
-import com.nasahacker.convertit.ui.composable.MainAppBar
+import com.nasahacker.convertit.ui.component.AppNavHost
+import com.nasahacker.convertit.ui.component.BottomNavigationBar
+import com.nasahacker.convertit.ui.component.MainAppBar
 import com.nasahacker.convertit.ui.screen.HomeScreen
 import com.nasahacker.convertit.ui.theme.AppTheme
 
@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     AppNavHost(
+                        this,
                         modifier = Modifier.padding(innerPadding),
                         controller = navController
                     )
@@ -53,7 +54,5 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewMainScreen() {
-    HomeScreen(
-        viewModel = TODO()
-    )
+
 }

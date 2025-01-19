@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.composable
+package com.nasahacker.convertit.ui.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

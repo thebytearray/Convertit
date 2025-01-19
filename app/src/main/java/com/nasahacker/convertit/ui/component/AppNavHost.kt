@@ -1,6 +1,7 @@
-package com.nasahacker.convertit.ui.composable
+package com.nasahacker.convertit.ui.component
 
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -12,14 +13,14 @@ import com.nasahacker.convertit.ui.screen.HomeScreen
 
 
 @Composable
-fun AppNavHost(modifier: Modifier = Modifier, controller: NavHostController) {
+fun AppNavHost(activity: Activity, modifier: Modifier = Modifier, controller: NavHostController) {
     NavHost(
         modifier = modifier,
         navController = controller,
         startDestination = BottomNavItem.Home.route
     ) {
         composable(BottomNavItem.Home.route) {
-            HomeScreen()
+            HomeScreen(activity)
         }
         composable(BottomNavItem.Converts.route) {
             ConvertsScreen()

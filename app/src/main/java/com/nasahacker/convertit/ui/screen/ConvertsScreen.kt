@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.nasahacker.convertit.ui.composable.AudioItem
-import com.nasahacker.convertit.ui.composable.DialogDeleteItem
+import com.nasahacker.convertit.ui.component.AudioItem
+import com.nasahacker.convertit.ui.component.DialogDeleteItem
 import com.nasahacker.convertit.util.AppUtil
 import java.io.File
 

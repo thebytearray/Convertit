@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.composable
+package com.nasahacker.convertit.ui.component
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar

@@ -37,7 +37,7 @@
         </activity>
 
         <service
-            android:name=".service.AudioConversionService"
+            android:name=".service.ConvertItService"
             android:exported="true"
             android:foregroundServiceType="shortService"
             android:permission="android.permission.FOREGROUND_SERVICE" />

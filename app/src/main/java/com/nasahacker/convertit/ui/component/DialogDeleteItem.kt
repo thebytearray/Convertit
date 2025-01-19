@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.composable
+package com.nasahacker.convertit.ui.component
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog

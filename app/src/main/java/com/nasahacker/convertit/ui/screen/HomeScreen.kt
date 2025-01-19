@@ -14,23 +14,23 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.service.AudioConversionService
-import com.nasahacker.convertit.ui.composable.AudioItem
-import com.nasahacker.convertit.ui.composable.DialogConvertAlertDialog
+import com.nasahacker.convertit.service.ConvertItService
+import com.nasahacker.convertit.ui.component.AudioItem
+import com.nasahacker.convertit.ui.component.DialogConvertAlertDialog
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
+    context: Activity,
     viewModel: HomeViewModel = viewModel()
 ) {
-    val context = LocalContext.current as Activity
+
     val uriList by viewModel.uriList.collectAsState()
     val conversionStatus by viewModel.conversionStatus.collectAsState()
     var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -44,11 +44,15 @@ fun HomeScreen(
             }
         }
 
-    
+
 
     LaunchedEffect(conversionStatus) {
-        conversionStatus?.let {
-            showDialog = it
+        conversionStatus?.let { isSuccess ->
+            if (isSuccess) {
+                Toast.makeText(context, "Conversion successful!", Toast.LENGTH_SHORT).show()
+                viewModel.clearUriList()
+                viewModel.resetConversionStatus()
+            }
         }
     }
 
@@ -61,14 +65,15 @@ fun HomeScreen(
                 val file = AppUtil.getFileFromUri(context, uri)
                 AudioItem(
                     fileName = file?.name.orEmpty(),
-                    fileSize = file?.let { AppUtil.getFileSizeInReadableFormat(context, it) } ?: "Unknown"
+                    fileSize = file?.let { AppUtil.getFileSizeInReadableFormat(context, it) }
+                        ?: "Unknown"
                 )
             }
         }
 
         FloatingActionButton(
             onClick = {
-                if (AudioConversionService.isForegroundServiceStarted) {
+                if (ConvertItService.isForegroundServiceStarted) {
                     Toast.makeText(
                         context,
                         "Please wait for the previous audios to be converted.",
@@ -104,5 +109,4 @@ fun HomeScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewMainScreen() {
-    HomeScreen()
 }

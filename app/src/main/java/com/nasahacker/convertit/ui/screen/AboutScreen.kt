@@ -1,8 +1,15 @@
 package com.nasahacker.convertit.ui.screen
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,8 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.util.Constant
 import com.nasahacker.convertit.util.AppUtil
+import com.nasahacker.convertit.util.Constant
 
 @Composable
 fun AboutScreen(modifier: Modifier = Modifier) {
@@ -27,17 +34,16 @@ fun AboutScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-
-
             // Contact Section
             Text(
                 text = "Contact Us",
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 24.dp),
+                modifier = Modifier.padding(top = 12.dp),
                 textAlign = TextAlign.Center
             )
             Column(
@@ -87,6 +93,26 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                 )
             }
 
+            // Donation Section
+            Text(
+                text = "Support Us",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 24.dp),
+                textAlign = TextAlign.Center
+            )
+            // Bitcoin Donation Card
+            DonationCard(
+                iconRes = R.drawable.btc,
+                description = "Bitcoin Icon",
+                address = "1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr"
+            )
+            // USDT Donation Card
+            DonationCard(
+                iconRes = R.drawable.usdt,
+                description = "USDT Icon",
+                address = "TM2Z6o6SabAJ3cW8UWjoG3orAGYPcqqdzJ"
+            )
+
             // About App Section
             Text(
                 text = "About App",
@@ -116,20 +142,61 @@ fun AboutScreen(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun DonationCard(iconRes: Int, description: String, address: String) {
+    val context = LocalContext.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .combinedClickable(
+                onClick = { /* Handle normal click if needed */ },
+                onLongClick = {
+                    val clipboard =
+                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText(description, address)
+                    clipboard.setPrimaryClip(clip)
+                }
+            ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(iconRes),
+                contentDescription = description,
+                modifier = Modifier.size(24.dp)
+            )
+            Text(
+                text = address,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+    }
+}
+
 @Composable
 fun ContactItem(name: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             text = name,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.clickable(onClick = {onClick()})
+            modifier = Modifier.clickable(onClick = { onClick() })
         )
-
     }
 }
 

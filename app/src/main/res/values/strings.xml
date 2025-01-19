@@ -9,8 +9,7 @@
     <string name="label_bio">Developed by Tamim Hossain</string>
     <string name="label_converting_audio">Running in background</string>
     <string name="label_storage_permissions_are_already_granted">Storage permissions granted</string>
-    <string name="label_conversion_failed_for_file_with_return_code">Conversion failed: %1$s (code: %2$d)</string>
-    <string name="label_failed_to_copy_file_from_uri">Failed to copy file: %1$s</string>
+    <string name="label_conversion_failed_for_file_with_return_code">Failed: %1$s (code: %2$s).</string>
     <string name="label_metadata_update_failed_with_return_code">Metadata update failed (code: %1$d)</string>
     <string name="label_no_app_found_to_open_the_file">No app to open the file</string>
     <string name="label_file_does_not_exist">File not found</string>
@@ -48,8 +47,8 @@
     <string name="label_no_metadata_found">No metadata</string>
     <string name="conversion_success">Conversion Successful</string>
     <string name="conversion_failed">Conversion Failed</string>
-    <string name="conversion_status">Status</string>
-
+    <string name="conversion_status">Conversion Status</string>
+    <string name="label_failed_to_copy_file_from_uri">Failed to copy the file from URI</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.composable
+package com.nasahacker.convertit.ui.component
 
 import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxWidth

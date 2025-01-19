@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.composable
+package com.nasahacker.convertit.ui.component
 
 import android.net.Uri
 import android.util.Log
@@ -81,7 +81,7 @@ fun DialogConvertContent(
     var isFormatMenuExpanded by remember { mutableStateOf(false) }
 
     val bitrateOptions = listOf("128k", "192k", "256k", "320k")
-    val formatOptions = listOf(".mp3", ".m4a")
+    val formatOptions = listOf(".mp3", ".m4a", ".wav", ".aac", ".ogg")
 
     Column(
         modifier = Modifier

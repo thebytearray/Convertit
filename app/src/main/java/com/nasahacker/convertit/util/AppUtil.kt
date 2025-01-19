@@ -16,8 +16,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.arthenica.mobileffmpeg.Config
-import com.arthenica.mobileffmpeg.FFmpeg
+import com.arthenica.ffmpegkit.FFmpegKit
+import com.arthenica.ffmpegkit.ReturnCode
 import com.nasahacker.convertit.App
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.dto.AudioBitrate
@@ -30,7 +30,7 @@ import com.nasahacker.convertit.util.Constant.FOLDER_DIR
 import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
 import com.nasahacker.convertit.util.Constant.STORAGE_PERMISSION_CODE
 import com.nasahacker.convertit.util.Constant.URI_LIST
-import com.nasahacker.convertit.service.AudioConversionService
+import com.nasahacker.convertit.service.ConvertItService
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.log10
@@ -223,7 +223,7 @@ object AppUtil {
                     "Format: $format"
         )
 
-        val intent = Intent(App.application, AudioConversionService::class.java).apply {
+        val intent = Intent(App.application, ConvertItService::class.java).apply {
             putParcelableArrayListExtra(URI_LIST, uriList)
             putExtra(BITRATE, bitrate)
             putExtra(AUDIO_FORMAT, format)
@@ -249,6 +249,7 @@ object AppUtil {
         Toast.makeText(context, resultMessage, Toast.LENGTH_SHORT).show()
     }
 
+
     fun convertAudio(
         context: Context,
         uris: List<Uri>,
@@ -264,31 +265,17 @@ object AppUtil {
         val outputPaths = mutableListOf<String>()
         uris.forEach { uri ->
             val inputPath = copyUriToInternalStorage(context, uri) ?: run {
-                onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri, uri))
+                onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri))
                 return
             }
             val outputFilePath = File(
                 musicDir,
                 "${File(inputPath).nameWithoutExtension}${outputFormat.extension}"
             ).absolutePath
-            val command = arrayOf(
-                "-y",
-                "-i",
-                inputPath,
-                "-map",
-                "0",
-                "-map_metadata",
-                "0",
-                "-c:a",
-                AudioCodec.fromFormat(outputFormat).codec,
-                "-b:a",
-                bitrate.bitrate,
-                "-c:v",
-                "copy",
-                outputFilePath
-            )
-            FFmpeg.executeAsync(command) { _, returnCode ->
-                if (returnCode == Config.RETURN_CODE_SUCCESS) {
+            val command = "-y -i $inputPath -c:a ${AudioCodec.fromFormat(outputFormat).codec} -b:a ${bitrate.bitrate} $outputFilePath"
+
+            FFmpegKit.executeAsync(command) { session ->
+                if (ReturnCode.isSuccess(session.returnCode)) {
                     outputPaths.add(outputFilePath)
                     if (outputPaths.size == uris.size) onSuccess(outputPaths)
                 } else {
@@ -296,7 +283,7 @@ object AppUtil {
                         context.getString(
                             R.string.label_conversion_failed_for_file_with_return_code,
                             inputPath,
-                            returnCode
+                            session.returnCode.toString()
                         )
                     )
                 }

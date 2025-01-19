@@ -28,7 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AudioConversionService : Service() {
+class ConvertItService : Service() {
 
     private val notificationId = 1
 
@@ -73,7 +73,7 @@ class AudioConversionService : Service() {
         if (uriList != null) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    AppUtil.convertAudio(context = this@AudioConversionService,
+                    AppUtil.convertAudio(context = this@ConvertItService,
                         uris = uriList,
                         outputFormat = format,
                         bitrate = bitrate,
@@ -131,7 +131,7 @@ class AudioConversionService : Service() {
     }
 
     private fun createProgressNotification(progress: Int, isIndeterminate: Boolean): Notification {
-        val stopIntent = Intent(this, AudioConversionService::class.java).apply {
+        val stopIntent = Intent(this, ConvertItService::class.java).apply {
             action = ACTION_STOP_SERVICE
         }
         val stopPendingIntent = PendingIntent.getService(
@@ -177,6 +177,15 @@ class AudioConversionService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.conversion_status)).setContentText(notificationText)
             .setSmallIcon(R.mipmap.ic_launcher).setAutoCancel(true).build()
+
+        //ajdlfajld
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         NotificationManagerCompat.from(this).notify(notificationId, notification)
     }
 }
