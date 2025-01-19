@@ -12,19 +12,24 @@ android {
         applicationId = "com.nasahacker.convertit"
         minSdk = 21
         targetSdk = 35
-        versionCode = 13
-        versionName = "1.1.2-beta"
+        versionCode = 14
+        versionName = "1.1.3-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isMinifyEnabled = true
+            isShrinkResources = true
         }
     }
     compileOptions {
