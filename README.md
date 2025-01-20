@@ -48,8 +48,8 @@ Download **ConvertIt** directly from the Play Store:
 
 If you find **ConvertIt** helpful and would like to support its development, consider donating:
 
-- ![Bitcoin Icon](https://img.shields.io/badge/Bitcoin-₿-F7931A?style=flat-square&logo=bitcoin&logoColor=white) **BTC Address**: `1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr`
-- ![Tether Icon](https://img.shields.io/badge/USDT-TRC20-26A17B?style=flat-square&logo=tether&logoColor=white) **USDT Address**: `TM2Z6o6SabAJ3cW8UWjoG3orAGYPcqqdzJ`
+- ![Bitcoin Icon](https://img.shields.io/badge/Bitcoin-₿-F7931A?style=flat-square&logo=bitcoin&logoColor=white) **BTC Address**: ```1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr```
+- ![Tether Icon](https://img.shields.io/badge/USDT-TRC20-26A17B?style=flat-square&logo=tether&logoColor=white) **USDT Address**: ```TM2Z6o6SabAJ3cW8UWjoG3orAGYPcqqdzJ```
 
 Every contribution, big or small, helps keep this project alive and ad-free. Thank you! 💖
 
