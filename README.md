@@ -23,10 +23,9 @@
 ## 🖼️ Screenshots Of App
 
 <p align="left">
-  <img src="images/img1.png" alt="Screenshot 1" width="200"/>
-  <img src="images/img2.png" alt="Screenshot 2" width="200"/>
-  <img src="images/img3.png" alt="Screenshot 3" width="200"/>
- <img src="images/img4.png" alt="Screenshot 3" width="200"/>
+  <img src="images/image1.png" alt="Screenshot 1" width="200"/>
+  <img src="images/image2.png" alt="Screenshot 2" width="200"/>
+  <img src="images/image3.png" alt="Screenshot 3" width="200"/>
 </p>
 
 ---
@@ -40,6 +39,19 @@ Download **ConvertIt** directly from the Play Store:
     <img alt="Get it on Google Play" src="https://img.shields.io/badge/Get%20it%20on-Google%20Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white" width="200"/>
   </a>
 </p>
+
+---
+
+---
+
+## 💝 Support the Project
+
+If you find **ConvertIt** helpful and would like to support its development, consider donating:
+
+- ![Bitcoin Icon](https://img.shields.io/badge/Bitcoin-₿-F7931A?style=flat-square&logo=bitcoin&logoColor=white) **BTC Address**: `1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr`
+- ![Tether Icon](https://img.shields.io/badge/USDT-TRC20-26A17B?style=flat-square&logo=tether&logoColor=white) **USDT Address**: `TM2Z6o6SabAJ3cW8UWjoG3orAGYPcqqdzJ`
+
+Every contribution, big or small, helps keep this project alive and ad-free. Thank you! 💖
 
 ---
 
