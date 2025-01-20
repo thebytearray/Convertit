@@ -35,17 +35,10 @@
 Download **ConvertIt** directly from the Play Store:
 
 <p align="left">
-  <img src="images/image1.png" alt="Screenshot 1" width="200" style="border-radius:15px;"/>
-  <img src="images/image2.png" alt="Screenshot 2" width="200" style="border-radius:15px;"/>
-  <img src="images/image3.png" alt="Screenshot 3" width="200" style="border-radius:15px;"/>
-</p>
-
-<p align="left">
   <a href="https://play.google.com/store/apps/details?id=com.nasahacker.convertit" target="_blank">
-    <img alt="Get it on Google Play" style="border-radius:10px;" src="https://img.shields.io/badge/Get%20it%20on-Google%20Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white" width="200"/>
+    <img alt="Get it on Google Play" style="border-radius:10px" src="https://img.shields.io/badge/Get%20it%20on-Google%20Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white" width="200"/>
   </a>
 </p>
-
 
 ---
 
