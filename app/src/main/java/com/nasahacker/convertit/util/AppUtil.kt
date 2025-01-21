@@ -261,18 +261,31 @@ object AppUtil {
         val musicDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
             FOLDER_DIR
-        ).apply { mkdirs() }
+        ).apply {
+            setReadable(true)
+            setWritable(true)
+            mkdirs()
+        }
+
         val outputPaths = mutableListOf<String>()
         uris.forEach { uri ->
             val inputPath = copyUriToInternalStorage(context, uri) ?: run {
                 onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri))
                 return
             }
-            val outputFilePath = File(
-                musicDir,
-                "${File(inputPath).nameWithoutExtension}${outputFormat.extension}"
-            ).absolutePath
-            val command = "-y -i $inputPath -c:a ${AudioCodec.fromFormat(outputFormat).codec} -b:a ${bitrate.bitrate} $outputFilePath"
+
+            val inputFileNameWithoutExtension = File(inputPath).nameWithoutExtension
+            var outputFileName = "${inputFileNameWithoutExtension}_convertit${outputFormat.extension}"
+            var outputFilePath = File(musicDir, outputFileName).absolutePath
+
+            var counter = 1
+            while (File(outputFilePath).exists()) {
+                outputFileName = "${inputFileNameWithoutExtension}_convertit($counter)${outputFormat.extension}"
+                outputFilePath = File(musicDir, outputFileName).absolutePath
+                counter++
+            }
+
+            val command = "-y -i \"$inputPath\" -c:a ${AudioCodec.fromFormat(outputFormat).codec} -b:a ${bitrate.bitrate} \"$outputFilePath\""
 
             FFmpegKit.executeAsync(command) { session ->
                 if (ReturnCode.isSuccess(session.returnCode)) {
