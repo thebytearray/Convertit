@@ -34,23 +34,16 @@ fun AboutScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(12.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Contact Section
-            Text(
-                text = "Contact Us",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 12.dp),
-                textAlign = TextAlign.Center
-            )
+            SectionTitle("Contact Us")
             Column(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 ContactItem(
                     name = "Tamim Hossain (Developer)",
@@ -63,17 +56,11 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             }
 
             // Community Section
-            Text(
-                text = "Community",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 24.dp),
-                textAlign = TextAlign.Center
-            )
+            SectionTitle("Community")
             Row(
                 modifier = Modifier
-                    .padding(top = 16.dp)
                     .wrapContentWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CommunityIcon(
@@ -94,19 +81,12 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             }
 
             // Donation Section
-            Text(
-                text = "Support Us",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 24.dp),
-                textAlign = TextAlign.Center
-            )
-            // Bitcoin Donation Card
+            SectionTitle("Support Us")
             DonationCard(
                 iconRes = R.drawable.btc,
                 description = "Bitcoin Icon",
                 address = "1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr"
             )
-            // USDT Donation Card
             DonationCard(
                 iconRes = R.drawable.usdt,
                 description = "USDT Icon",
@@ -114,32 +94,51 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             )
 
             // About App Section
-            Text(
-                text = "About App",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 24.dp),
-                textAlign = TextAlign.Center
-            )
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            SectionTitle("About App")
+            AboutAppContent(context)
+
+            // GitHub Issues Section
+            SectionTitle("Report an Issue")
+            Button(
+                onClick = { AppUtil.openLink(context, Constant.GITHUB_ISSUES_URL) },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = context.getString(R.string.label_about_app),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(16.dp),
-                    textAlign = TextAlign.Start
-                )
+                Text(text = "Open GitHub Issues")
             }
-            Text(
-                text = "Apache 2.0",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp)
-            )
         }
     }
+}
+
+@Composable
+fun SectionTitle(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.padding(top = 12.dp),
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun AboutAppContent(context: Context) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Text(
+            text = context.getString(R.string.label_about_app),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(8.dp),
+            textAlign = TextAlign.Start
+        )
+    }
+    Text(
+        text = "Apache 2.0",
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier.padding(top = 4.dp)
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -150,7 +149,7 @@ fun DonationCard(iconRes: Int, description: String, address: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(8.dp)
             .combinedClickable(
                 onClick = { /* Handle normal click if needed */ },
                 onLongClick = {
@@ -165,7 +164,7 @@ fun DonationCard(iconRes: Int, description: String, address: String) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -188,7 +187,7 @@ fun ContactItem(name: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 12.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -206,7 +205,7 @@ fun CommunityIcon(iconRes: Int, contentDescription: String, onClick: () -> Unit)
         Icon(
             painter = painterResource(iconRes),
             contentDescription = contentDescription,
-            modifier = Modifier.size(36.dp)
+            modifier = Modifier.size(30.dp)
         )
     }
 }

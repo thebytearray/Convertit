@@ -1,6 +1,7 @@
 package com.nasahacker.convertit.util
 
     object Constant {
+        const val GITHUB_ISSUES_URL  = "https://github.com/CodeWithTamim/ConvertIt/issues"
         const val STORAGE_PERMISSION_CODE = 101
         const val PICK_FILE_REQUEST_CODE = 102
         val BITRATE_ARRAY = arrayOf("128k", "192k", "256k", "320k")
