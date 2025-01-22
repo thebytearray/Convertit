@@ -1,7 +1,6 @@
 # 🎵 ConvertIt - Audio Converter App
 ![Kotlin](https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack_Compose-343434?style=for-the-badge&logo=jetpack-compose)
-
 ![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
 ![Downloads](https://img.shields.io/github/downloads/CodeWithTamim/ConvertIt/total?style=for-the-badge&logo=download)
 
