@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 
 
+/*
 data class AudioMetadata(
     val title: String? = null,
     val artist: String? = null,
@@ -12,4 +13,4 @@ data class AudioMetadata(
     val track: String? = null,
     val year: String? = null,
     val coverArtBitmap: Bitmap? = null,
-)
+)*/

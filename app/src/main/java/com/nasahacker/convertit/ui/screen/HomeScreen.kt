@@ -49,7 +49,8 @@ fun HomeScreen(
     LaunchedEffect(conversionStatus) {
         conversionStatus?.let { isSuccess ->
             if (isSuccess) {
-                Toast.makeText(context, "Conversion successful!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    context.getString(R.string.label_conversion_successful), Toast.LENGTH_SHORT).show()
                 viewModel.clearUriList()
                 viewModel.resetConversionStatus()
             }
@@ -76,7 +77,7 @@ fun HomeScreen(
                 if (ConvertItService.isForegroundServiceStarted) {
                     Toast.makeText(
                         context,
-                        "Please wait for the previous audios to be converted.",
+                        context.getString(R.string.label_warning),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {

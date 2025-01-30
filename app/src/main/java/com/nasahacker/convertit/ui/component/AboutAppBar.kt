@@ -10,13 +10,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.focusable
+import androidx.compose.ui.res.stringResource
+import com.nasahacker.convertit.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutAppBar(onBackPressed: () -> Unit) {
     TopAppBar(
         title = {
-            Text(text = "About")
+            Text(text = stringResource(R.string.label_about))
         },
         navigationIcon = {
             IconButton(
@@ -28,7 +30,7 @@ fun AboutAppBar(onBackPressed: () -> Unit) {
             ) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.label_back)
                 )
             }
         }

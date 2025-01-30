@@ -3,9 +3,9 @@ package com.nasahacker.convertit.util
     object Constant {
         const val GITHUB_ISSUES_URL  = "https://github.com/CodeWithTamim/ConvertIt/issues"
         const val STORAGE_PERMISSION_CODE = 101
-        const val PICK_FILE_REQUEST_CODE = 102
-        val BITRATE_ARRAY = arrayOf("128k", "192k", "256k", "320k")
-        val FORMAT_ARRAY = arrayOf(".mp3", ".wav", ".aac", ".ogg", ".m4a")
+        //const val PICK_FILE_REQUEST_CODE = 102
+        val BITRATE_ARRAY = listOf("128k", "192k", "256k", "320k")
+        val FORMAT_ARRAY = listOf(".mp3", ".m4a", ".wav", ".aac", ".ogg")
         const val URI_LIST = "uri_list"
         const val BITRATE = "bitrate"
         const val AUDIO_FORMAT = "audio_format"
@@ -19,5 +19,5 @@ package com.nasahacker.convertit.util
         const val GITHUB_PROFILE = "https://github.com/codewithtamim"
         const val GITHUB_PROFILE_MOD = "https://github.com/moontahid"
         const val TELEGRAM_CHANNEL = "https://t.me/officialnasahacker"
-        const val PROFILE_URL = "https://avatars.githubusercontent.com/u/132823494"
+     //   const val PROFILE_URL = "https://avatars.githubusercontent.com/u/132823494"
     }

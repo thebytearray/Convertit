@@ -8,8 +8,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nasahacker.convertit.R
 
 @Composable
 fun DialogDeleteItem(
@@ -21,10 +24,10 @@ fun DialogDeleteItem(
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = {
-                Text(text = "Delete Item")
+                Text(text = stringResource(R.string.label_delete_item))
             },
             text = {
-                Text(text = "Are you sure you want to delete this item? This action cannot be undone.")
+                Text(text = stringResource(R.string.label_delete_confirmation))
             },
             confirmButton = {
                 Button(

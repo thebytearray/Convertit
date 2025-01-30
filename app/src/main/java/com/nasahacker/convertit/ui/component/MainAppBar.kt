@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nasahacker.convertit.AboutActivity
 
@@ -32,7 +33,7 @@ fun MainAppBar() {
             }) {
                 Icon(
                     Icons.Default.Info,
-                    contentDescription = "About"
+                    contentDescription = stringResource(R.string.label_about)
                 )
             }
         },
@@ -56,7 +57,7 @@ fun PreviewMainAppBar() {
             }) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_info_24),
-                    contentDescription = "About"
+                    contentDescription = stringResource(R.string.label_about)
                 )
             }
         },

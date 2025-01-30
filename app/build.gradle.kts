@@ -5,11 +5,12 @@ plugins {
 }
 
 android {
-    namespace = "com.nasahacker.convertit"
+    val packageName = "com.nasahacker.convertit"
+    namespace = packageName
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.nasahacker.convertit"
+        applicationId = packageName
         minSdk = 21
         targetSdk = 35
         versionCode = 15
@@ -26,10 +27,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        debug {
-            isMinifyEnabled = true
-            isShrinkResources = true
         }
     }
     compileOptions {

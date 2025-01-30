@@ -178,7 +178,6 @@ class ConvertItService : Service() {
             .setContentTitle(getString(R.string.conversion_status)).setContentText(notificationText)
             .setSmallIcon(R.mipmap.ic_launcher).setAutoCancel(true).build()
 
-        //ajdlfajld
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS

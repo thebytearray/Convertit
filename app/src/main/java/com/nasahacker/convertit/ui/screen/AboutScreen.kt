@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,23 +41,23 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Contact Section
-            SectionTitle("Contact Us")
+            SectionTitle(stringResource(R.string.label_contact_us))
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 ContactItem(
-                    name = "Tamim Hossain (Developer)",
+                    name = stringResource(R.string.label_dev),
                     onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) }
                 )
                 ContactItem(
-                    name = "Moontahid (Moderator)",
+                    name = stringResource(R.string.label_mod),
                     onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE_MOD) }
                 )
             }
 
             // Community Section
-            SectionTitle("Community")
+            SectionTitle(stringResource(R.string.label_community))
             Row(
                 modifier = Modifier
                     .wrapContentWidth(),
@@ -65,45 +66,45 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             ) {
                 CommunityIcon(
                     iconRes = R.drawable.telegram_ic,
-                    contentDescription = "Telegram Icon",
+                    contentDescription = stringResource(R.string.label_telegram_icon),
                     onClick = { AppUtil.openLink(context, Constant.TELEGRAM_CHANNEL) }
                 )
                 CommunityIcon(
                     iconRes = R.drawable.discord_ic,
-                    contentDescription = "Discord Icon",
+                    contentDescription = stringResource(R.string.label_dc_icon),
                     onClick = { AppUtil.openLink(context, Constant.DISCORD_CHANNEL) }
                 )
                 CommunityIcon(
                     iconRes = R.drawable.github_ic,
-                    contentDescription = "GitHub - Tamim Hossain",
+                    contentDescription = stringResource(R.string.label_github_icon),
                     onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) }
                 )
             }
 
             // Donation Section
-            SectionTitle("Support Us")
+            SectionTitle(stringResource(R.string.label_support_us))
             DonationCard(
                 iconRes = R.drawable.btc,
-                description = "Bitcoin Icon",
-                address = "1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr"
+                description = stringResource(R.string.label_btc_icon),
+                address = stringResource(R.string.label_btc_add)
             )
             DonationCard(
                 iconRes = R.drawable.usdt,
-                description = "USDT Icon",
-                address = "TM2Z6o6SabAJ3cW8UWjoG3orAGYPcqqdzJ"
+                description = stringResource(R.string.label_usdt_icon),
+                address = stringResource(R.string.label_usdt_add)
             )
 
             // About App Section
-            SectionTitle("About App")
+            SectionTitle(stringResource(R.string.label_about_title))
             AboutAppContent(context)
 
             // GitHub Issues Section
-            SectionTitle("Report an Issue")
+            SectionTitle(stringResource(R.string.label_report_an_issue))
             Button(
                 onClick = { AppUtil.openLink(context, Constant.GITHUB_ISSUES_URL) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Open GitHub Issues")
+                Text(text = stringResource(R.string.label_open_github_issues))
             }
         }
     }

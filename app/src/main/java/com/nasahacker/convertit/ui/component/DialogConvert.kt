@@ -10,12 +10,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.nasahacker.convertit.util.AppUtil
-
+import com.nasahacker.convertit.util.Constant.BITRATE_ARRAY
+import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
+import com.nasahacker.convertit.R
 @Composable
 fun DialogConvertAlertDialog(
     showDialog: Boolean, uris: ArrayList<Uri>, onDismiss: () -> Unit, onCancel: () -> Unit
@@ -53,14 +56,14 @@ fun DialogConvertAlertDialog(
                         onDismiss()
                     }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("Convert")
+                    Text(stringResource(R.string.label_convert))
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { onCancel() }, modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.label_cancel))
                 }
             },
             shape = RoundedCornerShape(16.dp),
@@ -77,11 +80,12 @@ fun DialogConvertContent(
     selectedBitrate: String,
     onBitrateSelected: (String) -> Unit
 ) {
+    val context = LocalContext.current
     var isBitrateMenuExpanded by remember { mutableStateOf(false) }
     var isFormatMenuExpanded by remember { mutableStateOf(false) }
 
-    val bitrateOptions = listOf("128k", "192k", "256k", "320k")
-    val formatOptions = listOf(".mp3", ".m4a", ".wav", ".aac", ".ogg")
+    val bitrateOptions = BITRATE_ARRAY
+    val formatOptions = FORMAT_ARRAY
 
     Column(
         modifier = Modifier
@@ -90,14 +94,14 @@ fun DialogConvertContent(
             .wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        DropdownField(label = "Bitrate Options",
+        DropdownField(label = context.getString(R.string.label_bitrate_options),
             options = bitrateOptions,
             selectedOption = selectedBitrate,
             onOptionSelected = onBitrateSelected,
             isExpanded = isBitrateMenuExpanded,
             onExpandedChange = { isBitrateMenuExpanded = it })
 
-        DropdownField(label = "Format Options",
+        DropdownField(label = context.getString(R.string.label_format_options),
             options = formatOptions,
             selectedOption = selectedFormat,
             onOptionSelected = onFormatSelected,
@@ -134,7 +138,7 @@ fun DropdownField(
             Text(
                 text = selectedOption,
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
-                color = if (selectedOption == "Select Bitrate" || selectedOption == "Select Format") MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (selectedOption == stringResource(R.string.label_select_bitrate) || selectedOption == stringResource(R.string.label_select_format)) MaterialTheme.colorScheme.onSurfaceVariant
                 else MaterialTheme.colorScheme.onSurface
             )
             DropdownMenu(expanded = isExpanded, onDismissRequest = { onExpandedChange(false) }) {
@@ -157,7 +161,7 @@ fun PreviewDialogConvertAlertDialog() {
     if (showDialog) {
         DialogConvertAlertDialog(
             showDialog = showDialog,
-            uris = ArrayList<Uri>(),
+            uris = ArrayList(),
             onCancel = { showDialog = false },
             onDismiss = {  },
         )
