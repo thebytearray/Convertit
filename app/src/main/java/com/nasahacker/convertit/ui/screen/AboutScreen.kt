@@ -104,7 +104,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                 onClick = { AppUtil.openLink(context, Constant.GITHUB_ISSUES_URL) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(R.string.label_open_github_issues))
+                Text(text = stringResource(R.string.label_open_github_issue))
             }
         }
     }

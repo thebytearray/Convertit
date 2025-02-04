@@ -70,7 +70,7 @@
     <string name="label_usdt_icon">USDT Icon</string>
     <string name="label_usdt_add">TM2Z6o6SabAJ3cW8UWjoG3orAGYPcqqdzJ</string>
     <string name="label_report_an_issue">Report an Issue</string>
-    <string name="label_open_github_issues">Open GitHub Issues</string>
+    <string name="label_open_github_issue">Open GitHub Issue</string>
     <string name="label_conversion_successful">Conversion successful!</string>
     <string name="label_warning">Please wait for the previous audios to be converted.</string>
 
