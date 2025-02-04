@@ -41,8 +41,7 @@
         <service
             android:name=".service.ConvertItService"
             android:exported="true"
-            android:foregroundServiceType="shortService"
-            android:permission="android.permission.FOREGROUND_SERVICE" />
+            android:foregroundServiceType="mediaProcessing" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
