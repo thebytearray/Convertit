@@ -23,6 +23,16 @@ import androidx.compose.ui.unit.dp
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant
+/**
+ * @author      Tamim Hossain
+ * @email       tamimh.dev@gmail.com
+ * @license     Apache-2.0
+ *
+ * ConvertIt is a free and easy-to-use audio converter app.
+ * It supports popular audio formats like MP3 and M4A.
+ * With options for high-quality bitrates ranging from 128k to 320k,
+ * ConvertIt offers a seamless conversion experience tailored to your needs.
+ */
 
 @Composable
 fun AboutScreen(modifier: Modifier = Modifier) {
@@ -152,7 +162,7 @@ fun DonationCard(iconRes: Int, description: String, address: String) {
             .fillMaxWidth()
             .padding(8.dp)
             .combinedClickable(
-                onClick = { /* Handle normal click if needed */ },
+                onClick = {/*We don't even need it right now */},
                 onLongClick = {
                     val clipboard =
                         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

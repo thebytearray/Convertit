@@ -15,18 +15,25 @@ import com.nasahacker.convertit.util.AppUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+/**
+ * @author      Tamim Hossain
+ * @email       tamimh.dev@gmail.com
+ * @license     Apache-2.0
+ *
+ * ConvertIt is a free and easy-to-use audio converter app.
+ * It supports popular audio formats like MP3 and M4A.
+ * With options for high-quality bitrates ranging from 128k to 320k,
+ * ConvertIt offers a seamless conversion experience tailored to your needs.
+ */
 
-class HomeViewModel : ViewModel() {
+class AppViewModel : ViewModel() {
 
-    // Holds a list of URIs
     private val _uriList = MutableStateFlow<ArrayList<Uri>>(ArrayList())
     val uriList: StateFlow<ArrayList<Uri>> = _uriList
 
-    // Tracks the conversion status
     private val _conversionStatus = MutableStateFlow<Boolean?>(null)
     val conversionStatus: StateFlow<Boolean?> = _conversionStatus
 
-    // BroadcastReceiver to handle conversion status updates
     private val conversionStatusReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) ?: false
@@ -44,7 +51,6 @@ class HomeViewModel : ViewModel() {
 
 
     init {
-        // Start listening for broadcast messages
         startListeningForBroadcasts()
     }
 
