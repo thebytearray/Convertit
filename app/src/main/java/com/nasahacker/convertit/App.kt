@@ -10,7 +10,6 @@ import com.nasahacker.convertit.util.Constant.CHANNEL_ID
 import com.nasahacker.convertit.util.Constant.CHANNEL_NAME
 
 
-
 class App : Application() {
 
     companion object {
@@ -32,9 +31,7 @@ class App : Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManagerCompat.from(this).createNotificationChannel(
                 NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
                 )
             )
         }
