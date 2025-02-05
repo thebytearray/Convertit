@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.viewmodel
+package com.nasahacker.convertit.ui.viewmodel
 
 import android.content.BroadcastReceiver
 import android.content.Context

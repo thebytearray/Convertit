@@ -23,7 +23,7 @@ import com.nasahacker.convertit.service.ConvertItService
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogConvertAlertDialog
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.viewmodel.AppViewModel
+import com.nasahacker.convertit.ui.viewmodel.AppViewModel
 /**
  * @author      Tamim Hossain
  * @email       tamimh.dev@gmail.com
