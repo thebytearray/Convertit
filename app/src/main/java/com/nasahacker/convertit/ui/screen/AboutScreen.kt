@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant
+
 /**
  * @author      Tamim Hossain
  * @email       tamimh.dev@gmail.com
@@ -112,7 +114,8 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             SectionTitle(stringResource(R.string.label_report_an_issue))
             Button(
                 onClick = { AppUtil.openLink(context, Constant.GITHUB_ISSUES_URL) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Text(text = stringResource(R.string.label_open_github_issue))
             }
@@ -162,7 +165,7 @@ fun DonationCard(iconRes: Int, description: String, address: String) {
             .fillMaxWidth()
             .padding(8.dp)
             .combinedClickable(
-                onClick = {/*We don't even need it right now */},
+                onClick = {/*We don't even need it right now */ },
                 onLongClick = {
                     val clipboard =
                         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

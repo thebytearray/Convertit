@@ -125,7 +125,7 @@ object AppUtil {
         }
     }
 
-    fun getFilesFromUris(context: Context, uriList: List<Uri>): List<AudioFile> {
+    /*fun getFilesFromUris(context: Context, uriList: List<Uri>): List<AudioFile> {
         return uriList
             .mapNotNull { uri -> getFileFromUri(context, uri) }
             .map { file ->
@@ -135,7 +135,7 @@ object AppUtil {
                     file = file
                 )
             }
-    }
+    }*/
 
     fun getUriListFromIntent(intent: Intent): ArrayList<Uri> {
         val uriList = ArrayList<Uri>()
@@ -196,7 +196,7 @@ object AppUtil {
     }
 
 
-    fun getFileName(contentResolver: ContentResolver, uri: Uri): String {
+    private fun getFileName(contentResolver: ContentResolver, uri: Uri): String {
         return contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
@@ -350,7 +350,7 @@ object AppUtil {
         }
     }
 
-    fun requestStoragePermissions(context: Context) {
+    private fun requestStoragePermissions(context: Context) {
         if (!isStoragePermissionGranted(context)) {
             val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
