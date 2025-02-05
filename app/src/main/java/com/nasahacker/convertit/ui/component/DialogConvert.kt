@@ -40,44 +40,52 @@ fun DialogConvertAlertDialog(
 
     if (showDialog) {
         AlertDialog(
-            onDismissRequest = { onDismiss() },
+            onDismissRequest = onDismiss,
             title = {
                 Text(
-                    text = "Conversion Settings",
+                    text = stringResource(R.string.label_conversion_settings),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             },
             text = {
-                DialogConvertContent(selectedFormat = selectedFormat,
+                DialogConvertContent(
+                    selectedFormat = selectedFormat,
                     onFormatSelected = { selectedFormat = it },
                     selectedBitrate = selectedBitrate,
-                    onBitrateSelected = { selectedBitrate = it })
+                    onBitrateSelected = { selectedBitrate = it }
+                )
             },
             confirmButton = {
                 Button(
                     onClick = {
                         Log.d(
                             "ZERO_DOLLAR",
-                            "DialogConvertAlertDialog: Starting Service with Format $selectedFormat And  Bitrate $selectedBitrate"
+                            "Starting Service with Format $selectedFormat And Bitrate $selectedBitrate"
                         )
                         AppUtil.startAudioConvertService(
                             uris, selectedBitrate, selectedFormat
                         )
                         onDismiss()
-                    }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = ButtonDefaults.buttonElevation(4.dp)
                 ) {
                     Text(stringResource(R.string.label_convert))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { onCancel() }, modifier = Modifier.fillMaxWidth()
+                    onClick = onCancel,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                 ) {
                     Text(stringResource(R.string.label_cancel))
                 }
             },
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(20.dp),
             containerColor = MaterialTheme.colorScheme.surface,
             properties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false)
         )
@@ -91,73 +99,74 @@ fun DialogConvertContent(
     selectedBitrate: String,
     onBitrateSelected: (String) -> Unit
 ) {
-    val context = LocalContext.current
-    var isBitrateMenuExpanded by remember { mutableStateOf(false) }
-    var isFormatMenuExpanded by remember { mutableStateOf(false) }
-
-    val bitrateOptions = BITRATE_ARRAY
-    val formatOptions = FORMAT_ARRAY
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        DropdownField(label = context.getString(R.string.label_bitrate_options),
-            options = bitrateOptions,
+        DropdownField(
+            label = stringResource(R.string.label_bitrate_options),
+            options = BITRATE_ARRAY,
             selectedOption = selectedBitrate,
-            onOptionSelected = onBitrateSelected,
-            isExpanded = isBitrateMenuExpanded,
-            onExpandedChange = { isBitrateMenuExpanded = it })
+            onOptionSelected = onBitrateSelected
+        )
 
-        DropdownField(label = context.getString(R.string.label_format_options),
-            options = formatOptions,
+        DropdownField(
+            label = stringResource(R.string.label_format_options),
+            options = FORMAT_ARRAY,
             selectedOption = selectedFormat,
-            onOptionSelected = onFormatSelected,
-            isExpanded = isFormatMenuExpanded,
-            onExpandedChange = { isFormatMenuExpanded = it })
+            onOptionSelected = onFormatSelected
+        )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownField(
     label: String,
     options: List<String>,
     selectedOption: String,
-    onOptionSelected: (String) -> Unit,
-    isExpanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit
+    onOptionSelected: (String) -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 6.dp)
         )
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onExpandedChange(true) }
-            .padding(vertical = 8.dp)
-            .background(
-                MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = selectedOption,
+                onValueChange = {},
+                readOnly = true,
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) }
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp)) {
-            Text(
-                text = selectedOption,
-                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
-                color = if (selectedOption == stringResource(R.string.label_select_bitrate) || selectedOption == stringResource(R.string.label_select_format)) MaterialTheme.colorScheme.onSurfaceVariant
-                else MaterialTheme.colorScheme.onSurface
-            )
-            DropdownMenu(expanded = isExpanded, onDismissRequest = { onExpandedChange(false) }) {
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
                 options.forEach { option ->
-                    DropdownMenuItem(onClick = {
-                        onOptionSelected(option)
-                        onExpandedChange(false)
-                    }, text = { Text(text = option) })
+                    DropdownMenuItem(
+                        text = { Text(text = option) },
+                        onClick = {
+                            onOptionSelected(option)
+                            expanded = false
+                        }
+                    )
                 }
             }
         }
@@ -174,7 +183,7 @@ fun PreviewDialogConvertAlertDialog() {
             showDialog = showDialog,
             uris = ArrayList(),
             onCancel = { showDialog = false },
-            onDismiss = {  },
+            onDismiss = { },
         )
     }
 }
