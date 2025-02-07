@@ -22,6 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nasahacker.convertit.R
+import com.nasahacker.convertit.ui.component.AboutAppContent
+import com.nasahacker.convertit.ui.component.CommunityIcon
+import com.nasahacker.convertit.ui.component.ContactItem
+import com.nasahacker.convertit.ui.component.DonationCard
+import com.nasahacker.convertit.ui.component.SectionTitle
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant
 
@@ -41,8 +46,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = modifier
@@ -55,42 +59,30 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             // Contact Section
             SectionTitle(stringResource(R.string.label_contact_us))
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                ContactItem(
-                    name = stringResource(R.string.label_dev),
-                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) }
-                )
-                ContactItem(
-                    name = stringResource(R.string.label_mod),
-                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE_MOD) }
-                )
+                ContactItem(name = stringResource(R.string.label_dev),
+                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) })
+                ContactItem(name = stringResource(R.string.label_mod),
+                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE_MOD) })
             }
 
             // Community Section
             SectionTitle(stringResource(R.string.label_community))
             Row(
-                modifier = Modifier
-                    .wrapContentWidth(),
+                modifier = Modifier.wrapContentWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CommunityIcon(
-                    iconRes = R.drawable.telegram_ic,
+                CommunityIcon(iconRes = R.drawable.telegram_ic,
                     contentDescription = stringResource(R.string.label_telegram_icon),
-                    onClick = { AppUtil.openLink(context, Constant.TELEGRAM_CHANNEL) }
-                )
-                CommunityIcon(
-                    iconRes = R.drawable.discord_ic,
+                    onClick = { AppUtil.openLink(context, Constant.TELEGRAM_CHANNEL) })
+                CommunityIcon(iconRes = R.drawable.discord_ic,
                     contentDescription = stringResource(R.string.label_dc_icon),
-                    onClick = { AppUtil.openLink(context, Constant.DISCORD_CHANNEL) }
-                )
-                CommunityIcon(
-                    iconRes = R.drawable.github_ic,
+                    onClick = { AppUtil.openLink(context, Constant.DISCORD_CHANNEL) })
+                CommunityIcon(iconRes = R.drawable.github_ic,
                     contentDescription = stringResource(R.string.label_github_icon),
-                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) }
-                )
+                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) })
             }
 
             // Donation Section
@@ -123,106 +115,6 @@ fun AboutScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        modifier = Modifier.padding(top = 12.dp),
-        textAlign = TextAlign.Center
-    )
-}
-
-@Composable
-fun AboutAppContent(context: Context) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
-        Text(
-            text = context.getString(R.string.label_about_app),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(8.dp),
-            textAlign = TextAlign.Start
-        )
-    }
-    Text(
-        text = "Apache 2.0",
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier.padding(top = 4.dp)
-    )
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun DonationCard(iconRes: Int, description: String, address: String) {
-    val context = LocalContext.current
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .combinedClickable(
-                onClick = {/*We don't even need it right now */ },
-                onLongClick = {
-                    val clipboard =
-                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText(description, address)
-                    clipboard.setPrimaryClip(clip)
-                }
-            ),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(iconRes),
-                contentDescription = description,
-                modifier = Modifier.size(24.dp)
-            )
-            Text(
-                text = address,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 8.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun ContactItem(name: String, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = name,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.clickable(onClick = { onClick() })
-        )
-    }
-}
-
-@Composable
-fun CommunityIcon(iconRes: Int, contentDescription: String, onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        Icon(
-            painter = painterResource(iconRes),
-            contentDescription = contentDescription,
-            modifier = Modifier.size(30.dp)
-        )
-    }
-}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
