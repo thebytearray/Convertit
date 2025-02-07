@@ -10,10 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.nasahacker.convertit.ui.component.AppNavHost
+import com.nasahacker.convertit.ui.navigation.AppNavHost
 import com.nasahacker.convertit.ui.component.BottomNavigationBar
 import com.nasahacker.convertit.ui.component.MainAppBar
-import com.nasahacker.convertit.ui.screen.HomeScreen
 import com.nasahacker.convertit.ui.theme.AppTheme
 
 import com.nasahacker.convertit.util.AppUtil

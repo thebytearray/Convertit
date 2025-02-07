@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.component
+package com.nasahacker.convertit.ui.navigation
 
 
 import android.app.Activity
@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nasahacker.convertit.dto.BottomNavItem
 import com.nasahacker.convertit.ui.screen.ConvertsScreen
 import com.nasahacker.convertit.ui.screen.HomeScreen
 /**
@@ -27,12 +26,12 @@ fun AppNavHost(activity: Activity, modifier: Modifier = Modifier, controller: Na
     NavHost(
         modifier = modifier,
         navController = controller,
-        startDestination = BottomNavItem.Home.route
+        startDestination = BottomNavigation.Home.route
     ) {
-        composable(BottomNavItem.Home.route) {
+        composable(BottomNavigation.Home.route) {
             HomeScreen(activity)
         }
-        composable(BottomNavItem.Converts.route) {
+        composable(BottomNavigation.Converts.route) {
             ConvertsScreen()
         }
     }

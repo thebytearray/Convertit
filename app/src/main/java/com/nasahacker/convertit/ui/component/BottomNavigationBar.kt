@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.nasahacker.convertit.dto.BottomNavItem
+import com.nasahacker.convertit.ui.navigation.BottomNavigation
 import com.nasahacker.convertit.R
 /**
  * @author      Tamim Hossain
@@ -28,8 +28,8 @@ fun BottomNavigationBar(navController: NavController) {
         val currentRoute = navBackStackEntry?.destination?.route
 
         val items = listOf(
-            BottomNavItem.Home,
-            BottomNavItem.Converts
+            BottomNavigation.Home,
+            BottomNavigation.Converts
         )
 
         items.forEach { item ->
@@ -37,13 +37,13 @@ fun BottomNavigationBar(navController: NavController) {
                 icon = {
                     val iconRes = if (currentRoute == item.route) {
                         when (item) {
-                            BottomNavItem.Home -> R.drawable.home_filled
-                            BottomNavItem.Converts -> R.drawable.storage_filled
+                            BottomNavigation.Home -> R.drawable.home_filled
+                            BottomNavigation.Converts -> R.drawable.storage_filled
                         }
                     } else {
                         when (item) {
-                            BottomNavItem.Home -> R.drawable.home_outlined
-                            BottomNavItem.Converts -> R.drawable.storage_outlined
+                            BottomNavigation.Home -> R.drawable.home_outlined
+                            BottomNavigation.Converts -> R.drawable.storage_outlined
                         }
                     }
                     Icon(painter = painterResource(id = iconRes), contentDescription = item.label)

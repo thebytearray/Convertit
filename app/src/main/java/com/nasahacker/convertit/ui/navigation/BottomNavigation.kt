@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.dto
+package com.nasahacker.convertit.ui.navigation
 /**
  * @author      Tamim Hossain
  * @email       tamimh.dev@gmail.com
@@ -11,7 +11,7 @@ package com.nasahacker.convertit.dto
  */
 
 
-sealed class BottomNavItem(val route: String, val label: String) {
-    data object Home : BottomNavItem("home", "Home")
-    data object Converts : BottomNavItem("library ", "Library ")
+sealed class BottomNavigation(val route: String, val label: String) {
+    data object Home : BottomNavigation("home", "Home")
+    data object Converts : BottomNavigation("library ", "Library ")
 }
