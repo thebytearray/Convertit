@@ -156,7 +156,7 @@ class ConvertItService : Service() {
             .build()
     }
 
-    private fun updateNotification(progress: Int) {
+    /*private fun updateNotification(progress: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Log.w(TAG, "Notification permission not granted. Skipping update.")
@@ -166,7 +166,7 @@ class ConvertItService : Service() {
         val notification = createProgressNotification(progress, false)
         NotificationManagerCompat.from(this).notify(notificationId, notification)
         Log.d(TAG, "Updated notification: Progress $progress%")
-    }
+    }*/
 
     private fun showCompletionNotification(success: Boolean) {
         stopForegroundService()

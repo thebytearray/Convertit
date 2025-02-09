@@ -33,11 +33,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initializeNotificationChannel()
+        initChannel()
     }
 
 
-    private fun initializeNotificationChannel() {
+    private fun initChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManagerCompat.from(this).createNotificationChannel(
                 NotificationChannel(
