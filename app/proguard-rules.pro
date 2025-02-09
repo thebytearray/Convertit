@@ -20,11 +20,11 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Remove all logs on production
--assumenosideeffects class android.util.Log {
-  public static *** d(...);
-     public static *** i(...);
-     public static *** v(...);
-     public static *** w(...);
-     public static *** e(...);
-}
+## Remove all logs on production
+#-assumenosideeffects class android.util.Log {
+#  public static *** d(...);
+#     public static *** i(...);
+#     public static *** v(...);
+#     public static *** w(...);
+#     public static *** e(...);
+#}
