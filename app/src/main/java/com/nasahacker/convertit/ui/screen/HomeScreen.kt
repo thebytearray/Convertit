@@ -22,8 +22,10 @@ import com.nasahacker.convertit.R
 import com.nasahacker.convertit.service.ConvertItService
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogConvertAlertDialog
+import com.nasahacker.convertit.ui.component.RatingDialog
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.ui.viewmodel.AppViewModel
+
 /**
  * @author      Tamim Hossain
  * @email       tamimh.dev@gmail.com
@@ -37,13 +39,13 @@ import com.nasahacker.convertit.ui.viewmodel.AppViewModel
 
 @Composable
 fun HomeScreen(
-    context: Activity,
-    viewModel: AppViewModel = viewModel()
+    context: Activity, viewModel: AppViewModel = viewModel()
 ) {
 
     val uriList by viewModel.uriList.collectAsState()
     val conversionStatus by viewModel.conversionStatus.collectAsState()
     var showDialog by rememberSaveable { mutableStateOf(false) }
+    var showReviewDialog by rememberSaveable { mutableStateOf(false) }
 
 
     val pickFileLauncher =
@@ -59,26 +61,34 @@ fun HomeScreen(
     LaunchedEffect(conversionStatus) {
         conversionStatus?.let { isSuccess ->
             if (isSuccess) {
-                Toast.makeText(context,
-                    context.getString(R.string.label_conversion_successful), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.label_conversion_successful),
+                    Toast.LENGTH_SHORT
+                ).show()
                 viewModel.clearUriList()
                 viewModel.resetConversionStatus()
+                showReviewDialog = true
             }
         }
     }
 
+        RatingDialog(
+            showReviewDialog = showReviewDialog,
+            onConfirm = {
+            showReviewDialog = false
+        }, onDismiss = { showReviewDialog = false })
+
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 80.dp)
+            modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 80.dp)
         ) {
             items(uriList) { uri ->
                 val file = AppUtil.getFileFromUri(context, uri)
-                AudioItem(
-                    fileName = file?.name.orEmpty(),
+                AudioItem(fileName = file?.name.orEmpty(),
                     fileSize = file?.let { AppUtil.getFileSizeInReadableFormat(context, it) }
-                        ?: "Unknown"
-                )
+                        ?: "Unknown")
             }
         }
 
@@ -86,9 +96,7 @@ fun HomeScreen(
             onClick = {
                 if (ConvertItService.isForegroundServiceStarted) {
                     Toast.makeText(
-                        context,
-                        context.getString(R.string.label_warning),
-                        Toast.LENGTH_SHORT
+                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     AppUtil.openFilePicker(context, pickFileLauncher)

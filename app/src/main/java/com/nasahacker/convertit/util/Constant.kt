@@ -31,5 +31,8 @@ object Constant {
     const val GITHUB_PROFILE = "https://github.com/codewithtamim"
     const val GITHUB_PROFILE_MOD = "https://github.com/moontahid"
     const val TELEGRAM_CHANNEL = "https://t.me/officialnasahacker"
+
     //   const val PROFILE_URL = "https://avatars.githubusercontent.com/u/132823494"
+    const val APP_PREF = "app_prefs"
+    const val PREF_DONT_SHOW_AGAIN = "pref_dont_show_again"
 }
