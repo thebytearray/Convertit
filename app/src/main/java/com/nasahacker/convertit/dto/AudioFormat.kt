@@ -17,7 +17,8 @@ enum class AudioFormat(val extension: String) {
     WAV(".wav"),
     FLAC(".flac"),
     AAC(".aac"),
-    OGG(".ogg");
+    OGG(".ogg"),
+    OPUS(".opus");  
 
     companion object {
         fun fromExtension(extension: String?): AudioFormat {

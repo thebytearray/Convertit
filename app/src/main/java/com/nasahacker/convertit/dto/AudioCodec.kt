@@ -1,4 +1,5 @@
 package com.nasahacker.convertit.dto
+
 /**
  * @author      Tamim Hossain
  * @email       tamimh.dev@gmail.com
@@ -16,7 +17,8 @@ enum class AudioCodec(val codec: String) {
     WAV("pcm_s16le"),
     FLAC("flac"),
     AAC("aac"),
-    OGG("libvorbis");
+    OGG("libvorbis"),
+    OPUS("libopus");  
 
     companion object {
         fun fromFormat(format: AudioFormat): AudioCodec {
@@ -27,6 +29,7 @@ enum class AudioCodec(val codec: String) {
                 AudioFormat.FLAC -> FLAC
                 AudioFormat.AAC -> AAC
                 AudioFormat.OGG -> OGG
+                AudioFormat.OPUS -> OPUS  
             }
         }
     }
