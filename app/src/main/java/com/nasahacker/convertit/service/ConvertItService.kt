@@ -20,6 +20,7 @@ import com.nasahacker.convertit.dto.AudioFormat
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant.ACTION_STOP_SERVICE
 import com.nasahacker.convertit.util.Constant.AUDIO_FORMAT
+import com.nasahacker.convertit.util.Constant.AUDIO_PLAYBACK_SPEED
 import com.nasahacker.convertit.util.Constant.BITRATE
 import com.nasahacker.convertit.util.Constant.CHANNEL_ID
 import com.nasahacker.convertit.util.Constant.CONVERT_BROADCAST_ACTION
@@ -60,6 +61,7 @@ class ConvertItService : Service() {
         val uriList: ArrayList<Uri>? = intent?.getParcelableArrayListExtra(URI_LIST)
         val bitrate = AudioBitrate.fromBitrate(intent?.getStringExtra(BITRATE))
         val format = AudioFormat.fromExtension(intent?.getStringExtra(AUDIO_FORMAT))
+        val speed = intent?.getStringExtra(AUDIO_PLAYBACK_SPEED) ?: "1.0"
 
         Log.d(TAG, "Received Format: ${format.extension}, Bitrate: ${bitrate.bitrate}, UriList: ${uriList?.size ?: 0}")
 
@@ -76,6 +78,7 @@ class ConvertItService : Service() {
                 Log.i(TAG, "Starting audio conversion for ${uriList.size} files.")
                 AppUtil.convertAudio(
                     context = this@ConvertItService,
+                    speed,
                     uris = uriList,
                     outputFormat = format,
                     bitrate = bitrate,

@@ -19,6 +19,7 @@ import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant.BITRATE_ARRAY
 import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
 import com.nasahacker.convertit.R
+
 /**
  * @author      Tamim Hossain
  * @email       tamimh.dev@gmail.com
@@ -32,11 +33,12 @@ import com.nasahacker.convertit.R
 
 @Composable
 fun DialogConvertAlertDialog(
-    showDialog: Boolean, uris: ArrayList<Uri>, onDismiss: () -> Unit, onCancel: () -> Unit
+    showDialog: Boolean, uris: ArrayList<Uri>, onDismiss: () -> Unit, onCancel: () -> Unit,
 ) {
     val context = LocalContext.current
     var selectedFormat by remember { mutableStateOf(".mp3") }
     var selectedBitrate by remember { mutableStateOf("256k") }
+    var sliderValue by remember { mutableFloatStateOf(1.0f) }
 
     if (showDialog) {
         AlertDialog(
@@ -53,7 +55,9 @@ fun DialogConvertAlertDialog(
                     selectedFormat = selectedFormat,
                     onFormatSelected = { selectedFormat = it },
                     selectedBitrate = selectedBitrate,
-                    onBitrateSelected = { selectedBitrate = it }
+                    onBitrateSelected = { selectedBitrate = it },
+                    sliderValue = sliderValue,
+                    onSliderValueChanged = { sliderValue = it }
                 )
             },
             confirmButton = {
@@ -64,6 +68,7 @@ fun DialogConvertAlertDialog(
                             "Starting Service with Format $selectedFormat And Bitrate $selectedBitrate"
                         )
                         AppUtil.startAudioConvertService(
+                            sliderValue.toString(),
                             uris, selectedBitrate, selectedFormat
                         )
                         onDismiss()
@@ -80,7 +85,9 @@ fun DialogConvertAlertDialog(
             dismissButton = {
                 TextButton(
                     onClick = onCancel,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
                 ) {
                     Text(stringResource(R.string.label_cancel))
                 }
@@ -97,7 +104,9 @@ fun DialogConvertContent(
     selectedFormat: String,
     onFormatSelected: (String) -> Unit,
     selectedBitrate: String,
-    onBitrateSelected: (String) -> Unit
+    onBitrateSelected: (String) -> Unit,
+    sliderValue: Float,
+    onSliderValueChanged: (Float) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -119,6 +128,24 @@ fun DialogConvertContent(
             selectedOption = selectedFormat,
             onOptionSelected = onFormatSelected
         )
+
+        Text(
+            text = stringResource(R.string.label_slider),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 6.dp)
+        )
+        Slider(
+            value = sliderValue,
+            onValueChange = onSliderValueChanged,
+            valueRange = 0.5f..2.0f,
+            steps = 30,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = "Current: ${"%.2f".format(sliderValue)}x",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
 
@@ -128,7 +155,7 @@ fun DropdownField(
     label: String,
     options: List<String>,
     selectedOption: String,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (String) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 

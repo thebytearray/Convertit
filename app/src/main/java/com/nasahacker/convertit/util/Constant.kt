@@ -21,6 +21,7 @@ object Constant {
     const val URI_LIST = "uri_list"
     const val BITRATE = "bitrate"
     const val AUDIO_FORMAT = "audio_format"
+    const val AUDIO_PLAYBACK_SPEED = "audio_playback_speed"
     const val CONVERT_BROADCAST_ACTION = "com.nasahacker.convertit.ACTION_CONVERSION_COMPLETE"
     const val ACTION_STOP_SERVICE = "com.nasahacker.convertit.ACTION_STOP_SERVICE"
     const val IS_SUCCESS = "isSuccess"

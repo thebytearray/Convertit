@@ -31,6 +31,7 @@ import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
 import com.nasahacker.convertit.util.Constant.STORAGE_PERMISSION_CODE
 import com.nasahacker.convertit.util.Constant.URI_LIST
 import com.nasahacker.convertit.service.ConvertItService
+import com.nasahacker.convertit.util.Constant.AUDIO_PLAYBACK_SPEED
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.log10
@@ -221,6 +222,7 @@ object AppUtil {
 
 
     fun startAudioConvertService(
+        speed:String = "1.0",
         uriList: ArrayList<Uri>,
         bitrate: String,
         format: String
@@ -236,6 +238,7 @@ object AppUtil {
         val intent = Intent(App.application, ConvertItService::class.java).apply {
             putParcelableArrayListExtra(URI_LIST, uriList)
             putExtra(BITRATE, bitrate)
+            putExtra(AUDIO_PLAYBACK_SPEED, speed)
             putExtra(AUDIO_FORMAT, format)
         }
 
@@ -265,6 +268,7 @@ object AppUtil {
 
     fun convertAudio(
         context: Context,
+        playbackSpeed : String = "1.0",
         uris: List<Uri>,
         outputFormat: AudioFormat,
         bitrate: AudioBitrate,
@@ -298,7 +302,7 @@ object AppUtil {
                 counter++
             }
 
-            val command = "-y -i \"$inputPath\" -c:a ${AudioCodec.fromFormat(outputFormat).codec} -b:a ${bitrate.bitrate} \"$outputFilePath\""
+            val command = "-y -i \"$inputPath\" -c:a ${AudioCodec.fromFormat(outputFormat).codec} -b:a ${bitrate.bitrate} -filter:a \"atempo=$playbackSpeed\" \"$outputFilePath\""
 
             FFmpegKit.executeAsync(command) { session ->
                 if (ReturnCode.isSuccess(session.returnCode)) {

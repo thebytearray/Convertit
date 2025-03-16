@@ -74,6 +74,7 @@
     <string name="label_conversion_successful">Conversion successful!</string>
     <string name="label_warning">Please wait for the previous audios to be converted.</string>
     <string name="label_conversion_settings">Conversion Settings</string>
+    <string name="label_slider">Playback Speed</string>
 
 
 </resources>
