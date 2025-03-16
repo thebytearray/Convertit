@@ -28,7 +28,7 @@ object Constant {
     const val CHANNEL_ID = "CONVERT_IT_CHANNEL_ID"
     const val CHANNEL_NAME = "ConvertIt Notifications"
     const val FOLDER_DIR = "ConvertIt"
-    const val DISCORD_CHANNEL = "https://discord.gg/wzkDG2jDDS"
+    const val DISCORD_CHANNEL = "https://discord.com/invite/2WCsnpw4et"
     const val GITHUB_PROFILE = "https://github.com/codewithtamim"
     const val GITHUB_PROFILE_MOD = "https://github.com/moontahid"
     const val TELEGRAM_CHANNEL = "https://t.me/officialnasahacker"
