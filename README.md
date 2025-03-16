@@ -12,8 +12,8 @@
 
 ## 🚀 Features
 
-- 🎧 **Audio Format Conversion**: Effortlessly convert between **FLAC, MP3, WAV, AAC, OGG, and M4A**.
-- 🎚️ **Bitrate Selection**: Choose from bitrates such as **128k, 192k, 256k, and 320k** for output quality.
+- 🎧 **Audio Format Conversion**: Effortlessly convert between **FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, and SPX**.
+- 🎚️ **Bitrate Selection**: Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
 - 📱 **Ad-Free**: Enjoy a completely **ad-free** experience.
 - 🔧 **FFmpeg Integration**: Built-in FFmpeg ensures **reliable and high-quality** conversions.
 - 📐 **Modern Architecture**: Developed using **Kotlin** with **MVVM architecture** for better scalability and maintainability.
