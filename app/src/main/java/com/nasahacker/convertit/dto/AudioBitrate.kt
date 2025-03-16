@@ -11,10 +11,16 @@ package com.nasahacker.convertit.dto
  */
 
 enum class AudioBitrate(val bitrate: String) {
+    BITRATE_64K("64k"),
+    BITRATE_96K("96k"),
     BITRATE_128K("128k"),
     BITRATE_192K("192k"),
     BITRATE_256K("256k"),
-    BITRATE_320K("320k");
+    BITRATE_320K("320k"),
+    BITRATE_512K("512k"),
+    BITRATE_768K("768k"),
+    BITRATE_1024K("1024k");
+
 
     companion object {
         fun fromBitrate(bitrate: String?): AudioBitrate {
