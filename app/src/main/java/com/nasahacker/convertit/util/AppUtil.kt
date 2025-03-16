@@ -268,12 +268,13 @@ object AppUtil {
 
     fun convertAudio(
         context: Context,
-        playbackSpeed : String = "1.0",
+        playbackSpeed: String = "1.0",
         uris: List<Uri>,
         outputFormat: AudioFormat,
         bitrate: AudioBitrate,
         onSuccess: (List<String>) -> Unit,
         onFailure: (String) -> Unit,
+        onProgress: (Int) -> Unit  // Added progress callback
     ) {
         val musicDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
@@ -285,6 +286,9 @@ object AppUtil {
         }
 
         val outputPaths = mutableListOf<String>()
+        val totalFiles = uris.size
+        var processedFiles = 0
+
         uris.forEach { uri ->
             val inputPath = copyUriToInternalStorage(context, uri) ?: run {
                 onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri))
@@ -307,7 +311,14 @@ object AppUtil {
             FFmpegKit.executeAsync(command) { session ->
                 if (ReturnCode.isSuccess(session.returnCode)) {
                     outputPaths.add(outputFilePath)
-                    if (outputPaths.size == uris.size) onSuccess(outputPaths)
+                    processedFiles++
+
+                    val progress = ((processedFiles.toFloat() / totalFiles) * 100).toInt()
+                    onProgress(progress)
+
+                    if (processedFiles == totalFiles) {
+                        onSuccess(outputPaths)
+                    }
                 } else {
                     onFailure(
                         context.getString(

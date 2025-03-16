@@ -16,7 +16,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.dto.AudioBitrate
 import com.nasahacker.convertit.dto.AudioFormat
-
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant.ACTION_STOP_SERVICE
 import com.nasahacker.convertit.util.Constant.AUDIO_FORMAT
@@ -93,6 +92,10 @@ class ConvertItService : Service() {
                         showCompletionNotification(false)
                         broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false)
                         stopForegroundService()
+                    },
+                    onProgress = { progress ->
+                        // Update the notification with progress
+                        updateNotification(progress)
                     }
                 )
             } catch (e: Exception) {
@@ -155,11 +158,13 @@ class ConvertItService : Service() {
             .setProgress(100, progress, isIndeterminate)
             .setAutoCancel(false)
             .setOngoing(true)
+            .setDefaults(0)
+            .setOnlyAlertOnce(true)
             .addAction(R.drawable.baseline_stop_24, "Stop", stopPendingIntent)
             .build()
     }
 
-    /*private fun updateNotification(progress: Int) {
+    private fun updateNotification(progress: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Log.w(TAG, "Notification permission not granted. Skipping update.")
@@ -169,7 +174,7 @@ class ConvertItService : Service() {
         val notification = createProgressNotification(progress, false)
         NotificationManagerCompat.from(this).notify(notificationId, notification)
         Log.d(TAG, "Updated notification: Progress $progress%")
-    }*/
+    }
 
     private fun showCompletionNotification(success: Boolean) {
         stopForegroundService()
