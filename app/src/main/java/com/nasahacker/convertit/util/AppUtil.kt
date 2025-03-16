@@ -53,7 +53,8 @@ object AppUtil {
         if (isStoragePermissionGranted(context)) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
-                type = "audio/*"
+                type = "*/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("*/*"))
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
             pickFileLauncher.launch(intent)
