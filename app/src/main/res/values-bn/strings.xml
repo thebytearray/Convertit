@@ -4,7 +4,7 @@
     <string name="label_file_size">%1$.1f %2$s</string>
     <string name="converting_audio_files">ফাইল কনভার্ট হচ্ছে</string>
     <string name="label_about_title">সম্পর্কিত</string>
-    <string name="label_about_app">ConvertIt একটি ফ্রি এবং সহজে ব্যবহারযোগ্য অডিও কনভার্টার অ্যাপ। এটি MP3 এবং M4A এর মতো জনপ্রিয় অডিও ফরম্যাট সমর্থন করে। 128k থেকে 320k পর্যন্ত উচ্চমানের বিটরেটের জন্য অপশন সহ, ConvertIt আপনার প্রয়োজন অনুযায়ী একটি মসৃণ কনভার্ট অভিজ্ঞতা প্রদান করে।</string>
+    <string name="label_about_app">ConvertIt একটি ফ্রি এবং সহজে ব্যবহারযোগ্য অডিও কনভার্টার অ্যাপ। এটি MP3, M4A, AAC, WAV, OGG, OPUS, AIFF, WMA, MKA, এবং SPX এর মতো জনপ্রিয় অডিও ফরম্যাট সমর্থন করে। 128k থেকে 320k পর্যন্ত উচ্চমানের বিটরেটের জন্য অপশন সহ, ConvertIt আপনার প্রয়োজন অনুযায়ী একটি মসৃণ কনভার্ট অভিজ্ঞতা প্রদান করে।</string>
     <string name="label_contact">যোগাযোগ</string>
     <string name="label_bio">Developed by Tamim Hossain</string>
     <string name="label_converting_audio">ব্যাকগ্রাউন্ডে চলমান</string>

@@ -14,11 +14,14 @@ package com.nasahacker.convertit.dto
 enum class AudioFormat(val extension: String) {
     MP3(".mp3"),
     M4A(".m4a"),
-    WAV(".wav"),
-    FLAC(".flac"),
     AAC(".aac"),
+    WAV(".wav"),
     OGG(".ogg"),
-    OPUS(".opus");  
+    OPUS(".opus"),
+    AIFF(".aiff"),
+    WMA(".wma"),
+    MKA(".mka"),
+    SPX(".spx");
 
     companion object {
         fun fromExtension(extension: String?): AudioFormat {

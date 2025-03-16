@@ -17,7 +17,10 @@ object Constant {
 
     //const val PICK_FILE_REQUEST_CODE = 102
     val BITRATE_ARRAY = listOf("128k", "192k", "256k", "320k")
-    val FORMAT_ARRAY = listOf(".mp3", ".m4a", ".wav", ".aac", ".ogg", ".opus")
+    val FORMAT_ARRAY = listOf(
+        ".mp3", ".m4a", ".aac", ".wav", ".ogg", ".opus",
+        ".aiff", ".wma", ".mka", ".spx"
+    )
     const val URI_LIST = "uri_list"
     const val BITRATE = "bitrate"
     const val AUDIO_FORMAT = "audio_format"

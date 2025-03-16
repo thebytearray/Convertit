@@ -4,7 +4,7 @@
     <string name="label_file_size">%1$.1f %2$s</string>
     <string name="converting_audio_files">Converting files</string>
     <string name="label_about_title">About</string>
-    <string name="label_about_app">ConvertIt is a free and easy-to-use audio converter app. It supports popular audio formats like MP3 and M4A. With options for high-quality bitrates ranging from 128k to 320k, ConvertIt offers a seamless conversion experience tailored to your needs.</string>
+    <string name="label_about_app">ConvertIt is a free and easy-to-use audio converter app. It supports popular audio formats like MP3, M4A, AAC, WAV, OGG, OPUS, AIFF, WMA, MKA, and SPX. With options for high-quality bitrates ranging from 128k to 320k, ConvertIt offers a seamless conversion experience tailored to your needs.</string>
     <string name="label_contact">Contact</string>
     <string name="label_bio">Developed by Tamim Hossain</string>
     <string name="label_converting_audio">Running in background</string>

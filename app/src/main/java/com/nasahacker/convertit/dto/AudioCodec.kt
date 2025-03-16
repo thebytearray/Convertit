@@ -15,10 +15,13 @@ enum class AudioCodec(val codec: String) {
     MP3("libmp3lame"),
     M4A("aac"),
     WAV("pcm_s16le"),
-    FLAC("flac"),
     AAC("aac"),
     OGG("libvorbis"),
-    OPUS("libopus");  
+    OPUS("libopus"),
+    AIFF("pcm_s16le"),
+    WMA("wmav2"),
+    MKA("libvorbis"),
+    SPX("libspeex");
 
     companion object {
         fun fromFormat(format: AudioFormat): AudioCodec {
@@ -26,10 +29,14 @@ enum class AudioCodec(val codec: String) {
                 AudioFormat.MP3 -> MP3
                 AudioFormat.M4A -> M4A
                 AudioFormat.WAV -> WAV
-                AudioFormat.FLAC -> FLAC
                 AudioFormat.AAC -> AAC
                 AudioFormat.OGG -> OGG
-                AudioFormat.OPUS -> OPUS  
+                AudioFormat.OPUS -> OPUS
+                AudioFormat.AIFF -> AIFF
+                AudioFormat.WMA -> WMA
+                AudioFormat.MKA -> MKA
+                AudioFormat.SPX -> SPX
+
             }
         }
     }
