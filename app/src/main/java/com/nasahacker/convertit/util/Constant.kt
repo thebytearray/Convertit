@@ -28,7 +28,7 @@ object Constant {
         "1024k"
     )
     val FORMAT_ARRAY = listOf(
-        ".mp3", ".m4a", ".aac", ".wav", ".ogg", ".opus",
+        ".mp3", ".m4a", ".aac", ".wav",".flac", ".ogg", ".opus",
         ".aiff", ".wma", ".mka", ".spx"
     )
     const val URI_LIST = "uri_list"

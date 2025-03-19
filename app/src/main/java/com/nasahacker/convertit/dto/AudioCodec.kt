@@ -12,6 +12,7 @@ package com.nasahacker.convertit.dto
  */
 
 enum class AudioCodec(val codec: String) {
+    FLAC("flac"),
     MP3("libmp3lame"),
     M4A("aac"),
     WAV("pcm_s16le"),
@@ -36,7 +37,7 @@ enum class AudioCodec(val codec: String) {
                 AudioFormat.WMA -> WMA
                 AudioFormat.MKA -> MKA
                 AudioFormat.SPX -> SPX
-
+                AudioFormat.FLAC -> FLAC
             }
         }
     }

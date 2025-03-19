@@ -12,6 +12,7 @@ package com.nasahacker.convertit.dto
  */
 
 enum class AudioFormat(val extension: String) {
+    FLAC(".flac"),
     MP3(".mp3"),
     M4A(".m4a"),
     AAC(".aac"),
