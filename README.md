@@ -5,14 +5,13 @@
 ![Downloads](https://img.shields.io/github/downloads/CodeWithTamim/ConvertIt/total?style=for-the-badge&logo=download)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit?ref=badge_shield)
 
-
-**ConvertIt** is an **ad-free** and **easy-to-use** audio converter app that helps users convert audio files across different formats seamlessly. With **support for popular audio formats** and **customizable bitrates**, ConvertIt delivers high-quality conversions, powered by FFmpeg, all within a clean, user-friendly interface.
+**ConvertIt** is an **ad-free** and **easy-to-use** audio and video-to-audio converter app that helps users convert audio and video files across different formats seamlessly. With **support for popular audio formats** and **customizable bitrates**, ConvertIt delivers high-quality conversions, powered by FFmpeg, all within a clean, user-friendly interface.
 
 ---
 
 ## 🚀 Features
 
-- 🎧 **Audio Format Conversion**: Effortlessly convert between **FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, and SPX**.
+- 🎧 **Audio & Video to Audio Format Conversion**: Effortlessly convert between **FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX**, and more.
 - 🎚️ **Bitrate Selection**: Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
 - 📱 **Ad-Free**: Enjoy a completely **ad-free** experience.
 - 🔧 **FFmpeg Integration**: Built-in FFmpeg ensures **reliable and high-quality** conversions.
