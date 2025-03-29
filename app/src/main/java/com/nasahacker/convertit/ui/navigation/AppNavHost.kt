@@ -31,7 +31,7 @@ fun AppNavHost(activity: Activity, modifier: Modifier = Modifier, controller: Na
         composable(BottomNavigation.Home.route) {
             HomeScreen(activity)
         }
-        composable(BottomNavigation.Converts.route) {
+        composable(BottomNavigation.Library.route) {
             ConvertsScreen()
         }
     }

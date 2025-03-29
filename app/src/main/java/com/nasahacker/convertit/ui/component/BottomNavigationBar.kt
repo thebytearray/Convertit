@@ -29,7 +29,7 @@ fun BottomNavigationBar(navController: NavController) {
 
         val items = listOf(
             BottomNavigation.Home,
-            BottomNavigation.Converts
+            BottomNavigation.Library
         )
 
         items.forEach { item ->
@@ -38,12 +38,12 @@ fun BottomNavigationBar(navController: NavController) {
                     val iconRes = if (currentRoute == item.route) {
                         when (item) {
                             BottomNavigation.Home -> R.drawable.home_filled
-                            BottomNavigation.Converts -> R.drawable.storage_filled
+                            BottomNavigation.Library -> R.drawable.storage_filled
                         }
                     } else {
                         when (item) {
                             BottomNavigation.Home -> R.drawable.home_outlined
-                            BottomNavigation.Converts -> R.drawable.storage_outlined
+                            BottomNavigation.Library -> R.drawable.storage_outlined
                         }
                     }
                     Icon(painter = painterResource(id = iconRes), contentDescription = item.label)

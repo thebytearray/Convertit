@@ -13,5 +13,5 @@ package com.nasahacker.convertit.ui.navigation
 
 sealed class BottomNavigation(val route: String, val label: String) {
     data object Home : BottomNavigation("home", "Home")
-    data object Converts : BottomNavigation("library ", "Library ")
+    data object Library : BottomNavigation("library ", "Library ")
 }
