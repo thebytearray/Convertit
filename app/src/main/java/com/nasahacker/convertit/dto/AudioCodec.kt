@@ -1,9 +1,9 @@
 package com.nasahacker.convertit.dto
 
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -11,7 +11,9 @@ package com.nasahacker.convertit.dto
  * ConvertIt offers a seamless conversion experience tailored to your needs.
  */
 
-enum class AudioCodec(val codec: String) {
+enum class AudioCodec(
+    val codec: String,
+) {
     FLAC("flac"),
     MP3("libmp3lame"),
     M4A("aac"),
@@ -22,11 +24,12 @@ enum class AudioCodec(val codec: String) {
     AIFF("pcm_s16le"),
     WMA("wmav2"),
     MKA("libvorbis"),
-    SPX("libspeex");
+    SPX("libspeex"),
+    ;
 
     companion object {
-        fun fromFormat(format: AudioFormat): AudioCodec {
-            return when (format) {
+        fun fromFormat(format: AudioFormat): AudioCodec =
+            when (format) {
                 AudioFormat.MP3 -> MP3
                 AudioFormat.M4A -> M4A
                 AudioFormat.WAV -> WAV
@@ -39,6 +42,5 @@ enum class AudioCodec(val codec: String) {
                 AudioFormat.SPX -> SPX
                 AudioFormat.FLAC -> FLAC
             }
-        }
     }
 }

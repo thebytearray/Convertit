@@ -16,21 +16,22 @@ import com.nasahacker.convertit.R
 @Composable
 fun AboutAppContent(context: Context) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Text(
             text = context.getString(R.string.label_about_app),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(8.dp),
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Start,
         )
     }
     Text(
         text = "Apache 2.0",
         style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = Modifier.padding(top = 4.dp),
     )
 }

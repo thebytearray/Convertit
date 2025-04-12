@@ -14,6 +14,6 @@ fun SectionTitle(title: String) {
         text = title,
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier.padding(top = 12.dp),
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 }

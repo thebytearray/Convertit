@@ -16,12 +16,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nasahacker.convertit.AboutActivity
-
 import com.nasahacker.convertit.R
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -43,14 +43,13 @@ fun MainAppBar() {
             }) {
                 Icon(
                     Icons.Default.Info,
-                    contentDescription = stringResource(R.string.label_about)
+                    contentDescription = stringResource(R.string.label_about),
                 )
             }
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,15 +62,13 @@ fun PreviewMainAppBar() {
         },
         actions = {
             IconButton(onClick = {
-
             }) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_info_24),
-                    contentDescription = stringResource(R.string.label_about)
+                    contentDescription = stringResource(R.string.label_about),
                 )
             }
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
-
 }

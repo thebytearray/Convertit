@@ -10,9 +10,9 @@ import com.nasahacker.convertit.util.Constant.CHANNEL_ID
 import com.nasahacker.convertit.util.Constant.CHANNEL_NAME
 
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -21,7 +21,6 @@ import com.nasahacker.convertit.util.Constant.CHANNEL_NAME
  */
 
 class App : Application() {
-
     companion object {
         lateinit var application: App
     }
@@ -36,15 +35,15 @@ class App : Application() {
         initChannel()
     }
 
-
     private fun initChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManagerCompat.from(this).createNotificationChannel(
                 NotificationChannel(
-                    CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
-                )
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                ),
             )
         }
     }
 }
-

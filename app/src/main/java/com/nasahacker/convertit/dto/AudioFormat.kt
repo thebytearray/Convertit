@@ -1,9 +1,9 @@
 package com.nasahacker.convertit.dto
 
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -11,7 +11,9 @@ package com.nasahacker.convertit.dto
  * ConvertIt offers a seamless conversion experience tailored to your needs.
  */
 
-enum class AudioFormat(val extension: String) {
+enum class AudioFormat(
+    val extension: String,
+) {
     FLAC(".flac"),
     MP3(".mp3"),
     M4A(".m4a"),
@@ -22,12 +24,12 @@ enum class AudioFormat(val extension: String) {
     AIFF(".aiff"),
     WMA(".wma"),
     MKA(".mka"),
-    SPX(".spx");
+    SPX(".spx"),
+    ;
 
     companion object {
-        fun fromExtension(extension: String?): AudioFormat {
-            return entries.find { it.extension.equals(extension, ignoreCase = true) }
+        fun fromExtension(extension: String?): AudioFormat =
+            entries.find { it.extension.equals(extension, ignoreCase = true) }
                 ?: MP3
-        }
     }
 }

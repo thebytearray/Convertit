@@ -13,18 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ContactItem(name: String, onClick: () -> Unit) {
+fun ContactItem(
+    name: String,
+    onClick: () -> Unit,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Text(
             text = name,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.clickable(onClick = { onClick() })
+            modifier = Modifier.clickable(onClick = { onClick() }),
         )
     }
 }

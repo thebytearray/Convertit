@@ -3,9 +3,9 @@ package com.nasahacker.convertit.ui.screen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,10 +13,11 @@ import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogDeleteItem
 import com.nasahacker.convertit.util.AppUtil
 import java.io.File
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -27,17 +28,19 @@ import java.io.File
 @Composable
 fun ConvertsScreen() {
     val context = LocalContext.current
-    val data = remember {
-        mutableStateListOf(
-            *AppUtil.getAudioFilesFromConvertedFolder(context).toTypedArray()
-        )
-    }
+    val data =
+        remember {
+            mutableStateListOf(
+                *AppUtil.getAudioFilesFromConvertedFolder(context).toTypedArray(),
+            )
+        }
     var showDialog by remember { mutableStateOf(false) }
     var fileToDelete by remember { mutableStateOf<File?>(null) }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(data) { item ->
-            AudioItem(fileName = item.name,
+            AudioItem(
+                fileName = item.name,
                 fileSize = item.size,
                 isActionVisible = true,
                 onPlayClick = {
@@ -49,12 +52,14 @@ fun ConvertsScreen() {
                 onLongClick = {
                     showDialog = true
                     fileToDelete = item.file
-                })
+                },
+            )
         }
     }
 
     if (showDialog) {
-        DialogDeleteItem(showDialog = showDialog,
+        DialogDeleteItem(
+            showDialog = showDialog,
             onDismissRequest = { showDialog = false },
             onDeleteConfirm = {
                 fileToDelete?.let {
@@ -62,10 +67,10 @@ fun ConvertsScreen() {
                     data.removeAll { file -> file.file == it }
                 }
                 showDialog = false
-            })
+            },
+        )
     }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

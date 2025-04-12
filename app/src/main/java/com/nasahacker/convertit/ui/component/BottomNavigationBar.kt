@@ -8,12 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.nasahacker.convertit.ui.navigation.BottomNavigation
 import com.nasahacker.convertit.R
+import com.nasahacker.convertit.ui.navigation.BottomNavigation
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -27,25 +28,27 @@ fun BottomNavigationBar(navController: NavController) {
         val navBackStackEntry = navController.currentBackStackEntryAsState().value
         val currentRoute = navBackStackEntry?.destination?.route
 
-        val items = listOf(
-            BottomNavigation.Home,
-            BottomNavigation.Library
-        )
+        val items =
+            listOf(
+                BottomNavigation.Home,
+                BottomNavigation.Library,
+            )
 
         items.forEach { item ->
             NavigationBarItem(
                 icon = {
-                    val iconRes = if (currentRoute == item.route) {
-                        when (item) {
-                            BottomNavigation.Home -> R.drawable.home_filled
-                            BottomNavigation.Library -> R.drawable.storage_filled
+                    val iconRes =
+                        if (currentRoute == item.route) {
+                            when (item) {
+                                BottomNavigation.Home -> R.drawable.home_filled
+                                BottomNavigation.Library -> R.drawable.storage_filled
+                            }
+                        } else {
+                            when (item) {
+                                BottomNavigation.Home -> R.drawable.home_outlined
+                                BottomNavigation.Library -> R.drawable.storage_outlined
+                            }
                         }
-                    } else {
-                        when (item) {
-                            BottomNavigation.Home -> R.drawable.home_outlined
-                            BottomNavigation.Library -> R.drawable.storage_outlined
-                        }
-                    }
                     Icon(painter = painterResource(id = iconRes), contentDescription = item.label)
                 },
                 label = { Text(item.label) },
@@ -57,7 +60,7 @@ fun BottomNavigationBar(navController: NavController) {
                             restoreState = true
                         }
                     }
-                }
+                },
             )
         }
     }

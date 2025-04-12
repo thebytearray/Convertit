@@ -1,8 +1,9 @@
 package com.nasahacker.convertit.ui.navigation
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -10,8 +11,11 @@ package com.nasahacker.convertit.ui.navigation
  * ConvertIt offers a seamless conversion experience tailored to your needs.
  */
 
-
-sealed class BottomNavigation(val route: String, val label: String) {
+sealed class BottomNavigation(
+    val route: String,
+    val label: String,
+) {
     data object Home : BottomNavigation("home", "Home")
+
     data object Library : BottomNavigation("library ", "Library ")
 }

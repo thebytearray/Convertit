@@ -1,5 +1,6 @@
 package com.nasahacker.convertit.ui.component
 
+import androidx.compose.foundation.focusable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -9,13 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.focusable
 import androidx.compose.ui.res.stringResource
 import com.nasahacker.convertit.R
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -35,14 +36,15 @@ fun AboutAppBar(onBackPressed: () -> Unit) {
                 onClick = {
                     onBackPressed()
                 },
-                modifier = Modifier
-                    .focusable()
+                modifier =
+                    Modifier
+                        .focusable(),
             ) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.label_back)
+                    contentDescription = stringResource(R.string.label_back),
                 )
             }
-        }
+        },
     )
 }

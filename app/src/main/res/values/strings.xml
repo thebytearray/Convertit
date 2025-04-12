@@ -75,6 +75,12 @@
     <string name="label_warning">Please wait for the previous audios to be converted.</string>
     <string name="label_conversion_settings">Conversion Settings</string>
     <string name="label_slider">Playback Speed</string>
+    <string name="cd_star_icon">Star Icon</string>
+    <string name="title_review">If you enjoy using our app, please take a moment to rate us on Google Play.</string>
+    <string name="label_google_play">https://play.google.com/store/apps/details?id=%1$s</string>
+    <string name="label_review">Review</string>
+    <string name="label_select_files">Select Files</string>
+    <string name="label_folder">Open In Folder</string>
 
 
 </resources>

@@ -24,40 +24,46 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DonationCard(iconRes: Int, description: String, address: String) {
+fun DonationCard(
+    iconRes: Int,
+    description: String,
+    address: String,
+) {
     val context = LocalContext.current
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .combinedClickable(
-                onClick = {/*We don't even need it right now */ },
-                onLongClick = {
-                    val clipboard =
-                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText(description, address)
-                    clipboard.setPrimaryClip(clip)
-                }
-            ),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .combinedClickable(
+                    onClick = { },
+                    onLongClick = {
+                        val clipboard =
+                            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText(description, address)
+                        clipboard.setPrimaryClip(clip)
+                    },
+                ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(iconRes),
                 contentDescription = description,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
             Text(
                 text = address,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
             )
         }
     }

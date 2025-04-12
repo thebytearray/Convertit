@@ -18,10 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nasahacker.convertit.R
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -38,70 +39,72 @@ fun AudioItem(
     isActionVisible: Boolean = false,
     onPlayClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
-    onLongClick: () -> Unit = {}
+    onLongClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
-            .padding(16.dp)
-            .combinedClickable(onClick = {
-
-            }, onLongClick = {
-                onLongClick()
-            })
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                .padding(16.dp)
+                .combinedClickable(onClick = {
+                }, onLongClick = {
+                    onLongClick()
+                }),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Image(
                     painter = painterResource(R.drawable.audio_ic),
                     contentDescription = stringResource(R.string.label_audio_icon),
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(end = 8.dp)
+                    modifier =
+                        Modifier
+                            .size(50.dp)
+                            .padding(end = 8.dp),
                 )
                 Column {
                     Text(
                         text = fileName,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = fileSize,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
 
-            // Animated Visibility for Action Menu
             AnimatedVisibility(visible = isActionVisible) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
                         painter = painterResource(R.drawable.play_ic),
                         contentDescription = stringResource(R.string.label_play_icon),
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable { onPlayClick() }
+                        modifier =
+                            Modifier
+                                .size(40.dp)
+                                .clickable { onPlayClick() },
                     )
                     Image(
                         painter = painterResource(R.drawable.share_ic),
                         contentDescription = stringResource(R.string.label_share_icon),
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clickable { onShareClick() }
+                        modifier =
+                            Modifier
+                                .size(30.dp)
+                                .clickable { onShareClick() },
                     )
                 }
             }

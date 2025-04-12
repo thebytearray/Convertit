@@ -9,12 +9,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CommunityIcon(iconRes: Int, contentDescription: String, onClick: () -> Unit) {
+fun CommunityIcon(
+    iconRes: Int,
+    contentDescription: String,
+    onClick: () -> Unit,
+) {
     IconButton(onClick = onClick) {
         Icon(
             painter = painterResource(iconRes),
             contentDescription = contentDescription,
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(30.dp),
         )
     }
 }

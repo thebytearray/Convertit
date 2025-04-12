@@ -9,16 +9,17 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nasahacker.convertit.App
+import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant
 import com.nasahacker.convertit.util.Constant.IS_SUCCESS
-import com.nasahacker.convertit.util.AppUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -27,28 +28,30 @@ import kotlinx.coroutines.launch
  */
 
 class AppViewModel : ViewModel() {
-
     private val _uriList = MutableStateFlow<ArrayList<Uri>>(ArrayList())
     val uriList: StateFlow<ArrayList<Uri>> = _uriList
 
     private val _conversionStatus = MutableStateFlow<Boolean?>(null)
     val conversionStatus: StateFlow<Boolean?> = _conversionStatus
 
-    private val conversionStatusReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) ?: false
-            viewModelScope.launch {
-                _conversionStatus.value = isSuccess
+    private val conversionStatusReceiver =
+        object : BroadcastReceiver() {
+            override fun onReceive(
+                context: Context?,
+                intent: Intent?,
+            ) {
+                val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) ?: false
+                viewModelScope.launch {
+                    _conversionStatus.value = isSuccess
+                }
             }
         }
-    }
 
     fun resetConversionStatus() {
         viewModelScope.launch {
             _conversionStatus.value = null
         }
     }
-
 
     init {
         startListeningForBroadcasts()
@@ -78,7 +81,7 @@ class AppViewModel : ViewModel() {
             App.application,
             conversionStatusReceiver,
             intentFilter,
-            AppUtil.receiverFlags()
+            AppUtil.receiverFlags(),
         )
     }
 

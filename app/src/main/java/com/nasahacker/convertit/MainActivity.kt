@@ -10,17 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.nasahacker.convertit.ui.navigation.AppNavHost
 import com.nasahacker.convertit.ui.component.BottomNavigationBar
 import com.nasahacker.convertit.ui.component.MainAppBar
+import com.nasahacker.convertit.ui.navigation.AppNavHost
 import com.nasahacker.convertit.ui.theme.AppTheme
-
 import com.nasahacker.convertit.util.AppUtil
 
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -29,7 +28,6 @@ import com.nasahacker.convertit.util.AppUtil
  */
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,26 +41,22 @@ class MainActivity : ComponentActivity() {
                     },
                     bottomBar = {
                         BottomNavigationBar(navController = navController)
-                    }
+                    },
                 ) { innerPadding ->
                     AppNavHost(
                         this,
                         modifier = Modifier.padding(innerPadding),
-                        controller = navController
+                        controller = navController,
                     )
                 }
             }
         }
 
-
-        //Handle Notification
         AppUtil.handleNotificationPermission(this)
-
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewMainScreen() {
-
 }

@@ -1,9 +1,9 @@
 package com.nasahacker.convertit.util
 
 /**
- * @author      Tamim Hossain
- * @email       tamimh.dev@gmail.com
- * @license     Apache-2.0
+ * @author Tamim Hossain
+ * @email tamimh.dev@gmail.com
+ * @license Apache-2.0
  *
  * ConvertIt is a free and easy-to-use audio converter app.
  * It supports popular audio formats like MP3 and M4A.
@@ -15,22 +15,33 @@ object Constant {
     const val GITHUB_ISSUES_URL = "https://github.com/CodeWithTamim/ConvertIt/issues"
     const val STORAGE_PERMISSION_CODE = 101
 
-    //const val PICK_FILE_REQUEST_CODE = 102
-    val BITRATE_ARRAY = listOf(
-        "64k",
-        "96k",
-        "128k",
-        "192k",
-        "256k",
-        "320k",
-        "512k",
-        "768k",
-        "1024k"
-    )
-    val FORMAT_ARRAY = listOf(
-        ".mp3", ".m4a", ".aac", ".wav",".flac", ".ogg", ".opus",
-        ".aiff", ".wma", ".mka", ".spx"
-    )
+    // const val PICK_FILE_REQUEST_CODE = 102
+    val BITRATE_ARRAY =
+        listOf(
+            "64k",
+            "96k",
+            "128k",
+            "192k",
+            "256k",
+            "320k",
+            "512k",
+            "768k",
+            "1024k",
+        )
+    val FORMAT_ARRAY =
+        listOf(
+            ".mp3",
+            ".m4a",
+            ".aac",
+            ".wav",
+            ".flac",
+            ".ogg",
+            ".opus",
+            ".aiff",
+            ".wma",
+            ".mka",
+            ".spx",
+        )
     const val URI_LIST = "uri_list"
     const val BITRATE = "bitrate"
     const val AUDIO_FORMAT = "audio_format"
