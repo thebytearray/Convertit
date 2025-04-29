@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.ui.navigation
+package com.nasahacker.convertit.dto
 
 /**
  * @author Tamim Hossain

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nasahacker.convertit.dto.BottomNavigation
 import com.nasahacker.convertit.ui.screen.ConvertsScreen
 import com.nasahacker.convertit.ui.screen.HomeScreen
 

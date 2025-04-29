@@ -9,7 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.ui.navigation.BottomNavigation
+import com.nasahacker.convertit.dto.BottomNavigation
 
 /**
  * @author Tamim Hossain
