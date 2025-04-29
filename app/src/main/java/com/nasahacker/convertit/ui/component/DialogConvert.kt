@@ -17,6 +17,7 @@ import com.nasahacker.convertit.R
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant.BITRATE_ARRAY
 import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
+import com.nasahacker.convertit.util.Constant.FORMAT_BITRATE_MAP
 
 /**
  * @author Tamim Hossain
@@ -113,18 +114,21 @@ fun DialogConvertContent(
     sliderValue: Float,
     onSliderValueChanged: (Float) -> Unit,
 ) {
+    val bitrateOptions = remember(selectedFormat) {
+        FORMAT_BITRATE_MAP[selectedFormat] ?: BITRATE_ARRAY
+    }
+
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .wrapContentHeight(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         DropdownField(
             label = stringResource(R.string.label_bitrate_options),
-            options = BITRATE_ARRAY,
-            selectedOption = selectedBitrate,
+            options = bitrateOptions,
+            selectedOption = selectedBitrate.takeIf { it in bitrateOptions } ?: bitrateOptions.first(),
             onOptionSelected = onBitrateSelected,
         )
 
@@ -132,7 +136,11 @@ fun DialogConvertContent(
             label = stringResource(R.string.label_format_options),
             options = FORMAT_ARRAY,
             selectedOption = selectedFormat,
-            onOptionSelected = onFormatSelected,
+            onOptionSelected = {
+                onFormatSelected(it)
+                val validBitrates = FORMAT_BITRATE_MAP[it] ?: BITRATE_ARRAY
+                onBitrateSelected(validBitrates.first())
+            },
         )
 
         Text(
@@ -154,6 +162,7 @@ fun DialogConvertContent(
         )
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

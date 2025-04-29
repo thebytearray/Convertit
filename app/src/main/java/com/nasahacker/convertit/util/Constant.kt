@@ -39,6 +39,18 @@ object Constant {
             ".mka",
             ".spx",
         )
+
+    val FORMAT_BITRATE_MAP = mapOf(
+        ".mp3" to listOf("64k", "96k", "128k", "192k", "256k", "320k"),
+        ".aac" to listOf("64k", "96k", "128k", "192k", "256k", "320k"),
+        ".m4a" to listOf("64k", "96k", "128k", "192k", "256k", "320k", "512k"),
+        ".ogg" to listOf("64k", "96k", "128k", "192k", "256k", "320k", "512k"),
+        ".opus" to listOf("64k", "96k", "128k", "192k", "256k", "320k"),
+        ".wma" to listOf("64k", "96k", "128k", "192k", "256k", "320k"),
+        ".mka" to BITRATE_ARRAY, // supports all
+        ".spx" to listOf("64k", "96k", "128k", "192k"),
+    )
+
     const val URI_LIST = "uri_list"
     const val BITRATE = "bitrate"
     const val AUDIO_FORMAT = "audio_format"
