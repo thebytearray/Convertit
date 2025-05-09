@@ -7,8 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nasahacker.convertit.ui.component.BottomNavigationBar
 import com.nasahacker.convertit.ui.component.MainAppBar
@@ -34,17 +36,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
 
                 Scaffold(
                     topBar = {
-                        MainAppBar()
+                        MainAppBar(
+                            onNavigateToAbout = { navController.navigate("about") },
+                            onNavigateBack = { navController.popBackStack() },
+                            isAboutScreen = currentRoute == "about"
+                        )
                     },
                     bottomBar = {
-                        BottomNavigationBar(navController = navController)
+                        if (currentRoute != "about") {
+                            BottomNavigationBar(navController = navController)
+                        }
                     },
                 ) { innerPadding ->
                     AppNavHost(
-                        this,
                         modifier = Modifier.padding(innerPadding),
                         controller = navController,
                     )

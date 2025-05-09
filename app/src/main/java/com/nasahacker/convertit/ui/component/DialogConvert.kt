@@ -4,11 +4,15 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,11 +49,21 @@ fun DialogConvertAlertDialog(
     if (showDialog) {
         AlertDialog(
             onDismissRequest = onDismiss,
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+            },
             title = {
                 Text(
                     text = stringResource(R.string.label_conversion_settings),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.primary
                 )
             },
             text = {
@@ -77,29 +91,49 @@ fun DialogConvertAlertDialog(
                         )
                         onDismiss()
                     },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
                     shape = RoundedCornerShape(12.dp),
-                    elevation = ButtonDefaults.buttonElevation(4.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
-                    Text(stringResource(R.string.label_convert))
+                    Icon(
+                        imageVector = Icons.Default.Done,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.label_convert),
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 }
             },
             dismissButton = {
-                TextButton(
+                OutlinedButton(
                     onClick = onCancel,
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text(stringResource(R.string.label_cancel))
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.label_cancel),
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 }
             },
             shape = RoundedCornerShape(20.dp),
             containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 8.dp,
             properties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false),
         )
     }
@@ -121,48 +155,155 @@ fun DialogConvertContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        DropdownField(
-            label = stringResource(R.string.label_bitrate_options),
-            options = bitrateOptions,
-            selectedOption = selectedBitrate.takeIf { it in bitrateOptions } ?: bitrateOptions.first(),
-            onOptionSelected = onBitrateSelected,
-        )
-
-        DropdownField(
-            label = stringResource(R.string.label_format_options),
-            options = FORMAT_ARRAY,
-            selectedOption = selectedFormat,
-            onOptionSelected = {
-                onFormatSelected(it)
-                val validBitrates = FORMAT_BITRATE_MAP[it] ?: BITRATE_ARRAY
-                onBitrateSelected(validBitrates.first())
-            },
-        )
-
-        Text(
-            text = stringResource(R.string.label_slider),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(bottom = 6.dp),
-        )
-        Slider(
-            value = sliderValue,
-            onValueChange = onSliderValueChanged,
-            valueRange = 0.5f..2.0f,
-            steps = 30,
+        // Format and Bitrate Selection in a Row
+        Row(
             modifier = Modifier.fillMaxWidth(),
-        )
-        Text(
-            text = "Current: ${"%.2f".format(sliderValue)}x",
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(top = 4.dp),
-        )
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Format Selection
+            Card(
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AudioFile,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.label_format_options),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    DropdownField(
+                        label = "",
+                        options = FORMAT_ARRAY,
+                        selectedOption = selectedFormat,
+                        onOptionSelected = {
+                            onFormatSelected(it)
+                            val validBitrates = FORMAT_BITRATE_MAP[it] ?: BITRATE_ARRAY
+                            onBitrateSelected(validBitrates.first())
+                        },
+                    )
+                }
+            }
+
+            // Bitrate Selection
+            Card(
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Speed,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.label_bitrate_options),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    DropdownField(
+                        label = "",
+                        options = bitrateOptions,
+                        selectedOption = selectedBitrate.takeIf { it in bitrateOptions } ?: bitrateOptions.first(),
+                        onOptionSelected = onBitrateSelected,
+                    )
+                }
+            }
+        }
+
+        // Playback Speed
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Timer,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.label_slider),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Slider(
+                    value = sliderValue,
+                    onValueChange = onSliderValueChanged,
+                    valueRange = 0.5f..2.0f,
+                    steps = 30,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = SliderDefaults.colors(
+                        thumbColor = MaterialTheme.colorScheme.primary,
+                        activeTrackColor = MaterialTheme.colorScheme.primary,
+                        inactiveTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.24f)
+                    )
+                )
+                Text(
+                    text = "Current: ${"%.2f".format(sliderValue)}x",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+        }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -175,11 +316,13 @@ fun DropdownField(
     var expanded by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(bottom = 6.dp),
-        )
+        if (label.isNotEmpty()) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 4.dp),
+            )
+        }
 
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -189,12 +332,11 @@ fun DropdownField(
                 value = selectedOption,
                 onValueChange = {},
                 readOnly = true,
-                modifier =
-                    Modifier
-                        .menuAnchor()
-                        .fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             )
 

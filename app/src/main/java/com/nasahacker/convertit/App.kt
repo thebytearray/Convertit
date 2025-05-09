@@ -33,6 +33,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initChannel()
+        clearCacheOnStartup()
     }
 
     private fun initChannel() {
@@ -44,6 +45,18 @@ class App : Application() {
                     NotificationManager.IMPORTANCE_DEFAULT,
                 ),
             )
+        }
+    }
+
+    private fun clearCacheOnStartup() {
+        try {
+            cacheDir.listFiles()?.forEach { file ->
+                if (file.isFile) {
+                    file.delete()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

@@ -43,6 +43,9 @@ class AppViewModel : ViewModel() {
                 val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) ?: false
                 viewModelScope.launch {
                     _conversionStatus.value = isSuccess
+                    if (isSuccess) {
+                        clearUriList()
+                    }
                 }
             }
         }

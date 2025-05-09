@@ -4,19 +4,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.nasahacker.convertit.BuildConfig
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.ui.component.AboutAppContent
 import com.nasahacker.convertit.ui.component.CommunityIcon
 import com.nasahacker.convertit.ui.component.ContactItem
-import com.nasahacker.convertit.ui.component.DonationCard
 import com.nasahacker.convertit.ui.component.SectionTitle
 import com.nasahacker.convertit.util.AppUtil
 import com.nasahacker.convertit.util.Constant
@@ -33,7 +38,7 @@ import com.nasahacker.convertit.util.Constant
  */
 
 @Composable
-fun AboutScreen(modifier: Modifier = Modifier) {
+fun AboutScreen() {
     val context = LocalContext.current
 
     Surface(
@@ -41,75 +46,167 @@ fun AboutScreen(modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.background,
     ) {
         Column(
-            modifier =
-                modifier
-                    .fillMaxSize()
-                    .padding(12.dp)
-                    .verticalScroll(rememberScrollState()),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            SectionTitle(stringResource(R.string.label_contact_us))
-            Column(
+            // App Title
+            Text(
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 24.dp)
+            )
+
+            // About App Section
+            Card(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             ) {
-                ContactItem(
-                    name = stringResource(R.string.label_dev),
-                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) },
-                )
-                ContactItem(
-                    name = stringResource(R.string.label_mod),
-                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE_MOD) },
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_about_title),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    AboutAppContent(context)
+                }
             }
 
-            SectionTitle(stringResource(R.string.label_community))
-            Row(
-                modifier = Modifier.wrapContentWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
+            // Contact Section
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             ) {
-                CommunityIcon(
-                    iconRes = R.drawable.telegram_ic,
-                    contentDescription = stringResource(R.string.label_telegram_icon),
-                    onClick = { AppUtil.openLink(context, Constant.TELEGRAM_CHANNEL) },
-                )
-                CommunityIcon(
-                    iconRes = R.drawable.discord_ic,
-                    contentDescription = stringResource(R.string.label_dc_icon),
-                    onClick = { AppUtil.openLink(context, Constant.DISCORD_CHANNEL) },
-                )
-                CommunityIcon(
-                    iconRes = R.drawable.github_ic,
-                    contentDescription = stringResource(R.string.label_github_icon),
-                    onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) },
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_contact_us),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    ContactItem(
+                        name = stringResource(R.string.label_dev),
+                        onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) },
+                    )
+                    ContactItem(
+                        name = stringResource(R.string.label_mod),
+                        onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE_MOD) },
+                    )
+                }
             }
 
-            SectionTitle(stringResource(R.string.label_support_us))
-            DonationCard(
-                iconRes = R.drawable.btc,
-                description = stringResource(R.string.label_btc_icon),
-                address = stringResource(R.string.label_btc_add),
-            )
-            DonationCard(
-                iconRes = R.drawable.usdt,
-                description = stringResource(R.string.label_usdt_icon),
-                address = stringResource(R.string.label_usdt_add),
-            )
+            // Community Section
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_community),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 16.dp),
+                        textAlign = TextAlign.Center
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        CommunityIcon(
+                            iconRes = R.drawable.telegram_ic,
+                            contentDescription = stringResource(R.string.label_telegram_icon),
+                            onClick = { AppUtil.openLink(context, Constant.TELEGRAM_CHANNEL) },
+                        )
+                        CommunityIcon(
+                            iconRes = R.drawable.discord_ic,
+                            contentDescription = stringResource(R.string.label_dc_icon),
+                            onClick = { AppUtil.openLink(context, Constant.DISCORD_CHANNEL) },
+                        )
+                        CommunityIcon(
+                            iconRes = R.drawable.github_ic,
+                            contentDescription = stringResource(R.string.label_github_icon),
+                            onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) },
+                        )
+                    }
+                }
+            }
 
-            SectionTitle(stringResource(R.string.label_about_title))
-            AboutAppContent(context)
-
-            SectionTitle(stringResource(R.string.label_report_an_issue))
+            // Report Issue Button
             Button(
                 onClick = { AppUtil.openLink(context, Constant.GITHUB_ISSUES_URL) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
             ) {
-                Text(text = stringResource(R.string.label_open_github_issue))
+                Icon(
+                    imageVector = Icons.Default.BugReport,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.label_open_github_issue),
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
+
+            // Version and License
+            Text(
+                text = "Version ${BuildConfig.VERSION_NAME}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = stringResource(R.string.label_apache_2_0_license),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

@@ -1,14 +1,16 @@
 package com.nasahacker.convertit.ui.navigation
 
-import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nasahacker.convertit.dto.BottomNavigation
 import com.nasahacker.convertit.ui.screen.ConvertsScreen
 import com.nasahacker.convertit.ui.screen.HomeScreen
+import com.nasahacker.convertit.ui.screen.AboutScreen
+import com.nasahacker.convertit.ui.viewmodel.AppViewModel
 
 /**
  * @author Tamim Hossain
@@ -23,20 +25,24 @@ import com.nasahacker.convertit.ui.screen.HomeScreen
 
 @Composable
 fun AppNavHost(
-    activity: Activity,
     modifier: Modifier = Modifier,
     controller: NavHostController,
 ) {
+    val viewModel: AppViewModel = viewModel()
+
     NavHost(
         modifier = modifier,
         navController = controller,
         startDestination = BottomNavigation.Home.route,
     ) {
         composable(BottomNavigation.Home.route) {
-            HomeScreen(activity)
+            HomeScreen(viewModel = viewModel)
         }
         composable(BottomNavigation.Library.route) {
             ConvertsScreen()
+        }
+        composable("about") {
+            AboutScreen()
         }
     }
 }

@@ -3,6 +3,7 @@ package com.nasahacker.convertit.ui.screen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogDeleteItem
 import com.nasahacker.convertit.util.AppUtil
 import java.io.File
+import kotlinx.coroutines.launch
 
 /**
  * @author Tamim Hossain
@@ -28,17 +30,48 @@ import java.io.File
 @Composable
 fun ConvertsScreen() {
     val context = LocalContext.current
-    val data =
-        remember {
-            mutableStateListOf(
-                *AppUtil.getAudioFilesFromConvertedFolder(context).toTypedArray(),
-            )
-        }
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    
+    // Pagination state
+    var currentPage by remember { mutableStateOf(0) }
+    val pageSize = 20
+    var isLoading by remember { mutableStateOf(false) }
+    
+    // Load initial data
+    val initialData = remember {
+        mutableStateListOf(
+            *AppUtil.getAudioFilesFromConvertedFolder(context)
+                .take(pageSize)
+                .toTypedArray()
+        )
+    }
+    
     var showDialog by remember { mutableStateOf(false) }
     var fileToDelete by remember { mutableStateOf<File?>(null) }
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(data) { item ->
+    // Load more data when reaching the end
+    LaunchedEffect(listState) {
+        if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == listState.layoutInfo.totalItemsCount - 1) {
+            if (!isLoading) {
+                isLoading = true
+                currentPage++
+                val newItems = AppUtil.getAudioFilesFromConvertedFolder(context)
+                    .drop(currentPage * pageSize)
+                    .take(pageSize)
+                if (newItems.isNotEmpty()) {
+                    initialData.addAll(newItems)
+                }
+                isLoading = false
+            }
+        }
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState
+    ) {
+        items(initialData) { item ->
             AudioItem(
                 fileName = item.name,
                 fileSize = item.size,
@@ -64,7 +97,7 @@ fun ConvertsScreen() {
             onDeleteConfirm = {
                 fileToDelete?.let {
                     AppUtil.deleteFile(context, it)
-                    data.removeAll { file -> file.file == it }
+                    initialData.removeAll { file -> file.file == it }
                 }
                 showDialog = false
             },

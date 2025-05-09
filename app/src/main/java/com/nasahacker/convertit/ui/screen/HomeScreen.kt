@@ -26,6 +26,8 @@ import com.nasahacker.convertit.ui.component.DialogConvertAlertDialog
 import com.nasahacker.convertit.ui.component.RatingDialog
 import com.nasahacker.convertit.ui.viewmodel.AppViewModel
 import com.nasahacker.convertit.util.AppUtil
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 
 /**
  * @author Tamim Hossain
@@ -40,9 +42,9 @@ import com.nasahacker.convertit.util.AppUtil
 
 @Composable
 fun HomeScreen(
-    context: Activity,
-    viewModel: AppViewModel = viewModel(),
+    viewModel: AppViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val uriList by viewModel.uriList.collectAsState()
     val conversionStatus by viewModel.conversionStatus.collectAsState()
     var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -59,12 +61,11 @@ fun HomeScreen(
     LaunchedEffect(conversionStatus) {
         conversionStatus?.let { isSuccess ->
             if (isSuccess) {
-                Toast
-                    .makeText(
-                        context,
-                        context.getString(R.string.label_conversion_successful),
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.label_conversion_successful),
+                    Toast.LENGTH_SHORT
+                ).show()
                 viewModel.clearUriList()
                 viewModel.resetConversionStatus()
                 showReviewDialog = true
@@ -74,24 +75,20 @@ fun HomeScreen(
 
     RatingDialog(
         showReviewDialog = showReviewDialog,
-        onConfirm = {
-            showReviewDialog = false
-        },
-        onDismiss = { showReviewDialog = false },
+        onConfirm = { showReviewDialog = false },
+        onDismiss = { showReviewDialog = false }
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 80.dp),
+            contentPadding = PaddingValues(bottom = 80.dp)
         ) {
             items(uriList) { uri ->
                 val file = AppUtil.getFileFromUri(context, uri)
                 AudioItem(
                     fileName = file?.name.orEmpty(),
-                    fileSize =
-                        file?.let { AppUtil.getFileSizeInReadableFormat(context, it) }
-                            ?: "Unknown",
+                    fileSize = file?.let { AppUtil.getFileSizeInReadableFormat(context, it) } ?: "Unknown"
                 )
             }
         }
@@ -99,29 +96,24 @@ fun HomeScreen(
         FloatingActionButton(
             onClick = {
                 if (ConvertItService.isForegroundServiceStarted) {
-                    Toast
-                        .makeText(
-                            context,
-                            context.getString(R.string.label_warning),
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.label_warning),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     AppUtil.openFilePicker(context, pickFileLauncher)
                 }
             },
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            modifier =
-                Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(26.dp),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(26.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.audio_ic),
-                contentDescription =
-                    stringResource(
-                        R.string.label_select_files,
-                    ),
+                contentDescription = stringResource(R.string.label_select_files)
             )
         }
     }
@@ -133,11 +125,12 @@ fun HomeScreen(
             viewModel.clearUriList()
             showDialog = false
         },
-        uris = uriList,
+        uris = uriList
     )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewMainScreen() {
+    HomeScreen()
 }
