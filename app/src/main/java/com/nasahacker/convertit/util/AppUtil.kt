@@ -260,7 +260,6 @@ object AppUtil {
             putExtra(AUDIO_FORMAT, format)
         }
 
-        App.application.startService(intent)
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             Log.d("ZERO_DOLLAR", "Starting foreground service...")
