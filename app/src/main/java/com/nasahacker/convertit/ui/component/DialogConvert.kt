@@ -167,9 +167,7 @@ fun DialogConvertContent(
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+
             ) {
                 Column(
                     modifier = Modifier
@@ -212,9 +210,7 @@ fun DialogConvertContent(
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+
             ) {
                 Column(
                     modifier = Modifier
@@ -254,9 +250,7 @@ fun DialogConvertContent(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
+
         ) {
             Column(
                 modifier = Modifier

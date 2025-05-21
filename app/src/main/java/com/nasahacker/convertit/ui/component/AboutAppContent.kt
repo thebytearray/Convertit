@@ -37,7 +37,8 @@ fun AboutAppContent(context: Context) {
             text = context.getString(R.string.label_about_app),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(8.dp),
-            textAlign = TextAlign.Start,
+            textAlign = TextAlign.Center,
+
         )
     }
     Text(
