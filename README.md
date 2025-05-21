@@ -24,7 +24,7 @@
 ## 🖼️ Screenshots Of App
 
 <p align="left">
-  <img src="images/image2.png" alt="Screenshot 1" width="200"/>
+  <img src="images/image1.png" alt="Screenshot 1" width="200"/>
   <img src="images/image2.png" alt="Screenshot 2" width="200"/>
   <img src="images/image3.png" alt="Screenshot 3" width="200"/>
 </p>
