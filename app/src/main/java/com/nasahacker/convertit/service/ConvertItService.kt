@@ -17,6 +17,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
@@ -24,6 +25,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.ServiceCompat
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.dto.AudioBitrate
 import com.nasahacker.convertit.dto.AudioFormat
@@ -61,7 +63,9 @@ class ConvertItService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        Log.i(TAG, "onStartCommand: Received intent with action: ${intent?.action}, startId: $startId")
+        Log.i(
+            TAG, "onStartCommand: Received intent with action: ${intent?.action}, startId: $startId"
+        )
 
         if (intent?.action == ACTION_STOP_SERVICE) {
             Log.i(TAG, "Stopping service as per user request. startId: $startId")
@@ -71,25 +75,26 @@ class ConvertItService : Service() {
             return START_NOT_STICKY
         }
 
-        val uriList: ArrayList<Uri>? =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent?.getParcelableArrayListExtra(URI_LIST, Uri::class.java)
-            } else {
-                intent?.getParcelableArrayListExtra(URI_LIST)
-            }
+        val uriList: ArrayList<Uri>? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent?.getParcelableArrayListExtra(URI_LIST, Uri::class.java)
+        } else {
+            intent?.getParcelableArrayListExtra(URI_LIST)
+        }
 
         val bitrate = AudioBitrate.fromBitrate(intent?.getStringExtra(BITRATE))
         val format = AudioFormat.fromExtension(intent?.getStringExtra(AUDIO_FORMAT))
         val speed = intent?.getStringExtra(AUDIO_PLAYBACK_SPEED) ?: "1.0"
 
-        Log.d(TAG, """
+        Log.d(
+            TAG, """
             Conversion parameters:
             - Format: ${format.extension}
             - Bitrate: ${bitrate.bitrate}
             - Playback Speed: $speed
             - Number of files: ${uriList?.size ?: 0}
             - Files: ${uriList?.joinToString { it.lastPathSegment ?: "unknown" }}
-        """.trimIndent())
+        """.trimIndent()
+        )
 
         if (uriList.isNullOrEmpty()) {
             Log.e(TAG, "No valid URIs provided. Stopping service. startId: $startId")
@@ -109,15 +114,22 @@ class ConvertItService : Service() {
                     outputFormat = format,
                     bitrate = bitrate,
                     onSuccess = {
-                        Log.i(TAG, "Conversion completed successfully for all files. startId: $startId")
+                        Log.i(
+                            TAG,
+                            "Conversion completed successfully for all files. startId: $startId"
+                        )
                         showCompletionNotification(true)
-                        broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, true)
+                        broadcastConversionResult(Intent().apply {
+                            action = CONVERT_BROADCAST_ACTION
+                        }, true)
                         stopForegroundService()
                     },
                     onFailure = { error ->
-                        Log.e(TAG, "Conversion failed with error: ${error}. startId: $startId",)
+                        Log.e(TAG, "Conversion failed with error: ${error}. startId: $startId")
                         showCompletionNotification(false)
-                        broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false)
+                        broadcastConversionResult(Intent().apply {
+                            action = CONVERT_BROADCAST_ACTION
+                        }, false)
                         stopForegroundService()
                     },
                     onProgress = { progress ->
@@ -128,7 +140,9 @@ class ConvertItService : Service() {
             } catch (e: Exception) {
                 Log.e(TAG, "Unexpected error during conversion. startId: $startId", e)
                 showCompletionNotification(false)
-                broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false)
+                broadcastConversionResult(
+                    Intent().apply { action = CONVERT_BROADCAST_ACTION }, false
+                )
                 stopForegroundService()
             }
         }
@@ -148,7 +162,16 @@ class ConvertItService : Service() {
     private fun startForegroundServiceWithNotification() {
         val notification = createProgressNotification(0, true)
         if (!isForegroundServiceStarted) {
-            startForeground(notificationId, notification)
+            ServiceCompat.startForeground(
+                /* service = */ this,
+                /* id = */ notificationId,
+                /* notification = */ notification,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE
+                } else {
+                    0
+                },
+            )
             isForegroundServiceStarted = true
             Log.i(TAG, "Started foreground service with notification ID: $notificationId")
         } else {
@@ -176,46 +199,42 @@ class ConvertItService : Service() {
         progress: Int,
         isIndeterminate: Boolean,
     ): Notification {
-        val stopIntent =
-            Intent(this, ConvertItService::class.java).apply {
-                action = ACTION_STOP_SERVICE
-            }
-        val stopPendingIntent =
-            PendingIntent.getService(
-                this,
-                0,
-                stopIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-            )
+        val stopIntent = Intent(this, ConvertItService::class.java).apply {
+            action = ACTION_STOP_SERVICE
+        }
+        val stopPendingIntent = PendingIntent.getService(
+            this,
+            0,
+            stopIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
 
-        val progressText =
-            if (isIndeterminate) {
-                getString(R.string.label_converting_audio)
-            } else {
-                "Conversion in progress: $progress%"
-            }
+        val progressText = if (isIndeterminate) {
+            getString(R.string.label_converting_audio)
+        } else {
+            "Conversion in progress: $progress%"
+        }
 
-        Log.d(TAG, "Creating progress notification: $progressText (Indeterminate: $isIndeterminate)")
+        Log.d(
+            TAG, "Creating progress notification: $progressText (Indeterminate: $isIndeterminate)"
+        )
 
-        return NotificationCompat
-            .Builder(this, CHANNEL_ID)
+        return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.converting_audio_files))
-            .setContentText(progressText)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setProgress(100, progress, isIndeterminate)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setDefaults(0)
-            .setOnlyAlertOnce(true)
-            .addAction(R.drawable.baseline_stop_24, "Stop", stopPendingIntent)
-            .build()
+            .setContentText(progressText).setSmallIcon(R.mipmap.ic_launcher)
+            .setProgress(100, progress, isIndeterminate).setAutoCancel(false).setOngoing(true)
+            .setDefaults(0).setOnlyAlertOnce(true)
+            .addAction(R.drawable.baseline_stop_24, "Stop", stopPendingIntent).build()
     }
 
     private fun updateNotification(progress: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.w(TAG, "Notification permission not granted. Skipping update for progress: $progress%")
+            Log.w(
+                TAG, "Notification permission not granted. Skipping update for progress: $progress%"
+            )
             return
         }
 
@@ -227,26 +246,26 @@ class ConvertItService : Service() {
     private fun showCompletionNotification(success: Boolean) {
         stopForegroundService()
 
-        val notificationText =
-            if (success) {
-                getString(R.string.conversion_success)
-            } else {
-                getString(R.string.conversion_failed)
-            }
+        val notificationText = if (success) {
+            getString(R.string.conversion_success)
+        } else {
+            getString(R.string.conversion_failed)
+        }
 
         Log.i(TAG, "Showing completion notification: $notificationText")
 
-        val notification =
-            NotificationCompat
-                .Builder(this, CHANNEL_ID)
-                .setContentTitle(getString(R.string.conversion_status))
-                .setContentText(notificationText)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true)
-                .build()
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(getString(R.string.conversion_status)).setContentText(notificationText)
+            .setSmallIcon(R.mipmap.ic_launcher).setAutoCancel(true).build()
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            Log.w(TAG, "Notification permission not granted. Skipping completion notification for status: $success")
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.w(
+                TAG,
+                "Notification permission not granted. Skipping completion notification for status: $success"
+            )
             return
         }
 
