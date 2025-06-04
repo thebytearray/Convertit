@@ -99,5 +99,6 @@
     <string name="label_about_screen">About</string>
     <string name="label_sample_audio">Sample Audio File</string>
     <string name="label_sample_size">100KB</string>
+    <string name="label_no_files_found">No converted files found. \nTry converting some! 🙂</string>
 
 </resources>
