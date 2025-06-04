@@ -40,7 +40,7 @@ class AppViewModel : ViewModel() {
                 context: Context?,
                 intent: Intent?,
             ) {
-                val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) ?: false
+                val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) == true
                 viewModelScope.launch {
                     _conversionStatus.value = isSuccess
                     if (isSuccess) {
