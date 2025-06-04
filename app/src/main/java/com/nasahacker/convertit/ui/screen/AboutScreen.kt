@@ -16,15 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.nasahacker.convertit.BuildConfig
 import com.nasahacker.convertit.R
+import com.nasahacker.convertit.dto.ConvertitDarkPreview
+import com.nasahacker.convertit.dto.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.AboutAppContent
 import com.nasahacker.convertit.ui.component.CommunityIcon
 import com.nasahacker.convertit.ui.component.ContactItem
-import com.nasahacker.convertit.ui.component.SectionTitle
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.Constant
+import com.nasahacker.convertit.util.AppConfig
 
 /**
  * @author Tamim Hossain
@@ -53,7 +53,7 @@ fun AboutScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // App Title
+
             Text(
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -63,7 +63,7 @@ fun AboutScreen() {
                 modifier = Modifier.padding(top = 24.dp)
             )
 
-            // About App Section
+
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -90,7 +90,6 @@ fun AboutScreen() {
                 }
             }
 
-            // Contact Section
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -115,16 +114,15 @@ fun AboutScreen() {
                     )
                     ContactItem(
                         name = stringResource(R.string.label_dev),
-                        onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) },
+                        onClick = { AppUtil.openLink(context, AppConfig.GITHUB_PROFILE) },
                     )
                     ContactItem(
                         name = stringResource(R.string.label_mod),
-                        onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE_MOD) },
+                        onClick = { AppUtil.openLink(context, AppConfig.GITHUB_PROFILE_MOD) },
                     )
                 }
             }
 
-            // Community Section
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -154,25 +152,24 @@ fun AboutScreen() {
                         CommunityIcon(
                             iconRes = R.drawable.telegram_ic,
                             contentDescription = stringResource(R.string.label_telegram_icon),
-                            onClick = { AppUtil.openLink(context, Constant.TELEGRAM_CHANNEL) },
+                            onClick = { AppUtil.openLink(context, AppConfig.TELEGRAM_CHANNEL) },
                         )
                         CommunityIcon(
                             iconRes = R.drawable.discord_ic,
                             contentDescription = stringResource(R.string.label_dc_icon),
-                            onClick = { AppUtil.openLink(context, Constant.DISCORD_CHANNEL) },
+                            onClick = { AppUtil.openLink(context, AppConfig.DISCORD_CHANNEL) },
                         )
                         CommunityIcon(
                             iconRes = R.drawable.github_ic,
                             contentDescription = stringResource(R.string.label_github_icon),
-                            onClick = { AppUtil.openLink(context, Constant.GITHUB_PROFILE) },
+                            onClick = { AppUtil.openLink(context, AppConfig.GITHUB_PROFILE) },
                         )
                     }
                 }
             }
 
-            // Report Issue Button
             Button(
-                onClick = { AppUtil.openLink(context, Constant.GITHUB_ISSUES_URL) },
+                onClick = { AppUtil.openLink(context, AppConfig.GITHUB_ISSUES_URL) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
@@ -193,7 +190,6 @@ fun AboutScreen() {
                 )
             }
 
-            // Version and License
             Text(
                 text = "Version ${BuildConfig.VERSION_NAME}",
                 style = MaterialTheme.typography.bodyMedium,
@@ -211,7 +207,8 @@ fun AboutScreen() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@ConvertitLightPreview
+@ConvertitDarkPreview
 @Composable
 fun PreviewAboutScreen() {
     AboutScreen()

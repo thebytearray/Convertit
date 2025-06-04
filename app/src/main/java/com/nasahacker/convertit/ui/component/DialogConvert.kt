@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,9 +18,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.Constant.BITRATE_ARRAY
-import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
-import com.nasahacker.convertit.util.Constant.FORMAT_BITRATE_MAP
+import com.nasahacker.convertit.util.AppConfig.BITRATE_ARRAY
+import com.nasahacker.convertit.util.AppConfig.FORMAT_ARRAY
+import com.nasahacker.convertit.util.AppConfig.FORMAT_BITRATE_MAP
 
 /**
  * @author Tamim Hossain
@@ -41,7 +40,6 @@ fun DialogConvertAlertDialog(
     onDismiss: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    val context = LocalContext.current
     var selectedFormat by remember { mutableStateOf(".mp3") }
     var selectedBitrate by remember { mutableStateOf("256k") }
     var sliderValue by remember { mutableFloatStateOf(1.0f) }
