@@ -12,7 +12,7 @@ package com.nasahacker.convertit.util
  */
 
 object AppConfig {
-    const val GITHUB_ISSUES_URL = "https://github.com/CodeWithTamim/ConvertIt/issues"
+    const val GITHUB_ISSUES_URL = "https://github.com/TheByteArray/ConvertIt/issues"
     const val STORAGE_PERMISSION_CODE = 101
 
     val BITRATE_ARRAY =
