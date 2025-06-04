@@ -28,6 +28,7 @@ import com.nasahacker.convertit.ui.viewmodel.AppViewModel
 import com.nasahacker.convertit.util.AppUtil
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 /**
  * @author Tamim Hossain
@@ -45,8 +46,8 @@ fun HomeScreen(
     viewModel: AppViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val uriList by viewModel.uriList.collectAsState()
-    val conversionStatus by viewModel.conversionStatus.collectAsState()
+    val uriList by viewModel.uriList.collectAsStateWithLifecycle()
+    val conversionStatus by viewModel.conversionStatus.collectAsStateWithLifecycle()
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showReviewDialog by rememberSaveable { mutableStateOf(false) }
 
