@@ -222,7 +222,7 @@ class ConvertItService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.converting_audio_files))
-            .setContentText(progressText).setSmallIcon(R.mipmap.ic_launcher)
+            .setContentText(progressText).setSmallIcon(R.mipmap.ic_launcher_foreground)
             .setProgress(100, progress, isIndeterminate).setAutoCancel(false).setOngoing(true)
             .setDefaults(0).setOnlyAlertOnce(true)
             .addAction(R.drawable.baseline_stop_24, "Stop", stopPendingIntent).build()
