@@ -29,6 +29,8 @@ import com.nasahacker.convertit.util.AppUtil
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nasahacker.convertit.dto.ConvertitDarkPreview
+import com.nasahacker.convertit.dto.ConvertitLightPreview
 
 /**
  * @author Tamim Hossain
@@ -130,7 +132,8 @@ fun HomeScreen(
     )
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@ConvertitLightPreview
+@ConvertitDarkPreview
 @Composable
 fun PreviewMainScreen() {
     HomeScreen()

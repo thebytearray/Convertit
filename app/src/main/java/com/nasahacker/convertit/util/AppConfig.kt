@@ -11,11 +11,10 @@ package com.nasahacker.convertit.util
  * ConvertIt offers a seamless conversion experience tailored to your needs.
  */
 
-object Constant {
+object AppConfig {
     const val GITHUB_ISSUES_URL = "https://github.com/CodeWithTamim/ConvertIt/issues"
     const val STORAGE_PERMISSION_CODE = 101
 
-    // const val PICK_FILE_REQUEST_CODE = 102
     val BITRATE_ARRAY =
         listOf(
             "64k",
@@ -47,7 +46,7 @@ object Constant {
         ".ogg" to listOf("64k", "96k", "128k", "192k", "256k", "320k", "512k"),
         ".opus" to listOf("64k", "96k", "128k", "192k", "256k", "320k"),
         ".wma" to listOf("64k", "96k", "128k", "192k", "256k", "320k"),
-        ".mka" to BITRATE_ARRAY, // supports all
+        ".mka" to BITRATE_ARRAY,
         ".spx" to listOf("64k", "96k", "128k", "192k"),
     )
 
@@ -64,9 +63,7 @@ object Constant {
     const val DISCORD_CHANNEL = "https://discord.com/invite/2WCsnpw4et"
     const val GITHUB_PROFILE = "https://github.com/codewithtamim"
     const val GITHUB_PROFILE_MOD = "https://github.com/moontahid"
-    const val TELEGRAM_CHANNEL = "https://t.me/officialnasahacker"
-
-    //   const val PROFILE_URL = "https://avatars.githubusercontent.com/u/132823494"
+    const val TELEGRAM_CHANNEL = "https://t.me/thebytearray"
     const val APP_PREF = "app_prefs"
     const val PREF_DONT_SHOW_AGAIN = "pref_dont_show_again"
 }

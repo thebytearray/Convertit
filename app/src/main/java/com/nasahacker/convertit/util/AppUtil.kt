@@ -25,17 +25,18 @@ import com.nasahacker.convertit.dto.AudioCodec
 import com.nasahacker.convertit.dto.AudioFile
 import com.nasahacker.convertit.dto.AudioFormat
 import com.nasahacker.convertit.service.ConvertItService
-import com.nasahacker.convertit.util.Constant.AUDIO_FORMAT
-import com.nasahacker.convertit.util.Constant.AUDIO_PLAYBACK_SPEED
-import com.nasahacker.convertit.util.Constant.BITRATE
-import com.nasahacker.convertit.util.Constant.FOLDER_DIR
-import com.nasahacker.convertit.util.Constant.FORMAT_ARRAY
-import com.nasahacker.convertit.util.Constant.STORAGE_PERMISSION_CODE
-import com.nasahacker.convertit.util.Constant.URI_LIST
+import com.nasahacker.convertit.util.AppConfig.AUDIO_FORMAT
+import com.nasahacker.convertit.util.AppConfig.AUDIO_PLAYBACK_SPEED
+import com.nasahacker.convertit.util.AppConfig.BITRATE
+import com.nasahacker.convertit.util.AppConfig.FOLDER_DIR
+import com.nasahacker.convertit.util.AppConfig.FORMAT_ARRAY
+import com.nasahacker.convertit.util.AppConfig.STORAGE_PERMISSION_CODE
+import com.nasahacker.convertit.util.AppConfig.URI_LIST
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.log10
 import kotlin.math.pow
+import androidx.core.net.toUri
 
 /**
  * @author Tamim Hossain
@@ -76,7 +77,7 @@ object AppUtil {
         context: Context,
         link: String,
     ) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+        context.startActivity(Intent(Intent.ACTION_VIEW, link.toUri()))
     }
 
     fun shareMusicFile(
@@ -112,11 +113,12 @@ object AppUtil {
     ): String {
         val sizeInBytes = file.length()
         if (sizeInBytes <= 0) return "0 B"
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val units = arrayOf("B", "KiB", "MiB", "GiB", "TiB")
         val digitGroups = (log10(sizeInBytes.toDouble()) / log10(1024.0)).toInt()
+        val size = sizeInBytes / 1024.0.pow(digitGroups.toDouble())
         return String.format(
             context.getString(R.string.label_file_size),
-            sizeInBytes / 1024.0.pow(digitGroups.toDouble()),
+            if (size >= 100) size.toInt().toDouble() else size,
             units[digitGroups],
         )
     }
@@ -162,16 +164,16 @@ object AppUtil {
         return try {
             val fileName = getFileName(context, uri) ?: return null
             
-            // Check file size before processing
+
             val fileSize = context.contentResolver.openFileDescriptor(uri, "r")?.statSize ?: 0
-            if (fileSize > 1024 * 1024 * 1024) { // 1GB limit
+            if (fileSize > 1024 * 1024 * 1024) {
                 throw Exception("File too large")
             }
-            
+
             val file = File(context.cacheDir, fileName)
             context.contentResolver.openInputStream(uri)?.use { inputStream ->
                 FileOutputStream(file).use { outputStream ->
-                    val buffer = ByteArray(8192) // 8KB buffer
+                    val buffer = ByteArray(8192)
                     var bytesRead: Int
                     while (inputStream.read(buffer).also { bytesRead = it } != -1) {
                         outputStream.write(buffer, 0, bytesRead)
@@ -225,22 +227,7 @@ object AppUtil {
         if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
     } ?: "unknown"
 
-    private fun copyUriToInternalStorage(
-        context: Context,
-        uri: Uri,
-    ): String? = try {
-        val fileName = getFileName(context.contentResolver, uri)
-        val tempFile = File(context.cacheDir, fileName)
-        context.contentResolver.openInputStream(uri)?.use { inputStream ->
-            FileOutputStream(tempFile).use { outputStream ->
-                inputStream.copyTo(outputStream)
-            }
-        }
-        tempFile.absolutePath
-    } catch (e: Exception) {
-        Log.e("FileUtils", "Error copying file: ${e.message}")
-        null
-    }
+
 
     fun startAudioConvertService(
         speed: String = "1.0",
@@ -305,10 +292,9 @@ object AppUtil {
         val outputPaths = mutableListOf<String>()
         val totalFiles = uris.size
         var processedFiles = 0
-        val maxConcurrentConversions = 2 // Limit concurrent conversions
+        val maxConcurrentConversions = 2
         val conversionQueue = mutableListOf<Pair<Uri, Int>>()
-        
-        // Queue all files
+
         uris.forEachIndexed { index, uri ->
             conversionQueue.add(uri to index)
         }
@@ -322,12 +308,9 @@ object AppUtil {
             }
 
             val (uri, index) = conversionQueue.removeAt(0)
-            val inputPath = copyUriToInternalStorage(context, uri) ?: run {
-                onFailure(context.getString(R.string.label_failed_to_copy_file_from_uri))
-                return
-            }
-
-            val inputFileNameWithoutExtension = File(inputPath).nameWithoutExtension
+            val inputFileName = getFileName(context.contentResolver, uri)
+            val inputFileNameWithoutExtension = inputFileName.substringBeforeLast(".")
+            
             var outputFileName = "${inputFileNameWithoutExtension}_convertit${outputFormat.extension}"
             var outputFilePath = File(musicDir, outputFileName).absolutePath
 
@@ -338,37 +321,55 @@ object AppUtil {
                 counter++
             }
 
-            val command = "-y -i \"$inputPath\" -c:a ${
-                AudioCodec.fromFormat(outputFormat).codec
-            } -b:a ${bitrate.bitrate} -filter:a \"atempo=$playbackSpeed\" \"$outputFilePath\""
+            try {
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
 
-            FFmpegKit.executeAsync(command) { session ->
-                if (ReturnCode.isSuccess(session.returnCode)) {
-                    outputPaths.add(outputFilePath)
-                    processedFiles++
-                    
-                    val progress = ((processedFiles.toFloat() / totalFiles) * 100).toInt()
-                    onProgress(progress)
-                    
-                    // Process next file
-                    processNextFile()
-                } else {
-                    onFailure(
-                        context.getString(
-                            R.string.label_conversion_failed_for_file_with_return_code,
-                            inputPath,
-                            session.returnCode.toString(),
-                        ),
+                    val tempFile = File(context.cacheDir, "temp_${System.currentTimeMillis()}")
+                    FileOutputStream(tempFile).use { outputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
+
+                    val command = "-y -i \"${tempFile.absolutePath}\" -c:a ${
+                        AudioCodec.fromFormat(outputFormat).codec
+                    } -b:a ${bitrate.bitrate} -filter:a \"atempo=$playbackSpeed\" \"$outputFilePath\""
+
+                    FFmpegKit.executeAsync(command) { session ->
+                        tempFile.delete()
+                        
+                        if (ReturnCode.isSuccess(session.returnCode)) {
+                            outputPaths.add(outputFilePath)
+                            processedFiles++
+                            
+                            val progress = ((processedFiles.toFloat() / totalFiles) * 100).toInt()
+                            onProgress(progress)
+                            processNextFile()
+                        } else {
+                            onFailure(
+                                context.getString(
+                                    R.string.label_conversion_failed_for_file_with_return_code,
+                                    inputFileName,
+                                    session.returnCode.toString(),
+                                ),
+                            )
+                        }
+                    }
+                } ?: throw Exception("Failed to open input stream")
+            } catch (e: Exception) {
+                onFailure(
+                    context.getString(
+                        R.string.label_conversion_failed_for_file_with_return_code,
+                        inputFileName,
+                        e.message ?: "Unknown error"
                     )
-                }
+                )
             }
         }
 
-        // Start initial batch of conversions
         repeat(maxConcurrentConversions) {
             processNextFile()
         }
     }
+
 
     fun handleNotificationPermission(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ActivityCompat.checkSelfPermission(

@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,8 +43,8 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import com.nasahacker.convertit.App
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.util.Constant.APP_PREF
-import com.nasahacker.convertit.util.Constant.PREF_DONT_SHOW_AGAIN
+import com.nasahacker.convertit.util.AppConfig.APP_PREF
+import com.nasahacker.convertit.util.AppConfig.PREF_DONT_SHOW_AGAIN
 
 @Composable
 fun RatingDialog(

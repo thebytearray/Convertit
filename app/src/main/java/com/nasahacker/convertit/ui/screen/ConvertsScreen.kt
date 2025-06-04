@@ -10,6 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.nasahacker.convertit.dto.ConvertitDarkPreview
+import com.nasahacker.convertit.dto.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogDeleteItem
 import com.nasahacker.convertit.util.AppUtil
@@ -103,7 +105,8 @@ fun ConvertsScreen() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@ConvertitLightPreview
+@ConvertitDarkPreview
 @Composable
 fun PreviewConvertsScreen(modifier: Modifier = Modifier) {
     ConvertsScreen()

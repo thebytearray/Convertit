@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nasahacker.convertit.App
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.Constant
-import com.nasahacker.convertit.util.Constant.IS_SUCCESS
+import com.nasahacker.convertit.util.AppConfig
+import com.nasahacker.convertit.util.AppConfig.IS_SUCCESS
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -79,7 +79,7 @@ class AppViewModel : ViewModel() {
      * Registers the BroadcastReceiver to listen for conversion status updates.
      */
     private fun startListeningForBroadcasts() {
-        val intentFilter = IntentFilter(Constant.CONVERT_BROADCAST_ACTION)
+        val intentFilter = IntentFilter(AppConfig.CONVERT_BROADCAST_ACTION)
         ContextCompat.registerReceiver(
             App.application,
             conversionStatusReceiver,
