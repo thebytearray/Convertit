@@ -31,14 +31,12 @@ import kotlinx.coroutines.launch
 fun ConvertsScreen() {
     val context = LocalContext.current
     val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
-    
-    // Pagination state
+
     var currentPage by remember { mutableStateOf(0) }
     val pageSize = 20
     var isLoading by remember { mutableStateOf(false) }
     
-    // Load initial data
+
     val initialData = remember {
         mutableStateListOf(
             *AppUtil.getAudioFilesFromConvertedFolder(context)
@@ -50,7 +48,7 @@ fun ConvertsScreen() {
     var showDialog by remember { mutableStateOf(false) }
     var fileToDelete by remember { mutableStateOf<File?>(null) }
 
-    // Load more data when reaching the end
+
     LaunchedEffect(listState) {
         if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == listState.layoutInfo.totalItemsCount - 1) {
             if (!isLoading) {
