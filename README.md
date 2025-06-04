@@ -2,7 +2,7 @@
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack_Compose-343434?style=for-the-badge&logo=jetpack-compose)
 ![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
-![Downloads](https://img.shields.io/github/downloads/CodeWithTamim/ConvertIt/total?style=for-the-badge&logo=download)
+![Downloads](https://img.shields.io/github/downloads/TheByteArray/ConvertIt/total?style=for-the-badge&logo=download)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit?ref=badge_shield)
 
 **ConvertIt** is an **ad-free** and **easy-to-use** audio and video-to-audio converter app that helps users convert audio and video files across different formats seamlessly. With **support for popular audio formats** and **customizable bitrates**, ConvertIt delivers high-quality conversions, powered by FFmpeg, all within a clean, user-friendly interface.
