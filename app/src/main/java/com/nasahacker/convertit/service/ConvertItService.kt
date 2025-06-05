@@ -257,7 +257,7 @@ class ConvertItService : Service() {
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.conversion_status)).setContentText(notificationText)
-            .setSmallIcon(R.mipmap.ic_launcher).setAutoCancel(true).build()
+            .setSmallIcon(R.mipmap.ic_launcher_foreground).setAutoCancel(true).build()
 
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.POST_NOTIFICATIONS
