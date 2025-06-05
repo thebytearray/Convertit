@@ -4,9 +4,8 @@
     <string name="label_file_size">%1$.1f %2$s</string>
     <string name="converting_audio_files">Converting Files</string>
     <string name="label_about_title">About</string>
-    <string name="label_about_app">ConvertIt is a free and easy-to-use audio converter application. It supports popular audio formats including MP3, M4A, AAC, WAV, OGG, OPUS, AIFF, WMA, MKA, and SPX. With options for high-quality bitrates ranging from 128k to 320k, ConvertIt offers a seamless conversion experience tailored to your needs.</string>
+    <string name="label_about_app">ConvertIt is an ad-free Android app for converting audio and video files to various formats like FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, and SPX. Built with Kotlin, Compose, and FFmpeg, it offers flexible bitrate options for high-quality conversions. Video-to-audio conversion is also supported. Contributions are welcome!</string>
     <string name="label_contact">Contact</string>
-    <string name="label_bio">Developed by Tamim Hossain</string>
     <string name="label_converting_audio">Processing in Background</string>
     <string name="label_storage_permissions_are_already_granted">Storage permissions have been granted</string>
     <string name="label_conversion_failed_for_file_with_return_code">Conversion failed for file: %1$s (Error code: %2$s)</string>
@@ -99,5 +98,6 @@
     <string name="label_about_screen">About</string>
     <string name="label_sample_audio">Sample Audio File</string>
     <string name="label_sample_size">100KB</string>
+    <string name="label_no_files_found">No converted files found. \nTry converting some! 🙂</string>
 
 </resources>

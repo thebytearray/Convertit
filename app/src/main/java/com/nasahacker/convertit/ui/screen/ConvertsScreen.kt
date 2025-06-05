@@ -14,6 +14,7 @@ import com.nasahacker.convertit.dto.ConvertitDarkPreview
 import com.nasahacker.convertit.dto.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogDeleteItem
+import com.nasahacker.convertit.ui.component.NoFilesFoundCard
 import com.nasahacker.convertit.util.AppUtil
 import java.io.File
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ fun ConvertsScreen() {
     val context = LocalContext.current
     val listState = rememberLazyListState()
 
-    var currentPage by remember { mutableStateOf(0) }
+    var currentPage by remember { mutableIntStateOf(0) }
     val pageSize = 20
     var isLoading by remember { mutableStateOf(false) }
     
@@ -67,27 +68,31 @@ fun ConvertsScreen() {
         }
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        state = listState
-    ) {
-        items(initialData) { item ->
-            AudioItem(
-                fileName = item.name,
-                fileSize = item.size,
-                isActionVisible = true,
-                onPlayClick = {
-                    AppUtil.openMusicFileInPlayer(context, item.file)
-                },
-                onShareClick = {
-                    AppUtil.shareMusicFile(context, item.file)
-                },
-                onLongClick = {
-                    showDialog = true
-                    fileToDelete = item.file
-                },
-            )
+    if (initialData.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = listState
+        ) {
+            items(initialData) { item ->
+                AudioItem(
+                    fileName = item.name,
+                    fileSize = item.size,
+                    isActionVisible = true,
+                    onPlayClick = {
+                        AppUtil.openMusicFileInPlayer(context, item.file)
+                    },
+                    onShareClick = {
+                        AppUtil.shareMusicFile(context, item.file)
+                    },
+                    onLongClick = {
+                        showDialog = true
+                        fileToDelete = item.file
+                    },
+                )
+            }
         }
+    } else {
+        NoFilesFoundCard()
     }
 
     if (showDialog) {

@@ -12,6 +12,7 @@ package com.nasahacker.convertit.service
  */
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -221,7 +222,7 @@ class ConvertItService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.converting_audio_files))
-            .setContentText(progressText).setSmallIcon(R.mipmap.ic_launcher)
+            .setContentText(progressText).setSmallIcon(R.mipmap.ic_launcher_foreground)
             .setProgress(100, progress, isIndeterminate).setAutoCancel(false).setOngoing(true)
             .setDefaults(0).setOnlyAlertOnce(true)
             .addAction(R.drawable.baseline_stop_24, "Stop", stopPendingIntent).build()
@@ -256,7 +257,7 @@ class ConvertItService : Service() {
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.conversion_status)).setContentText(notificationText)
-            .setSmallIcon(R.mipmap.ic_launcher).setAutoCancel(true).build()
+            .setSmallIcon(R.mipmap.ic_launcher_foreground).setAutoCancel(true).build()
 
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.POST_NOTIFICATIONS

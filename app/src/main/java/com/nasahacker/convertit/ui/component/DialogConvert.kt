@@ -91,7 +91,7 @@ fun DialogConvertAlertDialog(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
@@ -156,12 +156,11 @@ fun DialogConvertContent(
             .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        // Format and Bitrate Selection in a Row
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Format Selection
+
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
@@ -191,6 +190,7 @@ fun DialogConvertContent(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+                    Spacer(modifier = Modifier.height(6.dp))
                     DropdownField(
                         label = "",
                         options = FORMAT_ARRAY,
@@ -204,7 +204,7 @@ fun DialogConvertContent(
                 }
             }
 
-            // Bitrate Selection
+
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
@@ -234,6 +234,7 @@ fun DialogConvertContent(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+                    Spacer(modifier = Modifier.height(6.dp))
                     DropdownField(
                         label = "",
                         options = bitrateOptions,
@@ -244,9 +245,9 @@ fun DialogConvertContent(
             }
         }
 
-        // Playback Speed
+
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
             shape = RoundedCornerShape(12.dp),
 
         ) {
@@ -325,7 +326,7 @@ fun DropdownField(
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier
-                    .menuAnchor()
+                    .menuAnchor(type = MenuAnchorType.PrimaryNotEditable,true)
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
