@@ -67,6 +67,22 @@ object AppUtil {
         }
     }
 
+    fun openSingleAudioFilePicker(
+        context: Context,
+        pickFileLauncher: ActivityResultLauncher<Intent>,
+    ) {
+        if (isStoragePermissionGranted(context)) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "audio/*"
+                // By not adding EXTRA_ALLOW_MULTIPLE, it defaults to single file selection.
+            }
+            pickFileLauncher.launch(intent)
+        } else {
+            requestStoragePermissions(context)
+        }
+    }
+
     fun receiverFlags(): Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         ContextCompat.RECEIVER_EXPORTED
     } else {
