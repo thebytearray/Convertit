@@ -14,6 +14,7 @@ package com.nasahacker.convertit.util
 object AppConfig {
     const val GITHUB_ISSUES_URL = "https://github.com/TheByteArray/ConvertIt/issues"
     const val STORAGE_PERMISSION_CODE = 101
+    const val STORAGE_PERMISSION_CODE_IMAGE = 102 // New permission code for images
 
     val BITRATE_ARRAY =
         listOf(

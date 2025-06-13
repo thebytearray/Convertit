@@ -82,6 +82,46 @@ object AppUtil {
         }
     }
 
+    fun openImagePicker(context: Context, pickImageLauncher: ActivityResultLauncher<Intent>) {
+        if (isImagePermissionGranted(context)) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            }
+            pickImageLauncher.launch(intent)
+        } else {
+            if (context is Activity) {
+                requestImagePermissions(context)
+            } else {
+                Log.e("AppUtil", "Context is not an Activity. Cannot request image permissions.")
+                // Consider using a more specific string or re-using label_cannot_request_permission_without_activity
+                Toast.makeText(context, context.getString(R.string.label_cannot_request_permission_without_activity), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    fun openSingleAudioFilePicker(
+        context: Context,
+        pickFileLauncher: ActivityResultLauncher<Intent>,
+    ) {
+        if (isStoragePermissionGranted(context)) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "audio/*" // Specific to audio
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false) // Single file selection
+            }
+            pickFileLauncher.launch(intent)
+        } else {
+            if (context is Activity) {
+                requestStoragePermissions(context)
+            } else {
+                Log.e("AppUtil", "Context is not an Activity. Cannot request storage permissions for single audio picker.")
+                Toast.makeText(context, context.getString(R.string.label_cannot_request_permission_without_activity), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     fun receiverFlags(): Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         ContextCompat.RECEIVER_EXPORTED
     } else {
@@ -560,6 +600,40 @@ object AppUtil {
                     activity.getString(R.string.label_storage_permissions_are_already_granted),
                     Toast.LENGTH_SHORT,
                 ).show()
+        }
+    }
+
+    private fun isImagePermissionGranted(context: Context): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_MEDIA_IMAGES,
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_EXTERNAL_STORAGE, // READ_EXTERNAL_STORAGE is sufficient for picking images on older SDKs
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+
+    private fun requestImagePermissions(activity: Activity) {
+        if (!isImagePermissionGranted(activity)) {
+            val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+            } else {
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            ActivityCompat.requestPermissions(
+                activity,
+                permissions,
+                AppConfig.STORAGE_PERMISSION_CODE_IMAGE, // Use the new request code
+            )
+        } else {
+            Toast.makeText(
+                activity,
+                activity.getString(R.string.label_storage_permissions_are_already_granted), // Can reuse or create a specific one for images
+                Toast.LENGTH_SHORT,
+            ).show()
         }
     }
 }
