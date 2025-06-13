@@ -51,8 +51,7 @@ fun DialogConvertAlertDialog(
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             },
             title = {

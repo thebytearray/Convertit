@@ -85,7 +85,7 @@ fun RatingDialog(
                         .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // App Icon
+
                     Box(
                         modifier = Modifier
                             .size(64.dp)
@@ -103,7 +103,7 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Title
+
                     Text(
                         text = stringResource(R.string.label_enjoying_app),
                         style = MaterialTheme.typography.titleLarge.copy(
@@ -115,7 +115,6 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Subtitle
                     Text(
                         text = stringResource(R.string.label_feedback_help),
                         style = MaterialTheme.typography.bodyLarge,
@@ -125,7 +124,6 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Star Rating
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
@@ -150,7 +148,7 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Feedback Message
+
                     AnimatedVisibility(
                         visible = selectedRating > 0,
                         enter = fadeIn() + expandVertically(),
@@ -173,7 +171,7 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Don't show again checkbox
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -197,7 +195,6 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Action Buttons
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
