@@ -140,7 +140,7 @@ Whether it's bug fixes, new features, or improvements, we appreciate your contri
 ---
 ## Contributors
 
-![Contributors](https://contributors-img.web.app/image?repo=CodeWithTamim/ConvertIt)
+![Contributors](https://contributors-img.web.app/image?repo=TheByteArray/ConvertIt)
 
 ---
 
