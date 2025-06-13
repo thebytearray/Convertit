@@ -46,6 +46,7 @@
     <string name="label_no_metadata_found">No metadata available</string>
     <string name="conversion_success">Conversion Successful</string>
     <string name="conversion_failed">Conversion Failed</string>
+    <string name="conversion_cancelled">Conversion Cancelled</string>
     <string name="conversion_status">Conversion Status</string>
     <string name="label_failed_to_copy_file_from_uri">Failed to copy file from source</string>
     <string name="label_delete_item">Delete Item</string>
@@ -99,5 +100,39 @@
     <string name="label_sample_audio">Sample Audio File</string>
     <string name="label_sample_size">100KB</string>
     <string name="label_no_files_found">No converted files found. \nTry converting some! 🙂</string>
+    
+    <!-- Metadata Editor Strings -->
+    <string name="label_edit_metadata">Edit Metadata</string>
+    <string name="label_cover_art">Cover Art</string>
+    <string name="label_no_cover_art">No Cover Art</string>
+    <string name="label_change">Change</string>
+    <string name="label_add">Add</string>
+    <string name="label_remove">Remove</string>
+    <string name="label_cover_art_will_be_updated">Cover art will be updated</string>
+    <string name="label_title">Title</string>
+    <string name="label_artist">Artist</string>
+    <string name="label_album">Album</string>
+    <string name="label_album_artist">Album Artist</string>
+    <string name="label_genre">Genre</string>
+    <string name="label_year">Year</string>
+    <string name="label_track_number">Track Number</string>
+    <string name="label_comment">Comment</string>
+    <string name="label_saving">Saving...</string>
+    <string name="label_save">Save</string>
+    <string name="label_metadata_saved_successfully">Metadata saved successfully</string>
+    <string name="label_failed_to_save_metadata">Failed to save metadata</string>
+    <string name="label_error_saving_metadata">Error saving metadata: %1$s</string>
+    <string name="label_failed_to_load_metadata">Failed to load metadata: %1$s</string>
+    <string name="label_failed_to_load_image">Failed to load image: %1$s</string>
+    <string name="label_please_select_image_only">Please select an image file only</string>
+    
+    <!-- Expandable FAB Strings -->
+    <string name="label_edit_metadata_action">Edit Metadata</string>
+    <string name="label_convert_audio_action">Convert Audio</string>
+    <string name="label_close">Close</string>
+    <string name="label_actions">Actions</string>
+    
+    <!-- Version String -->
+    <string name="label_version_text">Version %1$s</string>
 
 </resources>

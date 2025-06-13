@@ -31,24 +31,25 @@ class AppViewModel : ViewModel() {
     private val _uriList = MutableStateFlow<ArrayList<Uri>>(ArrayList())
     val uriList: StateFlow<ArrayList<Uri>> = _uriList
 
+    private val _metadataUri = MutableStateFlow<Uri?>(null)
+    val metadataUri: StateFlow<Uri?> = _metadataUri
+
     private val _conversionStatus = MutableStateFlow<Boolean?>(null)
     val conversionStatus: StateFlow<Boolean?> = _conversionStatus
 
-    private val conversionStatusReceiver =
-        object : BroadcastReceiver() {
-            override fun onReceive(
-                context: Context?,
-                intent: Intent?,
-            ) {
-                val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) == true
-                viewModelScope.launch {
-                    _conversionStatus.value = isSuccess
-                    if (isSuccess) {
-                        clearUriList()
-                    }
-                }
+    private val conversionStatusReceiver = object : BroadcastReceiver() {
+        override fun onReceive(
+            context: Context?,
+            intent: Intent?,
+        ) {
+            val isSuccess = intent?.getBooleanExtra(IS_SUCCESS, false) == true
+            viewModelScope.launch {
+                _conversionStatus.value = isSuccess
+                // Clear URI list regardless of success or failure
+                clearUriList()
             }
         }
+    }
 
     fun resetConversionStatus() {
         viewModelScope.launch {
@@ -58,6 +59,26 @@ class AppViewModel : ViewModel() {
 
     init {
         startListeningForBroadcasts()
+    }
+
+    /**
+     * Updates the Metadata URI  with new URIs from the given intent.
+     */
+    fun updateMetadataUri(intent: Intent?) {
+        viewModelScope.launch {
+            intent?.let {
+                _metadataUri.emit(it.data)
+            }
+        }
+    }
+
+    /**
+     * Clears or sets the Metadata URI directly.
+     */
+    fun setMetadataUri(uri: Uri?) {
+        viewModelScope.launch {
+            _metadataUri.emit(uri)
+        }
     }
 
     /**
