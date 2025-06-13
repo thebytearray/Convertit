@@ -41,7 +41,9 @@ import com.nasahacker.convertit.util.AppConfig.IS_SUCCESS
 import com.nasahacker.convertit.util.AppConfig.URI_LIST
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import com.arthenica.ffmpegkit.FFmpegKit
 
 class ConvertItService : Service() {
     companion object {
@@ -50,8 +52,22 @@ class ConvertItService : Service() {
     }
 
     private val notificationId = 1
+    private var conversionJob: Job? = null
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "Service destroyed")
+        
+        // Cancel ongoing conversion job
+        conversionJob?.cancel()
+        conversionJob = null
+        
+        // Cancel all FFmpeg sessions
+        FFmpegKit.cancel()
+        Log.i(TAG, "Cancelled all FFmpeg sessions in onDestroy")
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -70,7 +86,16 @@ class ConvertItService : Service() {
 
         if (intent?.action == ACTION_STOP_SERVICE) {
             Log.i(TAG, "Stopping service as per user request. startId: $startId")
-            showCompletionNotification(false)
+            
+            // Cancel ongoing conversion job
+            conversionJob?.cancel()
+            conversionJob = null
+            
+            // Cancel all FFmpeg sessions
+            FFmpegKit.cancel()
+            Log.i(TAG, "Cancelled all FFmpeg sessions")
+            
+            showCompletionNotification(success = false, cancelled = true)
             broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false)
             stopForegroundService()
             return START_NOT_STICKY
@@ -105,7 +130,7 @@ class ConvertItService : Service() {
             return START_NOT_STICKY
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        conversionJob = CoroutineScope(Dispatchers.IO).launch {
             try {
                 Log.i(TAG, "Starting audio conversion for ${uriList.size} files. startId: $startId")
                 AppUtil.convertAudio(
@@ -210,22 +235,30 @@ class ConvertItService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
-        val progressText = if (isIndeterminate) {
-            getString(R.string.label_converting_audio)
+        val (title, contentText) = if (isIndeterminate) {
+            getString(R.string.converting_audio_files) to getString(R.string.label_converting_audio)
         } else {
-            "Conversion in progress: $progress%"
+            // Put percentage in title for better visibility on Android 15+
+            "${getString(R.string.converting_audio_files)} ($progress%)" to getString(R.string.label_conversion_progress, progress)
         }
 
         Log.d(
-            TAG, "Creating progress notification: $progressText (Indeterminate: $isIndeterminate)"
+            TAG, "Creating progress notification: $title - $contentText (Indeterminate: $isIndeterminate)"
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.converting_audio_files))
-            .setContentText(progressText).setSmallIcon(R.mipmap.ic_launcher_foreground)
-            .setProgress(100, progress, isIndeterminate).setAutoCancel(false).setOngoing(true)
-            .setDefaults(0).setOnlyAlertOnce(true)
-            .addAction(R.drawable.baseline_stop_24, "Stop", stopPendingIntent).build()
+            .setContentTitle(title)
+            .setContentText(contentText)
+            .setSmallIcon(R.mipmap.ic_launcher_foreground)
+            .setProgress(100, progress, isIndeterminate)
+            .setAutoCancel(false)
+            .setOngoing(true)
+            .setDefaults(0)
+            .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+            .addAction(R.drawable.baseline_stop_24, getString(R.string.label_stop), stopPendingIntent)
+            .build()
     }
 
     private fun updateNotification(progress: Int) {
@@ -244,13 +277,13 @@ class ConvertItService : Service() {
         Log.v(TAG, "Updated notification: Progress $progress%")
     }
 
-    private fun showCompletionNotification(success: Boolean) {
+    private fun showCompletionNotification(success: Boolean, cancelled: Boolean = false) {
         stopForegroundService()
 
-        val notificationText = if (success) {
-            getString(R.string.conversion_success)
-        } else {
-            getString(R.string.conversion_failed)
+        val notificationText = when {
+            cancelled -> getString(R.string.conversion_cancelled)
+            success -> getString(R.string.conversion_success)
+            else -> getString(R.string.conversion_failed)
         }
 
         Log.i(TAG, "Showing completion notification: $notificationText")

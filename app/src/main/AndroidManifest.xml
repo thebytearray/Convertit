@@ -7,7 +7,10 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-sdk tools:overrideLibrary="com.arthenica.ffmpegkit" android:minSdkVersion="21" />
+    <uses-sdk
+        android:minSdkVersion="21"
+        tools:overrideLibrary="com.kyant.taglib,com.arthenica.ffmpegkit" />
+
 
     <application
         android:name=".App"

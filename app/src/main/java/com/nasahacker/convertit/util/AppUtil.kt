@@ -37,6 +37,13 @@ import java.io.FileOutputStream
 import kotlin.math.log10
 import kotlin.math.pow
 import androidx.core.net.toUri
+import android.graphics.Bitmap
+import com.kyant.taglib.Picture
+import com.kyant.taglib.TagLib
+import com.nasahacker.convertit.dto.Metadata
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 
 /**
  * @author Tamim Hossain
@@ -60,6 +67,23 @@ object AppUtil {
                 type = "audio/*, video/* ,*/*"
                 putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*", "video/*", "*/*"))
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }
+            pickFileLauncher.launch(intent)
+        } else {
+            requestStoragePermissions(context)
+        }
+    }
+
+
+    fun openMetadataEditorFilePicker(
+        context: Context,
+        pickFileLauncher: ActivityResultLauncher<Intent>,
+    ) {
+        if (isStoragePermissionGranted(context)) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "audio/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*"))
             }
             pickFileLauncher.launch(intent)
         } else {
@@ -422,6 +446,82 @@ object AppUtil {
                     context.getString(R.string.label_storage_permissions_are_already_granted),
                     Toast.LENGTH_SHORT,
                 ).show()
+        }
+    }
+
+    /**
+     * Loads metadata from an audio file using TagLib
+     */
+    suspend fun loadMetadata(context: Context, audioUri: Uri): Metadata {
+        return withContext(Dispatchers.IO) {
+            try {
+                val parcelFileDescriptor = context.contentResolver.openFileDescriptor(audioUri, "rw")
+                    ?: return@withContext Metadata()
+                
+                parcelFileDescriptor.use { fd ->
+                    val taglibMetadata = TagLib.getMetadata(fd.dup().detachFd(), readPictures = true)
+                        ?: return@withContext Metadata()
+                    
+                    Metadata.fromPropertyMap(taglibMetadata.propertyMap, taglibMetadata.pictures.toList())
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Metadata()
+            }
+        }
+    }
+
+    /**
+     * Saves metadata to an audio file using TagLib
+     */
+    suspend fun saveMetadata(context: Context, audioUri: Uri, metadata: Metadata): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val parcelFileDescriptor = context.contentResolver.openFileDescriptor(audioUri, "rw")
+                    ?: return@withContext false
+                
+                parcelFileDescriptor.use { fd ->
+                    val propertyMap = HashMap(metadata.toPropertyMap())
+                    TagLib.savePropertyMap(fd.dup().detachFd(), propertyMap)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+        }
+    }
+
+    /**
+     * Saves cover art to an audio file using TagLib
+     */
+    suspend fun saveCoverArt(context: Context, audioUri: Uri, bitmap: Bitmap?): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val parcelFileDescriptor = context.contentResolver.openFileDescriptor(audioUri, "rw")
+                    ?: return@withContext false
+                
+                parcelFileDescriptor.use { fd ->
+                    if (bitmap != null) {
+                        val byteArrayOutputStream = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream)
+                        val imageData = byteArrayOutputStream.toByteArray()
+                        
+                        val picture = Picture(
+                            data = imageData,
+                            description = "Front Cover",
+                            pictureType = "Front Cover",
+                            mimeType = "image/jpeg"
+                        )
+                        
+                        TagLib.savePictures(fd.dup().detachFd(), arrayOf(picture))
+                    } else {
+                        TagLib.savePictures(fd.dup().detachFd(), arrayOf())
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
         }
     }
 }
