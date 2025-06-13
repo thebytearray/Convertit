@@ -13,8 +13,10 @@ import java.io.File
  * ConvertIt offers a seamless conversion experience tailored to your needs.
  */
 
+import android.net.Uri
+
 data class AudioFile(
     val name: String,
     val size: String,
-    val file: File,
+    val uri: Uri,
 )

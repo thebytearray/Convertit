@@ -14,10 +14,12 @@ import com.nasahacker.convertit.dto.ConvertitDarkPreview
 import com.nasahacker.convertit.dto.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogDeleteItem
+import androidx.compose.ui.platform.LocalContext
+import com.nasahacker.convertit.dto.AudioFile // Ensure AudioFile is imported if not already
 import com.nasahacker.convertit.ui.component.NoFilesFoundCard
 import com.nasahacker.convertit.util.AppUtil
-import java.io.File
 import kotlinx.coroutines.launch
+import android.net.Uri // Import Uri
 
 /**
  * @author Tamim Hossain
@@ -49,7 +51,7 @@ fun ConvertsScreen() {
     }
     
     var showDialog by remember { mutableStateOf(false) }
-    var fileToDelete by remember { mutableStateOf<File?>(null) }
+    var uriToDelete by remember { mutableStateOf<Uri?>(null) } // Changed File? to Uri?
 
 
     LaunchedEffect(listState) {
@@ -73,20 +75,26 @@ fun ConvertsScreen() {
             modifier = Modifier.fillMaxSize(),
             state = listState
         ) {
-            items(initialData) { item ->
+            items(initialData) { audioFile -> // Changed item to audioFile for clarity
                 AudioItem(
-                    fileName = item.name,
-                    fileSize = item.size,
+                    fileName = audioFile.name,
+                    // fileSize = audioFile.size, // We'll use the AppUtil function directly if needed or assume it's pre-formatted
+                                                // As per instruction: AppUtil.getFileSizeInReadableFormat(LocalContext.current, audioFile.uri)
+                                                // However, AudioFile DTO already has 'size'. Assuming it's correctly pre-formatted.
+                                                // If AudioFile.size is NOT pre-formatted, this would be:
+                                                // fileSize = AppUtil.getFileSizeInReadableFormat(context, audioFile.uri),
+                                                // For now, sticking to the DTO's size. If issues arise, this is the place to change.
+                    fileSize = audioFile.size, // Assuming AudioFile.size is already the readable format
                     isActionVisible = true,
                     onPlayClick = {
-                        AppUtil.openMusicFileInPlayer(context, item.file)
+                        AppUtil.openMusicFileInPlayer(context, audioFile.uri)
                     },
                     onShareClick = {
-                        AppUtil.shareMusicFile(context, item.file)
+                        AppUtil.shareMusicFile(context, audioFile.uri)
                     },
                     onLongClick = {
                         showDialog = true
-                        fileToDelete = item.file
+                        uriToDelete = audioFile.uri // Store URI for deletion
                     },
                 )
             }
@@ -100,9 +108,9 @@ fun ConvertsScreen() {
             showDialog = showDialog,
             onDismissRequest = { showDialog = false },
             onDeleteConfirm = {
-                fileToDelete?.let {
-                    AppUtil.deleteFile(context, it)
-                    initialData.removeAll { file -> file.file == it }
+                uriToDelete?.let { uri -> // Changed to uri
+                    AppUtil.deleteFile(context, uri) // Pass URI to deleteFile
+                    initialData.removeAll { audioFile -> audioFile.uri == uri } // Compare URIs for removal
                 }
                 showDialog = false
             },

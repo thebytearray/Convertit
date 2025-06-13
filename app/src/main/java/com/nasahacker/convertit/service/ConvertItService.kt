@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 class ConvertItService : Service() {
     companion object {
         private const val TAG = "ConvertItService"
-        var isForegroundServiceStarted = false
+        // var isForegroundServiceStarted = false // Removed
     }
 
     private val notificationId = 1
@@ -56,7 +56,7 @@ class ConvertItService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.i(TAG, "Service created - Process ID: ${android.os.Process.myPid()}")
-        startForegroundServiceWithNotification()
+        // startForegroundServiceWithNotification() // Removed call from here
     }
 
     override fun onStartCommand(
@@ -68,23 +68,45 @@ class ConvertItService : Service() {
             TAG, "onStartCommand: Received intent with action: ${intent?.action}, startId: $startId"
         )
 
-        if (intent?.action == ACTION_STOP_SERVICE) {
+        if (intent == null) {
+            Log.e(TAG, "Intent is null. Stopping service. startId: $startId")
+            // No notification to stop here usually, as it wouldn't have started.
+            stopSelf(startId) // Or stopSelf()
+            return START_NOT_STICKY
+        }
+
+        if (intent.action == ACTION_STOP_SERVICE) {
             Log.i(TAG, "Stopping service as per user request. startId: $startId")
-            showCompletionNotification(false)
-            broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false)
-            stopForegroundService()
+            // showCompletionNotification(false) // Not strictly necessary as it calls stopForegroundService
+            broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false) // Keep broadcast
+            stopForegroundService() // This will call stopSelf()
             return START_NOT_STICKY
         }
 
         val uriList: ArrayList<Uri>? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableArrayListExtra(URI_LIST, Uri::class.java)
+            intent.getParcelableArrayListExtra(URI_LIST, Uri::class.java)
         } else {
-            intent?.getParcelableArrayListExtra(URI_LIST)
+            intent.getParcelableArrayListExtra(URI_LIST)
         }
 
-        val bitrate = AudioBitrate.fromBitrate(intent?.getStringExtra(BITRATE))
-        val format = AudioFormat.fromExtension(intent?.getStringExtra(AUDIO_FORMAT))
-        val speed = intent?.getStringExtra(AUDIO_PLAYBACK_SPEED) ?: "1.0"
+        val bitrateString = intent.getStringExtra(BITRATE)
+        val formatString = intent.getStringExtra(AUDIO_FORMAT)
+        val speed = intent.getStringExtra(AUDIO_PLAYBACK_SPEED) ?: "1.0"
+
+        if (uriList.isNullOrEmpty() || bitrateString.isNullOrEmpty() || formatString.isNullOrEmpty()) {
+            Log.e(TAG, "Invalid intent parameters. URI list empty: ${uriList.isNullOrEmpty()}, Bitrate: $bitrateString, Format: $formatString. startId: $startId")
+            showCompletionNotification(false) // Generic failure notification
+            broadcastConversionResult(Intent().apply { action = CONVERT_BROADCAST_ACTION }, false)
+            stopForegroundService() // This will call stopSelf()
+            return START_NOT_STICKY
+        }
+
+        // It's now safe to use bitrateString and formatString
+        val bitrate = AudioBitrate.fromBitrate(bitrateString)
+        val format = AudioFormat.fromExtension(formatString)
+        // TODO: Consider wrapping fromBitrate/fromExtension in try-catch if they can throw exceptions
+
+        this.uriListSize = uriList.size // Store for updateNotification logic
 
         Log.d(
             TAG, """
@@ -104,6 +126,9 @@ class ConvertItService : Service() {
             stopForegroundService()
             return START_NOT_STICKY
         }
+
+        // Call startForegroundServiceWithNotification before launching the coroutine
+        startForegroundServiceWithNotification(0, uriList.size <= 1) // Indeterminate if 1 file, determinate if >1 initially (or always true)
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -160,40 +185,41 @@ class ConvertItService : Service() {
         Log.d(TAG, "Broadcast conversion result: $isSuccess")
     }
 
-    private fun startForegroundServiceWithNotification() {
-        val notification = createProgressNotification(0, true)
-        if (!isForegroundServiceStarted) {
-            ServiceCompat.startForeground(
-                /* service = */ this,
-                /* id = */ notificationId,
-                /* notification = */ notification,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE
-                } else {
-                    0
-                },
-            )
-            isForegroundServiceStarted = true
-            Log.i(TAG, "Started foreground service with notification ID: $notificationId")
-        } else {
-            Log.w(TAG, "Foreground service already started. Skipping start.")
-        }
+    // Modified to accept parameters and always attempt to start foreground
+    private fun startForegroundServiceWithNotification(progress: Int, isIndeterminate: Boolean) {
+        val notification = createProgressNotification(progress, isIndeterminate)
+        // if (!isForegroundServiceStarted) { // Removed check
+        ServiceCompat.startForeground(
+            /* service = */ this,
+            /* id = */ notificationId,
+            /* notification = */ notification,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE
+            } else {
+                0
+            },
+        )
+        // isForegroundServiceStarted = true // Removed
+        Log.i(TAG, "Called ServiceCompat.startForeground. Progress: $progress, Indeterminate: $isIndeterminate")
+        // } else {
+        //    Log.w(TAG, "Foreground service already started. Skipping start.")
+        // }
     }
 
     private fun stopForegroundService() {
-        if (!isForegroundServiceStarted) {
-            Log.w(TAG, "Attempted to stop foreground service when it wasn't started")
-            return
-        }
+        // if (!isForegroundServiceStarted) { // Removed check
+        //    Log.w(TAG, "Attempted to stop foreground service when it wasn't started")
+        //    return
+        // }
 
-        isForegroundServiceStarted = false
+        // isForegroundServiceStarted = false // Removed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             stopForeground(STOP_FOREGROUND_REMOVE)
         } else {
             stopForeground(true)
         }
-        stopSelf()
-        Log.i(TAG, "Foreground service stopped and removed")
+        stopSelf() // Call stopSelf to terminate the service
+        Log.i(TAG, "Foreground service stopped and self-stopped.")
     }
 
     private fun createProgressNotification(
@@ -238,14 +264,18 @@ class ConvertItService : Service() {
             )
             return
         }
-
-        val notification = createProgressNotification(progress, false)
+        // Pass isIndeterminate based on whether progress is meaningful yet or if it's a single file operation
+        val notification = createProgressNotification(progress, progress == 0 && uriListSize <= 1)
         NotificationManagerCompat.from(this).notify(notificationId, notification)
         Log.v(TAG, "Updated notification: Progress $progress%")
     }
 
+    // Store uriList.size to help updateNotification decide isIndeterminate
+    private var uriListSize: Int = 0
+
+
     private fun showCompletionNotification(success: Boolean) {
-        stopForegroundService()
+        // stopForegroundService() // This is now called by the calling functions (onSuccess/onFailure in convertAudio's callbacks) or by onStartCommand for errors
 
         val notificationText = if (success) {
             getString(R.string.conversion_success)
@@ -267,9 +297,14 @@ class ConvertItService : Service() {
                 TAG,
                 "Notification permission not granted. Skipping completion notification for status: $success"
             )
-            return
+            // Unlike progress notification, completion notification is critical, but if no permission, can't show.
+            // The service should still stop itself via stopForegroundService() called by its callers.
+        } else {
+             NotificationManagerCompat.from(this).notify(notificationId + 1, notification) // Use different ID for completion
         }
-
-        NotificationManagerCompat.from(this).notify(notificationId, notification)
+        // Ensure service stops after completion notification is dealt with.
+        // This is typically called by the success/failure handlers of AppUtil.convertAudio
+        // or by onStartCommand if parameters are invalid.
+        // If called from ACTION_STOP_SERVICE, stopForegroundService is already handled.
     }
 }

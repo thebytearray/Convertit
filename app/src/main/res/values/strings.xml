@@ -20,6 +20,7 @@
     <string name="label_view_metadata">View Metadata</string>
     <string name="label_version">Version: %1$s</string>
     <string name="label_cancel">Cancel</string>
+    <string name="label_cannot_request_permission_without_activity">Cannot request permissions: Action requires an Activity.</string>
     <string name="label_successfully_converted">Conversion completed successfully</string>
     <string name="label_failed_to_convert">Conversion failed</string>
     <string name="label_conversion_started_with_bitrate_and_format_please_wait">Starting conversion with %1$s bitrate and %2$s format. Please wait.</string>
