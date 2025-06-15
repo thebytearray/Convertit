@@ -154,7 +154,7 @@ Developed with ❤️ by **Tamim**.
 ---
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=codewithtamim/convertit&type=Date)](https://www.star-history.com/#codewithtamim/convertit&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=codewithtamim/convertit&type=Date)](https://www.star-history.com/#TheByteArray/convertit&Date)
 ---
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTheByteArray%2FConvertit?ref=badge_large)
