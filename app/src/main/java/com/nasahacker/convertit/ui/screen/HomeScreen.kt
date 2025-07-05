@@ -80,7 +80,19 @@ fun HomeScreen(
     val folderPickLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                Toast.makeText(context, "Custom save location feature coming soon!", Toast.LENGTH_SHORT).show()
+                result.data?.data?.let { uri ->
+                    try {
+                        context.contentResolver.takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                        AppUtil.saveCustomSaveLocation(context, uri)
+                        val newLocation = AppUtil.getCurrentSaveLocationPath(context)
+                        Toast.makeText(context, "Save location: $newLocation", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Failed to set custom location", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
@@ -148,7 +160,9 @@ fun HomeScreen(
                 }
             },
             onCustomSaveLocationClick = {
-                Toast.makeText(context, "Custom save location feature coming soon!", Toast.LENGTH_SHORT).show()
+                val currentLocation = AppUtil.getCurrentSaveLocationPath(context)
+                Toast.makeText(context, "Current: $currentLocation", Toast.LENGTH_LONG).show()
+                AppUtil.openFolderPicker(context, folderPickLauncher)
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)

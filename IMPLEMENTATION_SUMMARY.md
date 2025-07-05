@@ -66,12 +66,13 @@ This document summarizes the implementation of three key features requested for 
 - Completion notifications show final status
 - Stop button available during conversion
 
-### 3. Custom Save Location 🚧 (Infrastructure Ready)
-- New "Custom Save Location" option in floating action button
-- Shows "coming soon" message when clicked
-- All infrastructure code is in place for future implementation
-- Currently uses default Music/ConvertIt location
-- Ready for future enhancement with full custom folder support
+### 3. Custom Save Location ✅
+- New "Save Location" option in floating action button
+- Users can select any accessible folder on their device
+- Shows current save location when clicked
+- Automatically handles URI permissions for selected folders
+- Falls back to default Music/ConvertIt if custom location becomes unavailable
+- Converted files automatically saved to chosen custom location
 
 ## Technical Implementation Details
 
@@ -80,11 +81,12 @@ This document summarizes the implementation of three key features requested for 
 - `openVideoFilePicker()`: New function accepting only `video/*` MIME types
 - Both maintain multiple file selection capability
 
-### Custom Save Location Storage (Infrastructure)
-- SharedPreferences functions ready for storing custom folder URI
-- Folder picker functions implemented and ready
-- Currently simplified to show "coming soon" message
-- Can be easily activated by uncommenting the full implementation
+### Custom Save Location Storage
+- Uses SharedPreferences to store custom folder URI
+- Automatically handles URI permissions with `takePersistableUriPermission()`
+- Smart path conversion from document tree URIs to file system paths
+- Graceful fallback to default location if custom location becomes unavailable
+- Write permission checking to ensure files can be saved
 
 ### Progress Notifications
 - Leverages existing FFmpeg progress reporting
@@ -95,13 +97,13 @@ This document summarizes the implementation of three key features requested for 
 
 1. **Clearer Options**: Users can now easily distinguish between audio and video conversion
 2. **Progress Visibility**: Real-time progress feedback during conversion
-3. **Future Storage Flexibility**: Infrastructure ready for custom save locations
-4. **Clear Feature Roadmap**: Custom save location shows as "coming soon"
+3. **Storage Flexibility**: Users can choose any folder for saving converted files
+4. **Location Awareness**: Shows current save location and confirms changes
 
 ## Code Quality
 - No unnecessary code comments added as requested
 - Simple, straightforward implementation without over-engineering
 - Maintains existing code patterns and architecture
 - Proper error handling and fallback mechanisms
-- Fixed compilation issues by simplifying custom save location logic
-- All core features (separate video/audio options and progress notifications) fully working
+- Fixed compilation issues and implemented working custom save location
+- All three requested features now fully functional

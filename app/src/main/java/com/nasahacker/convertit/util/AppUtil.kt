@@ -339,8 +339,58 @@ object AppUtil {
         sharedPrefs.edit().remove(PREF_CUSTOM_SAVE_LOCATION).apply()
     }
 
+    fun getCurrentSaveLocationPath(context: Context): String {
+        val customSaveUri = getCustomSaveLocation(context)
+        return if (customSaveUri != null) {
+            try {
+                val customPath = customSaveUri.path
+                if (customPath != null && customPath.contains("/tree/primary:")) {
+                    customPath.replace("/tree/primary:", "/storage/emulated/0/")
+                } else {
+                    "Music/ConvertIt (default)"
+                }
+            } catch (e: Exception) {
+                "Music/ConvertIt (default)"
+            }
+        } else {
+            "Music/ConvertIt (default)"
+        }
+    }
+
     fun getOutputDirectory(context: Context): File {
-        return getDefaultOutputDirectory()
+        val customSaveUri = getCustomSaveLocation(context)
+        return if (customSaveUri != null) {
+            try {
+                val customPath = customSaveUri.path
+                if (customPath != null && customPath.contains("/tree/primary:")) {
+                    val actualPath = customPath.replace("/tree/primary:", "/storage/emulated/0/")
+                    val customDir = File(actualPath)
+                    if (customDir.exists() || customDir.mkdirs()) {
+                        if (customDir.canWrite()) {
+                            customDir
+                        } else {
+                            getDefaultOutputDirectory()
+                        }
+                    } else {
+                        getDefaultOutputDirectory()
+                    }
+                } else if (customPath != null && customPath.contains("/tree/")) {
+                    val actualPath = customPath.replace("/tree/", "/storage/").replace(":", "/")
+                    val customDir = File(actualPath)
+                    if ((customDir.exists() || customDir.mkdirs()) && customDir.canWrite()) {
+                        customDir
+                    } else {
+                        getDefaultOutputDirectory()
+                    }
+                } else {
+                    getDefaultOutputDirectory()
+                }
+            } catch (e: Exception) {
+                getDefaultOutputDirectory()
+            }
+        } else {
+            getDefaultOutputDirectory()
+        }
     }
 
     private fun getDefaultOutputDirectory(): File {
