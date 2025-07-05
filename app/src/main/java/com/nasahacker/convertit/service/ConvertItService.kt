@@ -60,11 +60,9 @@ class ConvertItService : Service() {
         super.onDestroy()
         Log.i(TAG, "Service destroyed")
         
-        // Cancel ongoing conversion job
         conversionJob?.cancel()
         conversionJob = null
         
-        // Cancel all FFmpeg sessions
         FFmpegKit.cancel()
         Log.i(TAG, "Cancelled all FFmpeg sessions in onDestroy")
     }
@@ -87,11 +85,9 @@ class ConvertItService : Service() {
         if (intent?.action == ACTION_STOP_SERVICE) {
             Log.i(TAG, "Stopping service as per user request. startId: $startId")
             
-            // Cancel ongoing conversion job
             conversionJob?.cancel()
             conversionJob = null
             
-            // Cancel all FFmpeg sessions
             FFmpegKit.cancel()
             Log.i(TAG, "Cancelled all FFmpeg sessions")
             

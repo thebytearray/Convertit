@@ -129,6 +129,8 @@
     <!-- Expandable FAB Strings -->
     <string name="label_edit_metadata_action">Edit Metadata</string>
     <string name="label_convert_audio_action">Convert Audio</string>
+    <string name="label_convert_video_action">Convert Video</string>
+    <string name="label_custom_save_location_action">Save Location</string>
     <string name="label_close">Close</string>
     <string name="label_actions">Actions</string>
     

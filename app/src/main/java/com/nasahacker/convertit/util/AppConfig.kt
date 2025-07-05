@@ -66,4 +66,5 @@ object AppConfig {
     const val TELEGRAM_CHANNEL = "https://t.me/thebytearray"
     const val APP_PREF = "app_prefs"
     const val PREF_DONT_SHOW_AGAIN = "pref_dont_show_again"
+    const val PREF_CUSTOM_SAVE_LOCATION = "pref_custom_save_location"
 }

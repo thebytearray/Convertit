@@ -1,6 +1,7 @@
 package com.nasahacker.convertit.ui.screen
 
 import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -68,6 +69,32 @@ fun HomeScreen(
             }
         }
 
+    val videoPickFileLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.updateUriList(result.data)
+                showDialog = true
+            }
+        }
+
+    val folderPickLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    try {
+                        context.contentResolver.takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                        AppUtil.saveCustomSaveLocation(context, uri)
+                        val newLocation = AppUtil.getCurrentSaveLocationPath(context)
+                        Toast.makeText(context, "Save location: $newLocation", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Failed to set custom location", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
 
     val metadataPickFileLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -123,6 +150,20 @@ fun HomeScreen(
                     AppUtil.openFilePicker(context, pickFileLauncher)
                 }
             },
+            onConvertVideoClick = {
+                if (ConvertItService.isForegroundServiceStarted) {
+                    Toast.makeText(
+                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    AppUtil.openVideoFilePicker(context, videoPickFileLauncher)
+                }
+            },
+            onCustomSaveLocationClick = {
+                val currentLocation = AppUtil.getCurrentSaveLocationPath(context)
+                Toast.makeText(context, "Current: $currentLocation", Toast.LENGTH_LONG).show()
+                AppUtil.openFolderPicker(context, folderPickLauncher)
+            },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(26.dp)
@@ -146,10 +187,9 @@ fun HomeScreen(
         audioUri = metadataUri,
         onDismissRequest = { 
             showMetadataDialog = false
-            viewModel.setMetadataUri(null) // Clear the URI
+            viewModel.setMetadataUri(null)
         },
         onMetadataSaved = {
-            // Optionally refresh or update UI after metadata is saved
         }
     )
 }
