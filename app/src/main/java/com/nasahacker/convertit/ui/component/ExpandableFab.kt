@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.VideoLibrary
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -35,6 +37,8 @@ import com.nasahacker.convertit.R
 fun ExpandableFab(
     onEditMetadataClick: () -> Unit,
     onConvertAudioClick: () -> Unit,
+    onConvertVideoClick: () -> Unit,
+    onCustomSaveLocationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -68,6 +72,26 @@ fun ExpandableFab(
                 label = stringResource(R.string.label_edit_metadata_action),
                 onClick = {
                     onEditMetadataClick()
+                    isExpanded = false
+                },
+                scale = itemScale
+            )
+
+            ExpandableFabItem(
+                icon = Icons.Filled.Folder,
+                label = stringResource(R.string.label_custom_save_location_action),
+                onClick = {
+                    onCustomSaveLocationClick()
+                    isExpanded = false
+                },
+                scale = itemScale
+            )
+
+            ExpandableFabItem(
+                icon = Icons.Filled.VideoLibrary,
+                label = stringResource(R.string.label_convert_video_action),
+                onClick = {
+                    onConvertVideoClick()
                     isExpanded = false
                 },
                 scale = itemScale

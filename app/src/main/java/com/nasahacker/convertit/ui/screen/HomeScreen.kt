@@ -1,6 +1,7 @@
 package com.nasahacker.convertit.ui.screen
 
 import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -68,6 +69,27 @@ fun HomeScreen(
             }
         }
 
+    val videoPickFileLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.updateUriList(result.data)
+                showDialog = true
+            }
+        }
+
+    val folderPickLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    context.contentResolver.takePersistableUriPermission(
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    )
+                    AppUtil.saveCustomSaveLocation(context, uri)
+                    Toast.makeText(context, "Custom save location set", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     val metadataPickFileLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -122,6 +144,18 @@ fun HomeScreen(
                 } else {
                     AppUtil.openFilePicker(context, pickFileLauncher)
                 }
+            },
+            onConvertVideoClick = {
+                if (ConvertItService.isForegroundServiceStarted) {
+                    Toast.makeText(
+                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    AppUtil.openVideoFilePicker(context, videoPickFileLauncher)
+                }
+            },
+            onCustomSaveLocationClick = {
+                AppUtil.openFolderPicker(context, folderPickLauncher)
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)

@@ -32,11 +32,14 @@ import com.nasahacker.convertit.util.AppConfig.FOLDER_DIR
 import com.nasahacker.convertit.util.AppConfig.FORMAT_ARRAY
 import com.nasahacker.convertit.util.AppConfig.STORAGE_PERMISSION_CODE
 import com.nasahacker.convertit.util.AppConfig.URI_LIST
+import com.nasahacker.convertit.util.AppConfig.APP_PREF
+import com.nasahacker.convertit.util.AppConfig.PREF_CUSTOM_SAVE_LOCATION
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.log10
 import kotlin.math.pow
 import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
 import android.graphics.Bitmap
 import com.kyant.taglib.Picture
 import com.kyant.taglib.TagLib
@@ -64,11 +67,40 @@ object AppUtil {
         if (isStoragePermissionGranted(context)) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
-                type = "audio/*, video/* ,*/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*", "video/*", "*/*"))
+                type = "audio/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*"))
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
             pickFileLauncher.launch(intent)
+        } else {
+            requestStoragePermissions(context)
+        }
+    }
+
+    fun openVideoFilePicker(
+        context: Context,
+        pickFileLauncher: ActivityResultLauncher<Intent>,
+    ) {
+        if (isStoragePermissionGranted(context)) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "video/*"
+                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("video/*"))
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }
+            pickFileLauncher.launch(intent)
+        } else {
+            requestStoragePermissions(context)
+        }
+    }
+
+    fun openFolderPicker(
+        context: Context,
+        pickFolderLauncher: ActivityResultLauncher<Intent>,
+    ) {
+        if (isStoragePermissionGranted(context)) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+            pickFolderLauncher.launch(intent)
         } else {
             requestStoragePermissions(context)
         }
@@ -227,10 +259,7 @@ object AppUtil {
     }
 
     fun getAudioFilesFromConvertedFolder(context: Context): List<AudioFile> {
-        val convertedDir = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-            FOLDER_DIR,
-        )
+        val convertedDir = getOutputDirectory(context)
 
         return convertedDir.takeIf { it.exists() && it.isDirectory }?.listFiles()?.filter { file ->
                 FORMAT_ARRAY.any { file.extension.equals(it.trimStart('.'), ignoreCase = true) }
@@ -294,6 +323,59 @@ object AppUtil {
         Toast.makeText(context, resultMessage, Toast.LENGTH_SHORT).show()
     }
 
+    fun saveCustomSaveLocation(context: Context, uri: Uri) {
+        val sharedPrefs = context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
+        sharedPrefs.edit().putString(PREF_CUSTOM_SAVE_LOCATION, uri.toString()).apply()
+    }
+
+    fun getCustomSaveLocation(context: Context): Uri? {
+        val sharedPrefs = context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
+        val uriString = sharedPrefs.getString(PREF_CUSTOM_SAVE_LOCATION, null)
+        return uriString?.let { Uri.parse(it) }
+    }
+
+    fun clearCustomSaveLocation(context: Context) {
+        val sharedPrefs = context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
+        sharedPrefs.edit().remove(PREF_CUSTOM_SAVE_LOCATION).apply()
+    }
+
+    fun getOutputDirectory(context: Context): File {
+        val customSaveUri = getCustomSaveLocation(context)
+        return if (customSaveUri != null) {
+            try {
+                val documentFile = DocumentFile.fromTreeUri(context, customSaveUri)
+                if (documentFile != null && documentFile.canWrite()) {
+                    val customPath = documentFile.uri.path
+                    if (customPath != null) {
+                        val actualPath = customPath.replace("/tree/primary:", "/storage/emulated/0/")
+                        File(actualPath).apply {
+                            if (!exists()) mkdirs()
+                        }
+                    } else {
+                        getDefaultOutputDirectory()
+                    }
+                } else {
+                    getDefaultOutputDirectory()
+                }
+            } catch (e: Exception) {
+                getDefaultOutputDirectory()
+            }
+        } else {
+            getDefaultOutputDirectory()
+        }
+    }
+
+    private fun getDefaultOutputDirectory(): File {
+        return File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
+            FOLDER_DIR,
+        ).apply {
+            setReadable(true)
+            setWritable(true)
+            mkdirs()
+        }
+    }
+
     fun convertAudio(
         context: Context,
         playbackSpeed: String = "1.0",
@@ -304,14 +386,7 @@ object AppUtil {
         onFailure: (String) -> Unit,
         onProgress: (Int) -> Unit,
     ) {
-        val musicDir = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-            FOLDER_DIR,
-        ).apply {
-            setReadable(true)
-            setWritable(true)
-            mkdirs()
-        }
+        val musicDir = getOutputDirectory(context)
 
         val outputPaths = mutableListOf<String>()
         val totalFiles = uris.size
