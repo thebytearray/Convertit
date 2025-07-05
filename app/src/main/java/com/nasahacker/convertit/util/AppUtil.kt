@@ -47,6 +47,7 @@ import com.nasahacker.convertit.dto.Metadata
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import androidx.core.content.edit
 
 /**
  * @author Tamim Hossain
@@ -325,18 +326,18 @@ object AppUtil {
 
     fun saveCustomSaveLocation(context: Context, uri: Uri) {
         val sharedPrefs = context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
-        sharedPrefs.edit().putString(PREF_CUSTOM_SAVE_LOCATION, uri.toString()).apply()
+        sharedPrefs.edit { putString(PREF_CUSTOM_SAVE_LOCATION, uri.toString()) }
     }
 
     fun getCustomSaveLocation(context: Context): Uri? {
         val sharedPrefs = context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
         val uriString = sharedPrefs.getString(PREF_CUSTOM_SAVE_LOCATION, null)
-        return uriString?.let { Uri.parse(it) }
+        return uriString?.toUri()
     }
 
     fun clearCustomSaveLocation(context: Context) {
         val sharedPrefs = context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
-        sharedPrefs.edit().remove(PREF_CUSTOM_SAVE_LOCATION).apply()
+        sharedPrefs.edit { remove(PREF_CUSTOM_SAVE_LOCATION) }
     }
 
     fun getCurrentSaveLocationPath(context: Context): String {

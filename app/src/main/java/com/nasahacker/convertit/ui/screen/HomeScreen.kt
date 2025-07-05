@@ -187,10 +187,9 @@ fun HomeScreen(
         audioUri = metadataUri,
         onDismissRequest = { 
             showMetadataDialog = false
-            viewModel.setMetadataUri(null) // Clear the URI
+            viewModel.setMetadataUri(null)
         },
         onMetadataSaved = {
-            // Optionally refresh or update UI after metadata is saved
         }
     )
 }
