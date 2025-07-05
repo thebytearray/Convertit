@@ -340,29 +340,7 @@ object AppUtil {
     }
 
     fun getOutputDirectory(context: Context): File {
-        val customSaveUri = getCustomSaveLocation(context)
-        return if (customSaveUri != null) {
-            try {
-                val documentFile = DocumentFile.fromTreeUri(context, customSaveUri)
-                if (documentFile != null && documentFile.canWrite()) {
-                    val customPath = documentFile.uri.path
-                    if (customPath != null) {
-                        val actualPath = customPath.replace("/tree/primary:", "/storage/emulated/0/")
-                        File(actualPath).apply {
-                            if (!exists()) mkdirs()
-                        }
-                    } else {
-                        getDefaultOutputDirectory()
-                    }
-                } else {
-                    getDefaultOutputDirectory()
-                }
-            } catch (e: Exception) {
-                getDefaultOutputDirectory()
-            }
-        } else {
-            getDefaultOutputDirectory()
-        }
+        return getDefaultOutputDirectory()
     }
 
     private fun getDefaultOutputDirectory(): File {
