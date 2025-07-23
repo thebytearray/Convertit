@@ -1,0 +1,1 @@
+ConvertIt is an ad-free Android app for converting audio and video files to various formats like FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, and SPX. Built with Kotlin, Compose, and FFmpeg, it offers flexible bitrate options for high-quality conversions. Video-to-audio conversion is also supported. Contributions are welcome!

@@ -31,19 +31,20 @@ import com.nasahacker.convertit.R
 import com.nasahacker.convertit.dto.AudioBitrate
 import com.nasahacker.convertit.dto.AudioFormat
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.AppConfig.ACTION_STOP_SERVICE
-import com.nasahacker.convertit.util.AppConfig.AUDIO_FORMAT
-import com.nasahacker.convertit.util.AppConfig.AUDIO_PLAYBACK_SPEED
-import com.nasahacker.convertit.util.AppConfig.BITRATE
-import com.nasahacker.convertit.util.AppConfig.CHANNEL_ID
-import com.nasahacker.convertit.util.AppConfig.CONVERT_BROADCAST_ACTION
-import com.nasahacker.convertit.util.AppConfig.IS_SUCCESS
-import com.nasahacker.convertit.util.AppConfig.URI_LIST
+import com.nasahacker.convertit.AppConfig.ACTION_STOP_SERVICE
+import com.nasahacker.convertit.AppConfig.AUDIO_FORMAT
+import com.nasahacker.convertit.AppConfig.AUDIO_PLAYBACK_SPEED
+import com.nasahacker.convertit.AppConfig.BITRATE
+import com.nasahacker.convertit.AppConfig.CHANNEL_ID
+import com.nasahacker.convertit.AppConfig.CONVERT_BROADCAST_ACTION
+import com.nasahacker.convertit.AppConfig.IS_SUCCESS
+import com.nasahacker.convertit.AppConfig.URI_LIST
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import com.arthenica.ffmpegkit.FFmpegKit
+import com.arthenica.ffmpegkit.FFmpegKitConfig
 
 class ConvertItService : Service() {
     companion object {
@@ -234,8 +235,8 @@ class ConvertItService : Service() {
         val (title, contentText) = if (isIndeterminate) {
             getString(R.string.converting_audio_files) to getString(R.string.label_converting_audio)
         } else {
-            // Put percentage in title for better visibility on Android 15+
-            "${getString(R.string.converting_audio_files)} ($progress%)" to getString(R.string.label_conversion_progress, progress)
+            // Keep title clean, progress is shown in description and progress bar
+            getString(R.string.converting_audio_files) to getString(R.string.label_conversion_progress, progress)
         }
 
         Log.d(

@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nasahacker.convertit.App
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.AppConfig
-import com.nasahacker.convertit.util.AppConfig.IS_SUCCESS
+import com.nasahacker.convertit.AppConfig
+import com.nasahacker.convertit.AppConfig.IS_SUCCESS
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

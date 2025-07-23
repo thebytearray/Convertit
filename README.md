@@ -1,4 +1,4 @@
-# 🎵 ConvertIt - Audio Converter App
+# ConvertIt - Audio Converter App
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack_Compose-343434?style=for-the-badge&logo=jetpack-compose)
 ![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
@@ -9,19 +9,19 @@
 
 ---
 
-## 🚀 Features
+## Features
 
-- 🎧 **Audio & Video to Audio Format Conversion**: Effortlessly convert between **FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX**, and more.
-- 🎚️ **Bitrate Selection**: Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
-- 📱 **Ad-Free**: Enjoy a completely **ad-free** experience.
-- 🔧 **FFmpeg Integration**: Built-in FFmpeg ensures **reliable and high-quality** conversions.
-- 📐 **Modern Architecture**: Developed using **Kotlin** with **MVVM architecture** for better scalability and maintainability.
-- 🧭 **Smooth Navigation**: Implemented using **Android Navigation Component** for easy and smooth in-app navigation.
-- 🖥️ **User-Friendly UI**: Designed with simplicity and ease of use in mind, offering a clean and intuitive interface.
+- **Audio & Video to Audio Format Conversion**: Effortlessly convert between **FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX**, and more.
+- **Bitrate Selection**: Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
+- **Ad-Free**: Enjoy a completely **ad-free** experience.
+- **FFmpeg Integration**: Built-in FFmpeg ensures **reliable and high-quality** conversions.
+- **Modern Architecture**: Developed using **Kotlin** with **MVVM architecture** for better scalability and maintainability.
+- **Smooth Navigation**: Implemented using **Android Navigation Component** for easy and smooth in-app navigation.
+- **User-Friendly UI**: Designed with simplicity and ease of use in mind, offering a clean and intuitive interface.
 
 ---
 
-## 🖼️ Screenshots Of App
+## Screenshots
 
 <p align="left">
   <img src="images/image1.png" alt="Screenshot 1" width="200"/>
@@ -32,15 +32,21 @@
 
 ---
 
-## 📱 Get It on Play Store
+## Download
 
-Download **ConvertIt** directly from the Play Store:
+Download **ConvertIt** from multiple sources:
 
 <p align="left">
   <a href="https://play.google.com/store/apps/details?id=com.nasahacker.convertit" target="_blank">
     <img alt="Get it on Google Play" style="border-radius:10px" src="https://img.shields.io/badge/Get%20it%20on-Google%20Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white" width="200"/>
   </a>
+  <br/>
+  <a href="https://f-droid.org/packages/com.nasahacker.convertit/" target="_blank">
+    <img alt="Get it on F-Droid" style="border-radius:10px" src="https://img.shields.io/badge/Get%20it%20on-F--Droid-1976D2?style=for-the-badge&logo=f-droid&logoColor=white" width="200"/>
+  </a>
 </p>
+
+> **Note**: F-Droid builds may take some time to appear after a release as they build from source.
 
 ---
 
@@ -97,7 +103,7 @@ Every contribution, big or small, helps keep this project alive and ad-free. Tha
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - **Android**: Version **5.0 (Lollipop)** or later
 - **Kotlin**: Version **2.1.0** or later
@@ -105,7 +111,7 @@ Every contribution, big or small, helps keep this project alive and ad-free. Tha
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 Follow these steps to install and run the app locally:
 
@@ -123,7 +129,7 @@ Follow these steps to install and run the app locally:
 
 ---
 
-## 🤝 Contributions
+## Contributions
 
 Contributions are always welcome! Here's how you can contribute:
 
@@ -140,13 +146,13 @@ Whether it's bug fixes, new features, or improvements, we appreciate your contri
 
 ---
 
-## ⚖️ License
+## License
 
 This project is licensed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for more information.
 
 ---
 
-Developed with ❤️ by **Tamim**.
+Developed by **Tamim**.
 ---
 ## Star History
 

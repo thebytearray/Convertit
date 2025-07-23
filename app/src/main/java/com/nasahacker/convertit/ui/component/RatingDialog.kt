@@ -43,8 +43,8 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import com.nasahacker.convertit.App
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.util.AppConfig.APP_PREF
-import com.nasahacker.convertit.util.AppConfig.PREF_DONT_SHOW_AGAIN
+import com.nasahacker.convertit.AppConfig.APP_PREF
+import com.nasahacker.convertit.AppConfig.PREF_DONT_SHOW_AGAIN
 
 @Composable
 fun RatingDialog(
@@ -62,7 +62,7 @@ fun RatingDialog(
         mutableStateOf(sharedPreferences.getBoolean(PREF_DONT_SHOW_AGAIN, false))
     }
 
-    var selectedRating by remember { mutableStateOf(0) }
+    var selectedRating by remember { mutableIntStateOf(0) }
     val appPackageName = App.application.packageName
 
     if (showReviewDialog && !dontShowAgain) {

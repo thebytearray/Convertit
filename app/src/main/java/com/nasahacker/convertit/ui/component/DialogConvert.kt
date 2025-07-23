@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.nasahacker.convertit.R
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.AppConfig.BITRATE_ARRAY
-import com.nasahacker.convertit.util.AppConfig.FORMAT_ARRAY
-import com.nasahacker.convertit.util.AppConfig.FORMAT_BITRATE_MAP
+import com.nasahacker.convertit.AppConfig.BITRATE_ARRAY
+import com.nasahacker.convertit.AppConfig.FORMAT_ARRAY
+import com.nasahacker.convertit.AppConfig.FORMAT_BITRATE_MAP
 
 /**
  * @author Tamim Hossain

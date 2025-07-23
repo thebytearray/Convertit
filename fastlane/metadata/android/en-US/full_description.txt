@@ -1,0 +1,34 @@
+ConvertIt is a completely ad-free and open-source audio and video converter app designed for Android devices. Built with modern technologies including Kotlin, Jetpack Compose, and Material Design 3, it provides a clean and intuitive user experience.
+
+<b>Key Features:</b>
+
+• <b>Universal Format Support:</b> Convert between FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, and SPX formats
+• <b>Video to Audio:</b> Extract audio tracks from video files in various formats
+• <b>Flexible Bitrate Options:</b> Choose from 64k to 1024k bitrate for optimal quality vs file size balance
+• <b>Metadata Management:</b> Edit audio metadata including title, artist, album, and cover art
+• <b>Custom Save Location:</b> Choose where to save your converted files
+• <b>Batch Processing:</b> Convert multiple files simultaneously
+• <b>Progress Tracking:</b> Real-time conversion progress with notifications
+• <b>Material Design 3:</b> Modern, accessible interface following Google's design guidelines
+
+<b>Technical Details:</b>
+
+ConvertIt leverages FFmpeg for reliable and high-quality audio conversions. The app uses a foreground service to ensure conversions continue even when the app is in the background. All processing is done locally on your device - no internet connection required and no data is sent to external servers.
+
+<b>Privacy & Security:</b>
+
+• No ads or tracking
+• No internet permissions required for core functionality
+• All conversions happen locally on your device
+• Open source - you can review the code
+• No data collection or analytics
+
+<b>Requirements:</b>
+
+• Android 5.0 (API 21) or higher
+• Storage permissions for file access
+• Notification permissions for conversion progress updates
+
+The app is built with modern Android architecture principles including MVVM pattern, Kotlin Coroutines for asynchronous operations, and follows Android's recommended practices for performance and security.
+
+ConvertIt is perfect for musicians, audio enthusiasts, content creators, and anyone who needs reliable audio format conversion on their Android device. 

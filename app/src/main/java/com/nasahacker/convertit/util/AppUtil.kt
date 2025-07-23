@@ -25,15 +25,15 @@ import com.nasahacker.convertit.dto.AudioCodec
 import com.nasahacker.convertit.dto.AudioFile
 import com.nasahacker.convertit.dto.AudioFormat
 import com.nasahacker.convertit.service.ConvertItService
-import com.nasahacker.convertit.util.AppConfig.AUDIO_FORMAT
-import com.nasahacker.convertit.util.AppConfig.AUDIO_PLAYBACK_SPEED
-import com.nasahacker.convertit.util.AppConfig.BITRATE
-import com.nasahacker.convertit.util.AppConfig.FOLDER_DIR
-import com.nasahacker.convertit.util.AppConfig.FORMAT_ARRAY
-import com.nasahacker.convertit.util.AppConfig.STORAGE_PERMISSION_CODE
-import com.nasahacker.convertit.util.AppConfig.URI_LIST
-import com.nasahacker.convertit.util.AppConfig.APP_PREF
-import com.nasahacker.convertit.util.AppConfig.PREF_CUSTOM_SAVE_LOCATION
+import com.nasahacker.convertit.AppConfig.AUDIO_FORMAT
+import com.nasahacker.convertit.AppConfig.AUDIO_PLAYBACK_SPEED
+import com.nasahacker.convertit.AppConfig.BITRATE
+import com.nasahacker.convertit.AppConfig.FOLDER_DIR
+import com.nasahacker.convertit.AppConfig.FORMAT_ARRAY
+import com.nasahacker.convertit.AppConfig.STORAGE_PERMISSION_CODE
+import com.nasahacker.convertit.AppConfig.URI_LIST
+import com.nasahacker.convertit.AppConfig.APP_PREF
+import com.nasahacker.convertit.AppConfig.PREF_CUSTOM_SAVE_LOCATION
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.log10
@@ -48,6 +48,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import androidx.core.content.edit
+import com.arthenica.ffmpegkit.FFmpegKitConfig
+import com.arthenica.ffmpegkit.Statistics
+import com.arthenica.ffmpegkit.StatisticsCallback
+import com.arthenica.ffmpegkit.FFprobeKit
+import com.arthenica.ffmpegkit.MediaInformation
 
 /**
  * @author Tamim Hossain
@@ -268,6 +273,7 @@ object AppUtil {
                 AudioFile(
                     name = file.name,
                     size = getFileSizeInReadableFormat(context, file),
+                    format = file.extension,
                     file = file,
                 )
             } ?: emptyList()
@@ -405,6 +411,26 @@ object AppUtil {
         }
     }
 
+    private fun getAudioDuration(filePath: String): Long {
+        return try {
+            val session = FFprobeKit.getMediaInformation(filePath)
+            val mediaInformation = session.mediaInformation
+            if (mediaInformation != null) {
+                val duration = mediaInformation.duration
+                if (duration != null) {
+                    (duration.toDouble() * 1000).toLong() // Convert to milliseconds
+                } else {
+                    0L
+                }
+            } else {
+                0L
+            }
+        } catch (e: Exception) {
+            Log.e("AppUtil", "Error getting audio duration: ${e.message}")
+            0L
+        }
+    }
+
     fun convertAudio(
         context: Context,
         playbackSpeed: String = "1.0",
@@ -423,6 +449,9 @@ object AppUtil {
         val maxConcurrentConversions = 2
         val conversionQueue = mutableListOf<Pair<Uri, Int>>()
 
+        // Initialize progress at 0%
+        onProgress(0)
+
         uris.forEachIndexed { index, uri ->
             conversionQueue.add(uri to index)
         }
@@ -439,12 +468,12 @@ object AppUtil {
             val inputFileName = getFileName(context.contentResolver, uri)
             val inputFileNameWithoutExtension = inputFileName.substringBeforeLast(".")
             
-            var outputFileName = "${inputFileNameWithoutExtension}_convertit${outputFormat.extension}"
+            var outputFileName = "${inputFileNameWithoutExtension}${outputFormat.extension}"
             var outputFilePath = File(musicDir, outputFileName).absolutePath
 
             var counter = 1
             while (File(outputFilePath).exists()) {
-                outputFileName = "${inputFileNameWithoutExtension}_convertit($counter)${outputFormat.extension}"
+                outputFileName = "${inputFileNameWithoutExtension}(${counter})${outputFormat.extension}"
                 outputFilePath = File(musicDir, outputFileName).absolutePath
                 counter++
             }
@@ -457,30 +486,44 @@ object AppUtil {
                         inputStream.copyTo(outputStream)
                     }
 
-                    val command = "-y -i \"${tempFile.absolutePath}\" -c:a ${
-                        AudioCodec.fromFormat(outputFormat).codec
-                    } -b:a ${bitrate.bitrate} -filter:a \"atempo=$playbackSpeed\" \"$outputFilePath\""
+                    val baseProgress = ((processedFiles.toFloat() / totalFiles) * 100).toInt()
+                    onProgress(baseProgress)
 
-                    FFmpegKit.executeAsync(command) { session ->
-                        tempFile.delete()
-                        
-                        if (ReturnCode.isSuccess(session.returnCode)) {
-                            outputPaths.add(outputFilePath)
-                            processedFiles++
+
+                    val mediaDuration = getAudioDuration(tempFile.absolutePath)
+
+                    FFmpegKit.executeWithArgumentsAsync(
+                        arrayOf("-y", "-i", tempFile.absolutePath, "-c:a", AudioCodec.fromFormat(outputFormat).codec, "-b:a", bitrate.bitrate, "-filter:a", "atempo=$playbackSpeed", outputFilePath),
+                        { session ->
+                            tempFile.delete()
                             
-                            val progress = ((processedFiles.toFloat() / totalFiles) * 100).toInt()
-                            onProgress(progress)
-                            processNextFile()
-                        } else {
-                            onFailure(
-                                context.getString(
-                                    R.string.label_conversion_failed_for_file_with_return_code,
-                                    inputFileName,
-                                    session.returnCode.toString(),
-                                ),
-                            )
+                            if (ReturnCode.isSuccess(session.returnCode)) {
+                                outputPaths.add(outputFilePath)
+                                processedFiles++
+
+                                val progress = ((processedFiles.toFloat() / totalFiles) * 100).toInt()
+                                onProgress(progress)
+                                processNextFile()
+                            } else {
+                                onFailure(
+                                    context.getString(
+                                        R.string.label_conversion_failed_for_file_with_return_code,
+                                        inputFileName,
+                                        session.returnCode.toString(),
+                                    ),
+                                )
+                            }
+                        },
+                        null, // log callback
+                        { statistics ->
+                            // Statistics callback for this specific session
+                            if (statistics.time > 0 && mediaDuration > 0) {
+                                val fileProgress = ((statistics.time.toFloat() / mediaDuration) * 100).toInt()
+                                val totalProgress = baseProgress + ((fileProgress * (100 / totalFiles)) / 100)
+                                onProgress(minOf(totalProgress, 99)) // Cap at 99% until actually complete
+                            }
                         }
-                    }
+                    )
                 } ?: throw Exception("Failed to open input stream")
             } catch (e: Exception) {
                 onFailure(

@@ -24,7 +24,8 @@ import com.nasahacker.convertit.ui.component.AboutAppContent
 import com.nasahacker.convertit.ui.component.CommunityIcon
 import com.nasahacker.convertit.ui.component.ContactItem
 import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.util.AppConfig
+import com.nasahacker.convertit.AppConfig
+import androidx.compose.foundation.combinedClickable
 
 /**
  * @author Tamim Hossain
@@ -65,15 +66,6 @@ fun AboutScreen() {
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = stringResource(R.string.label_about_title),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        textAlign = TextAlign.Center
-                    )
                     AboutAppContent(context)
                 }
             }
@@ -133,6 +125,7 @@ fun AboutScreen() {
                         modifier = Modifier.padding(bottom = 16.dp),
                         textAlign = TextAlign.Center
                     )
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
@@ -153,6 +146,69 @@ fun AboutScreen() {
                             onClick = { AppUtil.openLink(context, AppConfig.GITHUB_PROFILE) },
                         )
                     }
+                }
+            }
+
+            // Donate section
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            ) {
+                val context = LocalContext.current
+                val bitcoinAddress = "1LNehfD2Ayop7BH7Wv2wSBz88xQPn8qJjr"
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Filled.CurrencyBitcoin,
+                            contentDescription = "Donate Bitcoin",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Donate",
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Support ConvertIt! Donate to help us grow. Donators leaderboard coming soon.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = bitcoinAddress,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .combinedClickable(
+                                onClick = {},
+                                onLongClick = {
+                                    val clipboard = android.content.Context.CLIPBOARD_SERVICE
+                                    val clip = android.content.ClipData.newPlainText("Donation Address", bitcoinAddress)
+                                    (context.getSystemService(clipboard) as android.content.ClipboardManager).setPrimaryClip(clip)
+                                    android.widget.Toast.makeText(context, "Address copied!", android.widget.Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Leaderboard feature coming soon!",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 

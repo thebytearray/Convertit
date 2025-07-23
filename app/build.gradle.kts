@@ -7,14 +7,14 @@ plugins {
 android {
     val packageName = "com.nasahacker.convertit"
     namespace = packageName
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = packageName
         minSdk = 21
-        targetSdk = 35
-        versionCode = 31
-        versionName = "1.3.0-lts"
+        targetSdk = 36
+        versionCode = 32
+        versionName = "1.3.1-lts"
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
