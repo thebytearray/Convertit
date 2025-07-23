@@ -1,7 +1,7 @@
 
 # Contributing to ConvertIt
 
-Thank you for contributing to [ConvertIt](https://github.com/CodeWithTamim/Convertit)!
+Thank you for contributing to [ConvertIt](https://github.com/CodeWithTamim/Convertit)! This project is available on multiple platforms including Google Play Store and F-Droid.
 
 ## Getting Started
 
