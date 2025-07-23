@@ -88,9 +88,11 @@ fun HomeScreen(
                         )
                         AppUtil.saveCustomSaveLocation(context, uri)
                         val newLocation = AppUtil.getCurrentSaveLocationPath(context)
-                        Toast.makeText(context, "Save location: $newLocation", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Save location: $newLocation", Toast.LENGTH_LONG)
+                            .show()
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Failed to set custom location", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Failed to set custom location", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -133,38 +135,36 @@ fun HomeScreen(
                 AudioItem(
                     fileName = file?.name.orEmpty(),
                     fileSize = file?.let { AppUtil.getFileSizeInReadableFormat(context, it) }
-                                                        ?: stringResource(R.string.label_unknown))
+                        ?: stringResource(R.string.label_unknown),
+                    format = file!!.extension,
+                )
             }
         }
 
         ExpandableFab(
             onEditMetadataClick = {
-                AppUtil.openMetadataEditorFilePicker(context, metadataPickFileLauncher)
-            },
-            onConvertAudioClick = {
-                if (ConvertItService.isForegroundServiceStarted) {
-                    Toast.makeText(
-                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    AppUtil.openFilePicker(context, pickFileLauncher)
-                }
-            },
-            onConvertVideoClick = {
-                if (ConvertItService.isForegroundServiceStarted) {
-                    Toast.makeText(
-                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    AppUtil.openVideoFilePicker(context, videoPickFileLauncher)
-                }
-            },
-            onCustomSaveLocationClick = {
-                val currentLocation = AppUtil.getCurrentSaveLocationPath(context)
-                Toast.makeText(context, "Current: $currentLocation", Toast.LENGTH_LONG).show()
-                AppUtil.openFolderPicker(context, folderPickLauncher)
-            },
-            modifier = Modifier
+            AppUtil.openMetadataEditorFilePicker(context, metadataPickFileLauncher)
+        }, onConvertAudioClick = {
+            if (ConvertItService.isForegroundServiceStarted) {
+                Toast.makeText(
+                    context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                AppUtil.openFilePicker(context, pickFileLauncher)
+            }
+        }, onConvertVideoClick = {
+            if (ConvertItService.isForegroundServiceStarted) {
+                Toast.makeText(
+                    context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                AppUtil.openVideoFilePicker(context, videoPickFileLauncher)
+            }
+        }, onCustomSaveLocationClick = {
+            val currentLocation = AppUtil.getCurrentSaveLocationPath(context)
+            Toast.makeText(context, "Current: $currentLocation", Toast.LENGTH_LONG).show()
+            AppUtil.openFolderPicker(context, folderPickLauncher)
+        }, modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(26.dp)
         )
@@ -182,16 +182,10 @@ fun HomeScreen(
         uris = uriList
     )
 
-    DialogEditMetadata(
-        showDialog = showMetadataDialog,
-        audioUri = metadataUri,
-        onDismissRequest = { 
-            showMetadataDialog = false
-            viewModel.setMetadataUri(null)
-        },
-        onMetadataSaved = {
-        }
-    )
+    DialogEditMetadata(showDialog = showMetadataDialog, audioUri = metadataUri, onDismissRequest = {
+        showMetadataDialog = false
+        viewModel.setMetadataUri(null)
+    }, onMetadataSaved = {})
 }
 
 @ConvertitLightPreview

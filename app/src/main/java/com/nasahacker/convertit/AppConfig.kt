@@ -1,4 +1,4 @@
-package com.nasahacker.convertit.util
+package com.nasahacker.convertit
 
 /**
  * @author Tamim Hossain

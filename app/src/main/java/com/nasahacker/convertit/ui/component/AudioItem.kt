@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -36,21 +37,20 @@ fun AudioItem(
     modifier: Modifier = Modifier,
     fileName: String = "Sample Audio File",
     fileSize: String = "100KB",
+    format: String = "Mp3",
     isActionVisible: Boolean = false,
     onPlayClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
     Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
-                .padding(16.dp)
-                .combinedClickable(onClick = {
-                }, onLongClick = {
-                    onLongClick()
-                }),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+            .padding(16.dp)
+            .combinedClickable(onClick = {}, onLongClick = {
+                onLongClick()
+            }),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -64,10 +64,9 @@ fun AudioItem(
                 Image(
                     painter = painterResource(R.drawable.audio_ic),
                     contentDescription = stringResource(R.string.label_audio_icon),
-                    modifier =
-                        Modifier
-                            .size(50.dp)
-                            .padding(end = 8.dp),
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(end = 8.dp),
                 )
                 Column {
                     Text(
@@ -77,12 +76,44 @@ fun AudioItem(
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = fileSize,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.outline,
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Text(
+                                text = fileSize,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.outline,
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Text(
+                                text = format,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
                 }
+
             }
 
             AnimatedVisibility(visible = isActionVisible) {
@@ -93,18 +124,16 @@ fun AudioItem(
                     Image(
                         painter = painterResource(R.drawable.play_ic),
                         contentDescription = stringResource(R.string.label_play_icon),
-                        modifier =
-                            Modifier
-                                .size(40.dp)
-                                .clickable { onPlayClick() },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clickable { onPlayClick() },
                     )
                     Image(
                         painter = painterResource(R.drawable.share_ic),
                         contentDescription = stringResource(R.string.label_share_icon),
-                        modifier =
-                            Modifier
-                                .size(30.dp)
-                                .clickable { onShareClick() },
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clickable { onShareClick() },
                     )
                 }
             }

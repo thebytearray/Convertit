@@ -16,5 +16,6 @@ import java.io.File
 data class AudioFile(
     val name: String,
     val size: String,
+    val format : String,
     val file: File,
 )

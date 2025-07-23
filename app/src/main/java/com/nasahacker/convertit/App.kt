@@ -6,8 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
-import com.nasahacker.convertit.util.AppConfig.CHANNEL_ID
-import com.nasahacker.convertit.util.AppConfig.CHANNEL_NAME
+import com.nasahacker.convertit.AppConfig.CHANNEL_ID
+import com.nasahacker.convertit.AppConfig.CHANNEL_NAME
 
 /**
  * @author Tamim Hossain

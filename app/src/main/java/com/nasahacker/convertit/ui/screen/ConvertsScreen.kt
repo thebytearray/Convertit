@@ -77,6 +77,7 @@ fun ConvertsScreen() {
                 AudioItem(
                     fileName = item.name,
                     fileSize = item.size,
+                    format = item.format,
                     isActionVisible = true,
                     onPlayClick = {
                         AppUtil.openMusicFileInPlayer(context, item.file)
