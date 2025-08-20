@@ -1,5 +1,13 @@
 package com.nasahacker.convertit.ui.component
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Inventory2
+import androidx.compose.material.icons.filled.Store
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -9,18 +17,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.dto.BottomNavigation
+import com.nasahacker.convertit.domain.model.BottomNavigation
 
 /**
- * @author Tamim Hossain
- * @email tamimh.dev@gmail.com
- * @license Apache-2.0
+ * Convertit Android app
+ * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
  *
- * ConvertIt is a free and easy-to-use audio converter app.
- * It supports popular audio formats like MP3 and M4A.
- * With options for high-quality bitrates ranging from 128k to 320k,
- * ConvertIt offers a seamless conversion experience tailored to your needs.
+ * Created by Tamim Hossain.
+ * Copyright (c) 2025 The Byte Array LTD.
+ *
+ * This file is part of the Convertit Android app.
+ *
+ * The Convertit Android app is free software: you can redistribute it and/or
+ * modify it under the terms of the Apache License, Version 2.0 as published by
+ * the Apache Software Foundation.
+ *
+ * The Convertit Android app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the Apache License for more
+ * details.
+ *
+ * You should have received a copy of the Apache License
+ * along with the Convertit Android app. If not, see <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.
+ *
+ * @author Tamim Hossain
+ * @company The Byte Array LTD
+ * @year 2025
+ * @license Apache-2.0
  */
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -37,19 +62,19 @@ fun BottomNavigationBar(navController: NavController) {
         items.forEach { item ->
             NavigationBarItem(
                 icon = {
-                    val iconRes =
+                    val iconVector =
                         if (currentRoute == item.route) {
                             when (item) {
-                                BottomNavigation.Home -> R.drawable.home_filled
-                                BottomNavigation.Library -> R.drawable.storage_filled
+                                BottomNavigation.Home -> Icons.Filled.Home
+                                BottomNavigation.Library -> Icons.Filled.Inventory2
                             }
                         } else {
                             when (item) {
-                                BottomNavigation.Home -> R.drawable.home_outlined
-                                BottomNavigation.Library -> R.drawable.storage_outlined
+                                BottomNavigation.Home -> Icons.Outlined.Home
+                                BottomNavigation.Library -> Icons.Outlined.Inventory2
                             }
                         }
-                    Icon(painter = painterResource(id = iconRes), contentDescription = item.label)
+                    Icon(imageVector = iconVector, contentDescription = item.label)
                 },
                 label = { Text(item.label) },
                 selected = currentRoute == item.route,

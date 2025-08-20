@@ -39,33 +39,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.core.content.edit
 import androidx.core.net.toUri
 import com.nasahacker.convertit.App
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.AppConfig.APP_PREF
-import com.nasahacker.convertit.AppConfig.PREF_DONT_SHOW_AGAIN
 
 @Composable
 fun RatingDialog(
     showReviewDialog: Boolean,
+    dontShowAgainInitially: Boolean,
+    onSaveDontShowAgain: (Boolean) -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-    val sharedPreferences =
-        remember {
-            context.getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
-        }
 
-    var dontShowAgain by remember {
-        mutableStateOf(sharedPreferences.getBoolean(PREF_DONT_SHOW_AGAIN, false))
-    }
+
+
 
     var selectedRating by remember { mutableIntStateOf(0) }
     val appPackageName = App.application.packageName
+    var dontShowAgain by remember { mutableStateOf(dontShowAgainInitially) }
 
-    if (showReviewDialog && !dontShowAgain) {
+    if (showReviewDialog) {
         Dialog(onDismissRequest = onDismiss) {
             Card(
                 modifier = Modifier
@@ -180,7 +175,6 @@ fun RatingDialog(
                             checked = dontShowAgain,
                             onCheckedChange = {
                                 dontShowAgain = it
-                                sharedPreferences.edit { putBoolean(PREF_DONT_SHOW_AGAIN, it) }
                             },
                             colors = CheckboxDefaults.colors(
                                 checkedColor = MaterialTheme.colorScheme.primary
@@ -201,7 +195,7 @@ fun RatingDialog(
                     ) {
                         TextButton(
                             onClick = {
-                                sharedPreferences.edit { putBoolean(PREF_DONT_SHOW_AGAIN, dontShowAgain) }
+                                onSaveDontShowAgain(dontShowAgain)
                                 onDismiss()
                             },
                             modifier = Modifier.weight(1f)
@@ -222,7 +216,7 @@ fun RatingDialog(
                                     context.getString(R.string.label_google_play, appPackageName).toUri()
                                 )
                                 context.startActivity(intent)
-                                sharedPreferences.edit { putBoolean(PREF_DONT_SHOW_AGAIN, dontShowAgain) }
+                                onSaveDontShowAgain(dontShowAgain)
                                 onConfirm()
                             },
                             modifier = Modifier.weight(1f),

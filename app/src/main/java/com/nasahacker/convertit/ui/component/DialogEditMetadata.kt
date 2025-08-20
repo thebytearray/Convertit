@@ -1,8 +1,5 @@
 package com.nasahacker.convertit.ui.component
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
@@ -40,20 +37,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.dto.Metadata
-import com.nasahacker.convertit.util.AppUtil
+import com.nasahacker.convertit.domain.model.Metadata
 import kotlinx.coroutines.launch
-
 /**
- * @author Tamim Hossain
- * @email tamimh.dev@gmail.com
- * @license Apache-2.0
+ * Convertit Android app
+ * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
  *
- * ConvertIt is a free and easy-to-use audio converter app.
- * It supports popular audio formats like MP3 and M4A.
- * With options for high-quality bitrates ranging from 128k to 320k,
- * ConvertIt offers a seamless conversion experience tailored to your needs.
+ * Created by Tamim Hossain.
+ * Copyright (c) 2025 The Byte Array LTD.
+ *
+ * This file is part of the Convertit Android app.
+ *
+ * The Convertit Android app is free software: you can redistribute it and/or
+ * modify it under the terms of the Apache License, Version 2.0 as published by
+ * the Apache Software Foundation.
+ *
+ * The Convertit Android app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the Apache License for more
+ * details.
+ *
+ * You should have received a copy of the Apache License
+ * along with the Convertit Android app. If not, see <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.
+ *
+ * @author Tamim Hossain
+ * @company The Byte Array LTD
+ * @year 2025
+ * @license Apache-2.0
  */
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +74,9 @@ fun DialogEditMetadata(
     audioUri: Uri?,
     onDismissRequest: () -> Unit,
     onMetadataSaved: () -> Unit = {},
+    onLoadMetadata: suspend (Uri) -> Metadata = { Metadata() },
+    onSaveMetadata: suspend (Uri, Metadata) -> Boolean = { _, _ -> false },
+    onSaveCoverArt: suspend (Uri, Bitmap?) -> Boolean = { _, _ -> false },
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -111,7 +126,7 @@ fun DialogEditMetadata(
             isLoading = true
             coroutineScope.launch {
                 try {
-                    val loadedMetadata = AppUtil.loadMetadata(context, audioUri)
+                    val loadedMetadata = onLoadMetadata(audioUri)
                     metadata = loadedMetadata
                     
                     titleText = loadedMetadata.title
@@ -363,10 +378,10 @@ fun DialogEditMetadata(
                                         comment = commentText
                                     )
                                     
-                                    var success = AppUtil.saveMetadata(context, audioUri, updatedMetadata)
+                                    var success = onSaveMetadata(audioUri, updatedMetadata)
                                     
                                     if (success && hasCoverArtChanged) {
-                                        success = AppUtil.saveCoverArt(context, audioUri, newCoverArt)
+                                        success = onSaveCoverArt(audioUri, newCoverArt)
                                     }
                                     
                                     if (success) {

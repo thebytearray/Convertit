@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,21 +18,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.AppConfig.BITRATE_ARRAY
-import com.nasahacker.convertit.AppConfig.FORMAT_ARRAY
-import com.nasahacker.convertit.AppConfig.FORMAT_BITRATE_MAP
+import androidx.compose.runtime.CompositionLocalProvider
 
 /**
- * @author Tamim Hossain
- * @email tamimh.dev@gmail.com
- * @license Apache-2.0
+ * Convertit Android app
+ * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
  *
- * ConvertIt is a free and easy-to-use audio converter app.
- * It supports popular audio formats like MP3 and M4A.
- * With options for high-quality bitrates ranging from 128k to 320k,
- * ConvertIt offers a seamless conversion experience tailored to your needs.
+ * Created by Tamim Hossain.
+ * Copyright (c) 2025 The Byte Array LTD.
+ *
+ * This file is part of the Convertit Android app.
+ *
+ * The Convertit Android app is free software: you can redistribute it and/or
+ * modify it under the terms of the Apache License, Version 2.0 as published by
+ * the Apache Software Foundation.
+ *
+ * The Convertit Android app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the Apache License for more
+ * details.
+ *
+ * You should have received a copy of the Apache License
+ * along with the Convertit Android app. If not, see <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.
+ *
+ * @author Tamim Hossain
+ * @company The Byte Array LTD
+ * @year 2025
+ * @license Apache-2.0
  */
+
 
 @Composable
 fun DialogConvertAlertDialog(
@@ -39,6 +54,7 @@ fun DialogConvertAlertDialog(
     uris: ArrayList<Uri>,
     onDismiss: () -> Unit,
     onCancel: () -> Unit,
+    onStartConversion: (speed: String, uris: ArrayList<Uri>, bitrate: String, format: String) -> Unit = { _, _, _, _ -> },
 ) {
     var selectedFormat by remember { mutableStateOf(".mp3") }
     var selectedBitrate by remember { mutableStateOf("256k") }
@@ -80,7 +96,7 @@ fun DialogConvertAlertDialog(
                             "ZERO_DOLLAR",
                             "Starting Service with Format $selectedFormat And Bitrate $selectedBitrate",
                         )
-                        AppUtil.startAudioConvertService(
+                        onStartConversion(
                             sliderValue.toString(),
                             uris,
                             selectedBitrate,
@@ -145,8 +161,29 @@ fun DialogConvertContent(
     sliderValue: Float,
     onSliderValueChanged: (Float) -> Unit,
 ) {
+    val allFormats = stringArrayResource(R.array.format_array).toList()
+    val bitratesMp3 = stringArrayResource(R.array.bitrates_mp3).toList()
+    val bitratesAac = stringArrayResource(R.array.bitrates_aac).toList()
+    val bitratesM4a = stringArrayResource(R.array.bitrates_m4a).toList()
+    val bitratesOgg = stringArrayResource(R.array.bitrates_ogg).toList()
+    val bitratesOpus = stringArrayResource(R.array.bitrates_opus).toList()
+    val bitratesWma = stringArrayResource(R.array.bitrates_wma).toList()
+    val bitratesMka = stringArrayResource(R.array.bitrates_mka).toList()
+    val bitratesSpx = stringArrayResource(R.array.bitrates_spx).toList()
+    val bitratesArray = stringArrayResource(R.array.bitrates_array).toList()
+    
     val bitrateOptions = remember(selectedFormat) {
-        FORMAT_BITRATE_MAP[selectedFormat] ?: BITRATE_ARRAY
+        when (selectedFormat) {
+            ".mp3" -> bitratesMp3
+            ".aac" -> bitratesAac
+            ".m4a" -> bitratesM4a
+            ".ogg" -> bitratesOgg
+            ".opus" -> bitratesOpus
+            ".wma" -> bitratesWma
+            ".mka" -> bitratesMka
+            ".spx" -> bitratesSpx
+            else -> bitratesArray
+        }
     }
 
     Column(
@@ -192,11 +229,21 @@ fun DialogConvertContent(
                     Spacer(modifier = Modifier.height(6.dp))
                     DropdownField(
                         label = "",
-                        options = FORMAT_ARRAY,
+                        options = allFormats,
                         selectedOption = selectedFormat,
                         onOptionSelected = {
                             onFormatSelected(it)
-                            val validBitrates = FORMAT_BITRATE_MAP[it] ?: BITRATE_ARRAY
+                            val validBitrates = when (it) {
+                                ".mp3" -> bitratesMp3
+                                ".aac" -> bitratesAac
+                                ".m4a" -> bitratesM4a
+                                ".ogg" -> bitratesOgg
+                                ".opus" -> bitratesOpus
+                                ".wma" -> bitratesWma
+                                ".mka" -> bitratesMka
+                                ".spx" -> bitratesSpx
+                                else -> bitratesArray
+                            }
                             onBitrateSelected(validBitrates.first())
                         },
                     )
