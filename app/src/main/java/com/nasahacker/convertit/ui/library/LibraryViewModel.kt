@@ -1,5 +1,6 @@
 package com.nasahacker.convertit.ui.library
 
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,6 +48,10 @@ class LibraryViewModel
         private val getConvertedAudioFiles: GetConvertedAudioFilesUseCase,
         private val getSelectedCustomLocationUseCase: GetSelectedCustomLocationUseCase,
     ) : ViewModel() {
+        
+        companion object {
+            private const val TAG = "LibraryViewModel"
+        }
         val selectedCustomLocation: StateFlow<String> =
             getSelectedCustomLocationUseCase().stateIn(
                 viewModelScope,
@@ -57,19 +62,19 @@ class LibraryViewModel
         // Reactive audio files that update when custom location changes
         val audioFiles: StateFlow<List<AudioFile>> =
             selectedCustomLocation.map { location ->
-                android.util.Log.d("LibraryViewModel", "Loading audio files from location: '$location'")
+                Log.d(TAG, "Loading audio files from location: '$location'")
                 val uri = if (location.isNotBlank()) {
                     val parsedUri = location.toUri()
-                    android.util.Log.d("LibraryViewModel", "Parsed URI: $parsedUri (scheme: ${parsedUri.scheme}, path: ${parsedUri.path})")
+                    Log.d(TAG, "Parsed URI: $parsedUri (scheme: ${parsedUri.scheme}, path: ${parsedUri.path})")
                     parsedUri
                 } else {
-                    android.util.Log.d("LibraryViewModel", "Using default location (null URI)")
+                    Log.d(TAG, "Using default location (null URI)")
                     null
                 }
                 val files = getConvertedAudioFiles(uri)
-                android.util.Log.d("LibraryViewModel", "Found ${files.size} audio files")
+                Log.d(TAG, "Found ${files.size} audio files")
                 if (files.isEmpty()) {
-                    android.util.Log.w("LibraryViewModel", "No files found - check if directory exists and has audio files")
+                    Log.w(TAG, "No files found - check if directory exists and has audio files")
                 }
                 files
             }.stateIn(

@@ -192,7 +192,6 @@ fun AboutScreen() {
                 }
             }
 
-            // Donate section
             Card(
                 modifier =
                     Modifier
