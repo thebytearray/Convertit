@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nasahacker.convertit.ui.component.BottomNavigationBar
@@ -17,51 +16,74 @@ import com.nasahacker.convertit.ui.component.MainAppBar
 import com.nasahacker.convertit.ui.navigation.AppNavHost
 import com.nasahacker.convertit.ui.theme.AppTheme
 import com.nasahacker.convertit.util.AppUtil
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * @author Tamim Hossain
- * @email tamimh.dev@gmail.com
- * @license Apache-2.0
+ * Convertit Android app
+ * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
  *
- * ConvertIt is a free and easy-to-use audio converter app.
- * It supports popular audio formats like MP3 and M4A.
- * With options for high-quality bitrates ranging from 128k to 320k,
- * ConvertIt offers a seamless conversion experience tailored to your needs.
+ * Created by Tamim Hossain.
+ * Copyright (c) 2025 The Byte Array LTD.
+ *
+ * This file is part of the Convertit Android app.
+ *
+ * The Convertit Android app is free software: you can redistribute it and/or
+ * modify it under the terms of the Apache License, Version 2.0 as published by
+ * the Apache Software Foundation.
+ *
+ * The Convertit Android app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the Apache License for more
+ * details.
+ *
+ * You should have received a copy of the Apache License
+ * along with the Convertit Android app. If not, see <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.
+ *
+ * @author Tamim Hossain
+ * @company The Byte Array LTD
+ * @year 2025
+ * @license Apache-2.0
  */
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppTheme {
-                val navController = rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
-                Scaffold(
-                    topBar = {
-                        MainAppBar(
-                            onNavigateToAbout = { navController.navigate("about") },
-                            onNavigateBack = { navController.popBackStack() },
-                            isAboutScreen = currentRoute == "about"
-                        )
-                    },
-                    bottomBar = {
-                        if (currentRoute != "about") {
-                            BottomNavigationBar(navController = navController)
-                        }
-                    },
-                ) { innerPadding ->
-                    AppNavHost(
-                        modifier = Modifier.padding(innerPadding),
-                        controller = navController,
-                    )
-                }
-            }
+            MainScreen()
         }
 
         AppUtil.handleNotificationPermission(this)
     }
 }
 
+
+@Composable
+fun MainScreen() {
+    AppTheme {
+        val navController = rememberNavController()
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
+        Scaffold(
+            topBar = {
+                MainAppBar(
+                    onNavigateToAbout = { navController.navigate("about") },
+                    onNavigateBack = { navController.popBackStack() },
+                    isAboutScreen = currentRoute == "about",
+                )
+            },
+            bottomBar = {
+                if (currentRoute != "about") {
+                    BottomNavigationBar(navController = navController)
+                }
+            },
+        ) { innerPadding ->
+            AppNavHost(
+                modifier = Modifier.padding(innerPadding),
+                controller = navController,
+            )
+        }
+    }
+}

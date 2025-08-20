@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bitrates_array">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+        <item>512k</item>
+        <item>768k</item>
+        <item>1024k</item>
+    </string-array>
+
+    <string-array name="format_array">
+        <item>.mp3</item>
+        <item>.m4a</item>
+        <item>.aac</item>
+        <item>.ogg</item>
+        <item>.opus</item>
+        <item>.wma</item>
+        <item>.mka</item>
+        <item>.spx</item>
+    </string-array>
+
+
+    <string-array name="bitrates_mp3">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+    </string-array>
+
+    <string-array name="bitrates_aac">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+    </string-array>
+
+    <string-array name="bitrates_m4a">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+        <item>512k</item>
+    </string-array>
+
+    <string-array name="bitrates_ogg">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+        <item>512k</item>
+    </string-array>
+
+    <string-array name="bitrates_opus">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+    </string-array>
+
+    <string-array name="bitrates_wma">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+    </string-array>
+
+    <string-array name="bitrates_mka">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+        <item>256k</item>
+        <item>320k</item>
+        <item>512k</item>
+        <item>768k</item>
+        <item>1024k</item>
+    </string-array>
+
+    <string-array name="bitrates_spx">
+        <item>64k</item>
+        <item>96k</item>
+        <item>128k</item>
+        <item>192k</item>
+    </string-array>
+
+</resources>

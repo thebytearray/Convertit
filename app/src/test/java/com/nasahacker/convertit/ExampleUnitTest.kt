@@ -1,6 +1,5 @@
 package com.nasahacker.convertit
 
-import org.junit.Assert.*
 import org.junit.Test
 
 /**

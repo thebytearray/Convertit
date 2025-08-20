@@ -1,23 +1,18 @@
-# ConvertIt - Audio Converter App
+# ConvertIt - Audio & Video Converter/Tools
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack_Compose-343434?style=for-the-badge&logo=jetpack-compose)
 ![Material Design 3](https://img.shields.io/badge/Material%203-4285F4?style=for-the-badge&logo=material-design&logoColor=white)
 ![Downloads](https://img.shields.io/github/downloads/TheByteArray/ConvertIt/total?style=for-the-badge&logo=download)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCodeWithTamim%2FConvertit?ref=badge_shield)
 
-**ConvertIt** is an **ad-free** and **easy-to-use** audio and video-to-audio converter app that helps users convert audio and video files across different formats seamlessly. With **support for popular audio formats** and **customizable bitrates**, ConvertIt delivers high-quality conversions, powered by FFmpeg, all within a clean, user-friendly interface.
+#### **ConvertIt** is an ad free audio/video converter and metadata editor app built using kotlin & compose and powered by ffmpeg and taglib
 
----
 
-## Features
-
-- **Audio & Video to Audio Format Conversion**: Effortlessly convert between **FLAC, ALAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX**, and more.
-- **Bitrate Selection**: Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
-- **Ad-Free**: Enjoy a completely **ad-free** experience.
-- **FFmpeg Integration**: Built-in FFmpeg ensures **reliable and high-quality** conversions.
-- **Modern Architecture**: Developed using **Kotlin** with **MVVM architecture** for better scalability and maintainability.
-- **Smooth Navigation**: Implemented using **Android Navigation Component** for easy and smooth in-app navigation.
-- **User-Friendly UI**: Designed with simplicity and ease of use in mind, offering a clean and intuitive interface.
+#### Features
+- **Multiple Formats** : **FLAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX**, and more.
+- **Bitrate Options** : Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
+- **Modern Design** : Uses MaterialYou(aka Material3).
+- **Ad-Free** : Completely free and no annoying Ads.
+- **User-Friendly-UI** : The UI and Conversion flow is so simple that everyone can figure out with nearly zero effort.
 
 ---
 
@@ -41,12 +36,10 @@ Download **ConvertIt** from multiple sources:
     <img alt="Get it on Google Play" style="border-radius:10px" src="https://img.shields.io/badge/Get%20it%20on-Google%20Play-4285F4?style=for-the-badge&logo=google-play&logoColor=white" width="200"/>
   </a>
   <br/>
-  <a href="https://f-droid.org/packages/com.nasahacker.convertit/" target="_blank">
-    <img alt="Get it on F-Droid" style="border-radius:10px" src="https://img.shields.io/badge/Get%20it%20on-F--Droid-1976D2?style=for-the-badge&logo=f-droid&logoColor=white" width="200"/>
+  <a href="https://github.com/thebytearray/Convertit/releases" target="_blank">
+    <img alt="GitHub Releases" style="border-radius:10px" src="https://img.shields.io/github/v/release/thebytearray/Convertit?style=for-the-badge&logo=github&logoColor=white" width="200"/>
   </a>
 </p>
-
-> **Note**: F-Droid builds may take some time to appear after a release as they build from source.
 
 ---
 
@@ -103,46 +96,14 @@ Every contribution, big or small, helps keep this project alive and ad-free. Tha
 
 ---
 
-## Requirements
-
-- **Android**: Version **5.0 (Lollipop)** or later
-- **Kotlin**: Version **2.1.0** or later
-- **Android Studio**: Version **Ladybug** or later
-
----
-
-## Installation
-
-Follow these steps to install and run the app locally:
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/CodeWithTamim/ConvertIt.git
-    ```
-
-2. Open the project in **Android Studio**:
-    ```bash
-    open ConvertIt
-    ```
-
-3. Build and run the app on an Android device or emulator.
-
----
-
 ## Contributions
 
 Contributions are always welcome! Here's how you can contribute:
-
 1. **Fork** the repository.
 2. Create a **new branch** with your changes.
 3. **Submit a pull request**.
 
 Whether it's bug fixes, new features, or improvements, we appreciate your contribution!
-
----
-## Contributors
-
-![Contributors](https://contributors-img.web.app/image?repo=TheByteArray/ConvertIt)
 
 ---
 
@@ -152,11 +113,7 @@ This project is licensed under the **Apache License 2.0**. See the [LICENSE](LIC
 
 ---
 
-Developed by **Tamim**.
----
-## Star History
+> "No ads, no nags, does what it is supposed to."  
+> — Anonymous User
 
-[![Star History Chart](https://api.star-history.com/svg?repos=TheByteArray/convertit&type=Date)](https://www.star-history.com/#TheByteArray/convertit&Date)
 ---
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTheByteArray%2FConvertit.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTheByteArray%2FConvertit?ref=badge_large)

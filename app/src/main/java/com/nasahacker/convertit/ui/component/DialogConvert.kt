@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,20 +18,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.nasahacker.convertit.R
-import com.nasahacker.convertit.util.AppUtil
-import com.nasahacker.convertit.AppConfig.BITRATE_ARRAY
-import com.nasahacker.convertit.AppConfig.FORMAT_ARRAY
-import com.nasahacker.convertit.AppConfig.FORMAT_BITRATE_MAP
 
 /**
- * @author Tamim Hossain
- * @email tamimh.dev@gmail.com
- * @license Apache-2.0
+ * Convertit Android app
+ * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
  *
- * ConvertIt is a free and easy-to-use audio converter app.
- * It supports popular audio formats like MP3 and M4A.
- * With options for high-quality bitrates ranging from 128k to 320k,
- * ConvertIt offers a seamless conversion experience tailored to your needs.
+ * Created by Tamim Hossain.
+ * Copyright (c) 2025 The Byte Array LTD.
+ *
+ * This file is part of the Convertit Android app.
+ *
+ * The Convertit Android app is free software: you can redistribute it and/or
+ * modify it under the terms of the Apache License, Version 2.0 as published by
+ * the Apache Software Foundation.
+ *
+ * The Convertit Android app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the Apache License for more
+ * details.
+ *
+ * You should have received a copy of the Apache License
+ * along with the Convertit Android app. If not, see <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.
+ *
+ * @author Tamim Hossain
+ * @company The Byte Array LTD
+ * @year 2025
+ * @license Apache-2.0
  */
 
 @Composable
@@ -39,6 +52,7 @@ fun DialogConvertAlertDialog(
     uris: ArrayList<Uri>,
     onDismiss: () -> Unit,
     onCancel: () -> Unit,
+    onStartConversion: (speed: String, uris: ArrayList<Uri>, bitrate: String, format: String) -> Unit = { _, _, _, _ -> },
 ) {
     var selectedFormat by remember { mutableStateOf(".mp3") }
     var selectedBitrate by remember { mutableStateOf("256k") }
@@ -51,16 +65,17 @@ fun DialogConvertAlertDialog(
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             },
             title = {
                 Text(
                     text = stringResource(R.string.label_conversion_settings),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = MaterialTheme.colorScheme.primary
+                    style =
+                        MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    color = MaterialTheme.colorScheme.primary,
                 )
             },
             text = {
@@ -80,7 +95,7 @@ fun DialogConvertAlertDialog(
                             "ZERO_DOLLAR",
                             "Starting Service with Format $selectedFormat And Bitrate $selectedBitrate",
                         )
-                        AppUtil.startAudioConvertService(
+                        onStartConversion(
                             sliderValue.toString(),
                             uris,
                             selectedBitrate,
@@ -88,43 +103,46 @@ fun DialogConvertAlertDialog(
                         )
                         onDismiss()
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                        ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Done,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(R.string.label_convert),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             },
             dismissButton = {
                 OutlinedButton(
                     onClick = onCancel,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(12.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(R.string.label_cancel),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             },
@@ -145,92 +163,126 @@ fun DialogConvertContent(
     sliderValue: Float,
     onSliderValueChanged: (Float) -> Unit,
 ) {
-    val bitrateOptions = remember(selectedFormat) {
-        FORMAT_BITRATE_MAP[selectedFormat] ?: BITRATE_ARRAY
-    }
+    val allFormats = stringArrayResource(R.array.format_array).toList()
+    val bitratesMp3 = stringArrayResource(R.array.bitrates_mp3).toList()
+    val bitratesAac = stringArrayResource(R.array.bitrates_aac).toList()
+    val bitratesM4a = stringArrayResource(R.array.bitrates_m4a).toList()
+    val bitratesOgg = stringArrayResource(R.array.bitrates_ogg).toList()
+    val bitratesOpus = stringArrayResource(R.array.bitrates_opus).toList()
+    val bitratesWma = stringArrayResource(R.array.bitrates_wma).toList()
+    val bitratesMka = stringArrayResource(R.array.bitrates_mka).toList()
+    val bitratesSpx = stringArrayResource(R.array.bitrates_spx).toList()
+    val bitratesArray = stringArrayResource(R.array.bitrates_array).toList()
+
+    val bitrateOptions =
+        remember(selectedFormat) {
+            when (selectedFormat) {
+                ".mp3" -> bitratesMp3
+                ".aac" -> bitratesAac
+                ".m4a" -> bitratesM4a
+                ".ogg" -> bitratesOgg
+                ".opus" -> bitratesOpus
+                ".wma" -> bitratesWma
+                ".mka" -> bitratesMka
+                ".spx" -> bitratesSpx
+                else -> bitratesArray
+            }
+        }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 4.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.AudioFile,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.label_format_options),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Medium,
+                                ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     DropdownField(
                         label = "",
-                        options = FORMAT_ARRAY,
+                        options = allFormats,
                         selectedOption = selectedFormat,
                         onOptionSelected = {
                             onFormatSelected(it)
-                            val validBitrates = FORMAT_BITRATE_MAP[it] ?: BITRATE_ARRAY
+                            val validBitrates =
+                                when (it) {
+                                    ".mp3" -> bitratesMp3
+                                    ".aac" -> bitratesAac
+                                    ".m4a" -> bitratesM4a
+                                    ".ogg" -> bitratesOgg
+                                    ".opus" -> bitratesOpus
+                                    ".wma" -> bitratesWma
+                                    ".mka" -> bitratesMka
+                                    ".spx" -> bitratesSpx
+                                    else -> bitratesArray
+                                }
                             onBitrateSelected(validBitrates.first())
                         },
                     )
                 }
             }
 
-
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 4.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Speed,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.label_bitrate_options),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Medium,
+                                ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Spacer(modifier = Modifier.height(6.dp))
@@ -244,34 +296,34 @@ fun DialogConvertContent(
             }
         }
 
-
         Card(
             modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
             shape = RoundedCornerShape(12.dp),
-
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(bottom = 4.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Timer,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = stringResource(R.string.label_slider),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Medium,
+                            ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Slider(
@@ -280,17 +332,18 @@ fun DialogConvertContent(
                     valueRange = 0.5f..2.0f,
                     steps = 30,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = SliderDefaults.colors(
-                        thumbColor = MaterialTheme.colorScheme.primary,
-                        activeTrackColor = MaterialTheme.colorScheme.primary,
-                        inactiveTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.24f)
-                    )
+                    colors =
+                        SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.24f),
+                        ),
                 )
                 Text(
                     text = "Current: ${"%.2f".format(sliderValue)}x",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 )
             }
         }
@@ -324,9 +377,10 @@ fun DropdownField(
                 value = selectedOption,
                 onValueChange = {},
                 readOnly = true,
-                modifier = Modifier
-                    .menuAnchor(type = MenuAnchorType.PrimaryNotEditable,true)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .menuAnchor(type = MenuAnchorType.PrimaryNotEditable, true)
+                        .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
