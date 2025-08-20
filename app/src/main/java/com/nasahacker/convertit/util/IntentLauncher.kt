@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.nasahacker.convertit.R
 import java.io.File
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -41,16 +42,18 @@ import java.io.File
  * @license Apache-2.0
  */
 
-class IntentLauncher(private val activity: Activity) {
-
+class IntentLauncher(
+    private val activity: Activity,
+) {
     fun openFilePicker(pickFileLauncher: ActivityResultLauncher<Intent>) {
         if (isStoragePermissionGranted()) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "audio/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*"))
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            }
+            val intent =
+                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "audio/*"
+                    putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*"))
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                }
             pickFileLauncher.launch(intent)
         } else {
             requestStoragePermissions()
@@ -59,12 +62,13 @@ class IntentLauncher(private val activity: Activity) {
 
     fun openVideoFilePicker(pickFileLauncher: ActivityResultLauncher<Intent>) {
         if (isStoragePermissionGranted()) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "video/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("video/*"))
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            }
+            val intent =
+                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "video/*"
+                    putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("video/*"))
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                }
             pickFileLauncher.launch(intent)
         } else {
             requestStoragePermissions()
@@ -82,11 +86,12 @@ class IntentLauncher(private val activity: Activity) {
 
     fun openMetadataEditorFilePicker(pickFileLauncher: ActivityResultLauncher<Intent>) {
         if (isStoragePermissionGranted()) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "audio/*"
-                putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*"))
-            }
+            val intent =
+                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "audio/*"
+                    putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("audio/*"))
+                }
             pickFileLauncher.launch(intent)
         } else {
             requestStoragePermissions()
@@ -95,22 +100,25 @@ class IntentLauncher(private val activity: Activity) {
 
     fun openMusicFileInPlayer(file: File) {
         if (file.exists()) {
-            val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                FileProvider.getUriForFile(activity, "${activity.packageName}.provider", file)
-            } else {
-                Uri.fromFile(file)
-            }
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "audio/*")
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
+            val uri =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    FileProvider.getUriForFile(activity, "${activity.packageName}.provider", file)
+                } else {
+                    Uri.fromFile(file)
+                }
+            val intent =
+                Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(uri, "audio/*")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
             activity.startActivity(intent)
         } else {
-            Toast.makeText(
-                activity,
-                activity.getString(R.string.label_no_app_found_to_open_the_file),
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    activity,
+                    activity.getString(R.string.label_no_app_found_to_open_the_file),
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 
@@ -118,11 +126,12 @@ class IntentLauncher(private val activity: Activity) {
         if (file.exists()) {
             val fileUri =
                 FileProvider.getUriForFile(activity, "${activity.packageName}.provider", file)
-            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "audio/*"
-                putExtra(Intent.EXTRA_STREAM, fileUri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
+            val shareIntent =
+                Intent(Intent.ACTION_SEND).apply {
+                    type = "audio/*"
+                    putExtra(Intent.EXTRA_STREAM, fileUri)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
             activity.startActivity(
                 Intent.createChooser(
                     shareIntent,
@@ -130,11 +139,12 @@ class IntentLauncher(private val activity: Activity) {
                 ),
             )
         } else {
-            Toast.makeText(
-                activity,
-                activity.getString(R.string.label_file_does_not_exist),
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    activity,
+                    activity.getString(R.string.label_file_does_not_exist),
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 
@@ -147,29 +157,34 @@ class IntentLauncher(private val activity: Activity) {
             activity.checkSelfPermission(Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(
-                activity, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                activity, Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
+                activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+            ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                ) == PackageManager.PERMISSION_GRANTED
         }
 
     private fun requestStoragePermissions() {
         if (!isStoragePermissionGranted()) {
-            val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
-            } else {
-                arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                )
-            }
+            val permissions =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
+                } else {
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    )
+                }
             ActivityCompat.requestPermissions(activity, permissions, 101)
         } else {
-            Toast.makeText(
-                activity,
-                activity.getString(R.string.label_storage_permissions_are_already_granted),
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    activity,
+                    activity.getString(R.string.label_storage_permissions_are_already_granted),
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 }

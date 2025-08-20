@@ -4,6 +4,7 @@ import android.net.Uri
 import com.nasahacker.convertit.domain.model.Metadata
 import com.nasahacker.convertit.domain.repository.MetadataRepository
 import javax.inject.Inject
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -31,10 +32,10 @@ import javax.inject.Inject
  * @license Apache-2.0
  */
 
-class LoadMetadataUseCase @Inject constructor(
-    private val metadataRepository: MetadataRepository
-) {
-    suspend operator fun invoke(audioUri: Uri): Metadata {
-        return metadataRepository.loadMetadata(audioUri)
+class LoadMetadataUseCase
+    @Inject
+    constructor(
+        private val metadataRepository: MetadataRepository,
+    ) {
+        suspend operator fun invoke(audioUri: Uri): Metadata = metadataRepository.loadMetadata(audioUri)
     }
-}

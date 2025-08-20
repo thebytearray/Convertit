@@ -2,7 +2,9 @@ package com.nasahacker.convertit.ui.home
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
+import java.io.File
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -10,22 +12,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nasahacker.convertit.R
+import com.nasahacker.convertit.domain.model.ConvertitDarkPreview
+import com.nasahacker.convertit.domain.model.ConvertitLightPreview
 import com.nasahacker.convertit.service.ConvertItService
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.DialogConvertAlertDialog
-import com.nasahacker.convertit.ui.component.RatingDialog
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nasahacker.convertit.domain.model.ConvertitDarkPreview
-import com.nasahacker.convertit.domain.model.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.DialogEditMetadata
 import com.nasahacker.convertit.ui.component.ExpandableFab
+import com.nasahacker.convertit.ui.component.RatingDialog
 import com.nasahacker.convertit.util.IntentLauncher
 
 /**
@@ -55,16 +57,14 @@ import com.nasahacker.convertit.util.IntentLauncher
  * @license Apache-2.0
  */
 
-
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel()
-) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val intentLauncher = remember { IntentLauncher(context as Activity) }
     val uriList by viewModel.uriList.collectAsStateWithLifecycle()
     val metadataUri by viewModel.metadataUri.collectAsStateWithLifecycle()
     val conversionStatus by viewModel.conversionStatus.collectAsStateWithLifecycle()
+    val selectedCustomLocation by viewModel.selectedCustomLocation.collectAsStateWithLifecycle()
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showMetadataDialog by rememberSaveable { mutableStateOf(false) }
     var showReviewDialog by rememberSaveable { mutableStateOf(false) }
@@ -92,14 +92,29 @@ fun HomeScreen(
                     try {
                         context.contentResolver.takePersistableUriPermission(
                             uri,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
                         )
                         viewModel.onSelectedCustomLocation(uri.toString())
-                        val newLocation = viewModel.selectedCustomLocation.value
-                        Toast.makeText(context, "Save location: $newLocation", Toast.LENGTH_LONG)
+                        
+                        
+                        val displayName = when {
+                            uri.scheme == "content" && uri.path?.contains("/tree/primary:") == true -> {
+                                uri.lastPathSegment?.substringAfterLast(':')?.replace("%2F", "/") ?: "Custom folder"
+                            }
+                            uri.scheme == "content" -> {
+                                uri.lastPathSegment?.substringAfterLast(':') ?: "Custom folder"
+                            }
+                            else -> {
+                                uri.lastPathSegment ?: "Custom folder"
+                            }
+                        }
+                        
+                        Toast
+                            .makeText(context, "Save location updated to: $displayName", Toast.LENGTH_LONG)
                             .show()
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Failed to set custom location", Toast.LENGTH_SHORT)
+                        Toast
+                            .makeText(context, "Failed to set custom location", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
@@ -115,18 +130,20 @@ fun HomeScreen(
         }
 
     val isDontShowAgain by viewModel.isDontShowAgain.collectAsStateWithLifecycle()
-    val shouldShowReviewDialog = remember(showReviewDialog, isDontShowAgain) {
-        showReviewDialog && !isDontShowAgain
-    }
+    val shouldShowReviewDialog =
+        remember(showReviewDialog, isDontShowAgain) {
+            showReviewDialog && !isDontShowAgain
+        }
 
     LaunchedEffect(conversionStatus) {
         conversionStatus?.let { isSuccess ->
             if (isSuccess) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.label_conversion_successful),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        context.getString(R.string.label_conversion_successful),
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 viewModel.clearUriList()
                 viewModel.resetConversionStatus()
                 showReviewDialog = true
@@ -139,18 +156,21 @@ fun HomeScreen(
         dontShowAgainInitially = isDontShowAgain,
         onSaveDontShowAgain = { checked -> viewModel.onIsDontShowAgainSelected(checked) },
         onConfirm = { showReviewDialog = false },
-        onDismiss = { showReviewDialog = false })
+        onDismiss = { showReviewDialog = false },
+    )
 
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 80.dp)
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 80.dp),
         ) {
             items(uriList) { uri ->
                 val file = viewModel.getFileFromUri(uri)
                 AudioItem(
                     fileName = file?.name.orEmpty(),
-                    fileSize = file?.let { viewModel.getReadableFileSize(it) }
-                        ?: stringResource(R.string.label_unknown),
+                    fileSize =
+                        file?.let { viewModel.getReadableFileSize(it) }
+                            ?: stringResource(R.string.label_unknown),
                     format = file!!.extension,
                 )
             }
@@ -159,29 +179,62 @@ fun HomeScreen(
         ExpandableFab(
             onEditMetadataClick = {
                 intentLauncher.openMetadataEditorFilePicker(metadataPickFileLauncher)
-            }, onConvertAudioClick = {
+            },
+            onConvertAudioClick = {
                 if (ConvertItService.isForegroundServiceStarted) {
-                    Toast.makeText(
-                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            context,
+                            context.getString(R.string.label_warning),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                 } else {
                     intentLauncher.openFilePicker(pickFileLauncher)
                 }
-            }, onConvertVideoClick = {
+            },
+            onConvertVideoClick = {
                 if (ConvertItService.isForegroundServiceStarted) {
-                    Toast.makeText(
-                        context, context.getString(R.string.label_warning), Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            context,
+                            context.getString(R.string.label_warning),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                 } else {
                     intentLauncher.openVideoFilePicker(videoPickFileLauncher)
                 }
-            }, onCustomSaveLocationClick = {
-                val currentLocation = viewModel.selectedCustomLocation.value
-                Toast.makeText(context, "Current: $currentLocation", Toast.LENGTH_LONG).show()
+            },
+            onCustomSaveLocationClick = {
+                android.util.Log.d("HomeScreen", "Raw current location: '$selectedCustomLocation'")
+                
+                val displayLocation = when {
+                    selectedCustomLocation.isBlank() -> "Default (Music/ConvertIt)"
+                    selectedCustomLocation.startsWith("content://") -> {
+                   
+                        val parsed = Uri.parse(selectedCustomLocation)
+                        val displayName = parsed.lastPathSegment?.substringAfterLast(':')?.replace("%2F", "/") ?: "Custom folder"
+                        android.util.Log.d("HomeScreen", "Content URI parsed to: '$displayName'")
+                        displayName
+                    }
+                    selectedCustomLocation.startsWith("/") -> {
+               
+                        val folderName = File(selectedCustomLocation).name.takeIf { it.isNotBlank() } ?: "ConvertIt"
+                        android.util.Log.d("HomeScreen", "File path parsed to: '$folderName'")
+                        folderName
+                    }
+                    else -> {
+                        android.util.Log.d("HomeScreen", "Using raw location: '$selectedCustomLocation'")
+                        selectedCustomLocation
+                    }
+                }
+                android.util.Log.d("HomeScreen", "Final display location: '$displayLocation'")
+                Toast.makeText(context, "Current: $displayLocation", Toast.LENGTH_LONG).show()
                 intentLauncher.openFolderPicker(folderPickLauncher)
-            }, modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(26.dp)
+            },
+            modifier =
+                Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(26.dp),
         )
     }
 
@@ -195,20 +248,20 @@ fun HomeScreen(
         uris = uriList,
         onStartConversion = { speed, uris, bitrate, format ->
             viewModel.startConversion(speed, uris, bitrate, format)
-        }
+        },
     )
 
     DialogEditMetadata(
-        showDialog = showMetadataDialog, 
-        audioUri = metadataUri, 
+        showDialog = showMetadataDialog,
+        audioUri = metadataUri,
         onDismissRequest = {
             showMetadataDialog = false
             viewModel.setMetadataUri(null)
-        }, 
+        },
         onMetadataSaved = {},
         onLoadMetadata = { uri -> viewModel.loadMetadata(uri) },
         onSaveMetadata = { uri, metadata -> viewModel.saveMetadata(uri, metadata) },
-        onSaveCoverArt = { uri, bitmap -> viewModel.saveCoverArt(uri, bitmap) }
+        onSaveCoverArt = { uri, bitmap -> viewModel.saveCoverArt(uri, bitmap) },
     )
 }
 

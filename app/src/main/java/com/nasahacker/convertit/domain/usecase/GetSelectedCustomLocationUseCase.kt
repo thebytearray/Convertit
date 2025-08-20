@@ -3,6 +3,7 @@ package com.nasahacker.convertit.domain.usecase
 import com.nasahacker.convertit.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -30,10 +31,10 @@ import javax.inject.Inject
  * @license Apache-2.0
  */
 
-class GetSelectedCustomLocationUseCase @Inject constructor(
-    private val repository: AppRepository
-) {
-    operator fun invoke(): Flow<String> = repository.selectedCustomLocation
-}
-
-
+class GetSelectedCustomLocationUseCase
+    @Inject
+    constructor(
+        private val repository: AppRepository,
+    ) {
+        operator fun invoke(): Flow<String> = repository.selectedCustomLocation
+    }

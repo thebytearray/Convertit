@@ -1,4 +1,5 @@
 package com.nasahacker.convertit.domain.model
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -25,7 +26,6 @@ package com.nasahacker.convertit.domain.model
  * @year 2025
  * @license Apache-2.0
  */
-
 
 enum class AudioCodec(
     val codec: String,

@@ -6,10 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nasahacker.convertit.ui.component.BottomNavigationBar
@@ -62,7 +60,7 @@ class MainActivity : ComponentActivity() {
                         MainAppBar(
                             onNavigateToAbout = { navController.navigate("about") },
                             onNavigateBack = { navController.popBackStack() },
-                            isAboutScreen = currentRoute == "about"
+                            isAboutScreen = currentRoute == "about",
                         )
                     },
                     bottomBar = {
@@ -82,4 +80,3 @@ class MainActivity : ComponentActivity() {
         AppUtil.handleNotificationPermission(this)
     }
 }
-

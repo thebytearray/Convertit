@@ -4,6 +4,7 @@ import com.nasahacker.convertit.data.local.UserPreferencesDataSource
 import com.nasahacker.convertit.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -31,19 +32,21 @@ import javax.inject.Inject
  * @license Apache-2.0
  */
 
-class AppRepositoryImpl @Inject constructor(
-    private val dataSource: UserPreferencesDataSource
-) : AppRepository {
-    override val isDontShowAgain: Flow<Boolean>
-        get() = dataSource.isDontShowAgain
-    override val selectedCustomLocation: Flow<String>
-        get() = dataSource.selectedCustomSaveLocation
+class AppRepositoryImpl
+    @Inject
+    constructor(
+        private val dataSource: UserPreferencesDataSource,
+    ) : AppRepository {
+        override val isDontShowAgain: Flow<Boolean>
+            get() = dataSource.isDontShowAgain
+        override val selectedCustomLocation: Flow<String>
+            get() = dataSource.selectedCustomSaveLocation
 
-    override suspend fun saveIsDontShowAgain(value: Boolean) {
-        dataSource.saveIsDontShowAgain(value)
-    }
+        override suspend fun saveIsDontShowAgain(value: Boolean) {
+            dataSource.saveIsDontShowAgain(value)
+        }
 
-    override suspend fun saveSelectedCustomLocation(value: String) {
-        dataSource.saveSelectedCustomSaveLocation(value)
+        override suspend fun saveSelectedCustomLocation(value: String) {
+            dataSource.saveSelectedCustomSaveLocation(value)
+        }
     }
-}

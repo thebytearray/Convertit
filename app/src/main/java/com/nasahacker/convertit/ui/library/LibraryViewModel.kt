@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nasahacker.convertit.domain.model.AudioFile
 import com.nasahacker.convertit.domain.usecase.GetConvertedAudioFilesUseCase
+import com.nasahacker.convertit.domain.usecase.GetSelectedCustomLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import com.nasahacker.convertit.domain.usecase.GetSelectedCustomLocationUseCase
 
 /**
  * Convertit Android app
@@ -40,31 +41,44 @@ import com.nasahacker.convertit.domain.usecase.GetSelectedCustomLocationUseCase
  */
 
 @HiltViewModel
-class LibraryViewModel @Inject constructor(
-    private val getConvertedAudioFiles: GetConvertedAudioFilesUseCase,
-    private val getSelectedCustomLocationUseCase: GetSelectedCustomLocationUseCase,
-) : ViewModel() {
+class LibraryViewModel
+    @Inject
+    constructor(
+        private val getConvertedAudioFiles: GetConvertedAudioFilesUseCase,
+        private val getSelectedCustomLocationUseCase: GetSelectedCustomLocationUseCase,
+    ) : ViewModel() {
+        val selectedCustomLocation: StateFlow<String> =
+            getSelectedCustomLocationUseCase().stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                "",
+            )
 
-    val selectedCustomLocation: StateFlow<String> =
-        getSelectedCustomLocationUseCase().stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            ""
-        )
+        // Reactive audio files that update when custom location changes
+        val audioFiles: StateFlow<List<AudioFile>> =
+            selectedCustomLocation.map { location ->
+                android.util.Log.d("LibraryViewModel", "Loading audio files from location: '$location'")
+                val uri = if (location.isNotBlank()) location.toUri() else null
+                val files = getConvertedAudioFiles(uri)
+                android.util.Log.d("LibraryViewModel", "Found ${files.size} audio files")
+                files
+            }.stateIn(
+                viewModelScope,
+                SharingStarted.Lazily,
+                emptyList()
+            )
 
+        // Kept for backward compatibility but now uses the reactive audioFiles
+        fun getInitialAudioFiles(pageSize: Int): List<AudioFile> {
+            return audioFiles.value.take(pageSize)
+        }
 
-    fun getInitialAudioFiles(pageSize: Int): List<AudioFile> {
-        val uri = selectedCustomLocation.value.toUri()
-        return getConvertedAudioFiles(uri)
-            .take(pageSize)
+        fun getAudioFilesPage(
+            page: Int,
+            pageSize: Int,
+        ): List<AudioFile> {
+            return audioFiles.value
+                .drop(page * pageSize)
+                .take(pageSize)
+        }
     }
-
-    fun getAudioFilesPage(page: Int, pageSize: Int): List<AudioFile> {
-        val uri = selectedCustomLocation.value.toUri()
-        return getConvertedAudioFiles(uri)
-            .drop(page * pageSize)
-            .take(pageSize)
-    }
-
-
-}

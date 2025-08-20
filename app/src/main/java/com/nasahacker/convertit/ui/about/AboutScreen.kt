@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,9 +29,8 @@ import com.nasahacker.convertit.domain.model.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.AboutAppContent
 import com.nasahacker.convertit.ui.component.CommunityIcon
 import com.nasahacker.convertit.ui.component.ContactItem
-import com.nasahacker.convertit.util.IntentLauncher
 import com.nasahacker.convertit.util.AppConfig
-import androidx.compose.foundation.combinedClickable
+import com.nasahacker.convertit.util.IntentLauncher
 
 /**
  * Convertit Android app
@@ -69,24 +69,27 @@ fun AboutScreen() {
         color = MaterialTheme.colorScheme.background,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     AboutAppContent(context)
                 }
@@ -95,24 +98,27 @@ fun AboutScreen() {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(R.string.label_contact_us),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
+                        style =
+                            MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                            ),
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(bottom = 8.dp),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     ContactItem(
                         name = stringResource(R.string.label_dev),
@@ -128,36 +134,39 @@ fun AboutScreen() {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(R.string.label_community),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
+                        style =
+                            MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                            ),
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(bottom = 16.dp),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
                         CommunityIcon(
                             iconRes = R.drawable.telegram_ic,
                             contentDescription = stringResource(R.string.label_telegram_icon),
                             onClick = {
                                 intentLauncher.openLink(
-                                    AppConfig.TELEGRAM_CHANNEL
+                                    AppConfig.TELEGRAM_CHANNEL,
                                 )
                             },
                         )
@@ -166,7 +175,7 @@ fun AboutScreen() {
                             contentDescription = stringResource(R.string.label_dc_icon),
                             onClick = {
                                 intentLauncher.openLink(
-                                    AppConfig.DISCORD_CHANNEL
+                                    AppConfig.DISCORD_CHANNEL,
                                 )
                             },
                         )
@@ -175,7 +184,7 @@ fun AboutScreen() {
                             contentDescription = stringResource(R.string.label_github_icon),
                             onClick = {
                                 intentLauncher.openLink(
-                                    AppConfig.GITHUB_PROFILE
+                                    AppConfig.GITHUB_PROFILE,
                                 )
                             },
                         )
@@ -185,41 +194,44 @@ fun AboutScreen() {
 
             // Donate section
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
                 shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
             ) {
                 val context = LocalContext.current
                 val bitcoinAddress = stringResource(R.string.btc_address)
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Filled.CurrencyBitcoin,
                             contentDescription = "Donate Bitcoin",
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(28.dp),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "Donate",
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Support ConvertIt! Donate to help us grow. Donators leaderboard coming soon.",
                         style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -227,48 +239,56 @@ fun AboutScreen() {
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.combinedClickable(onClick = {}, onLongClick = {
-                            val clipboard = android.content.Context.CLIPBOARD_SERVICE
-                            val clip = android.content.ClipData.newPlainText(
-                                "Donation Address", bitcoinAddress
-                            )
-                            (context.getSystemService(clipboard) as android.content.ClipboardManager).setPrimaryClip(
-                                clip
-                            )
-                            android.widget.Toast.makeText(
-                                context, "Address copied!", android.widget.Toast.LENGTH_SHORT
-                            ).show()
-                        })
+                        modifier =
+                            Modifier.combinedClickable(onClick = {}, onLongClick = {
+                                val clipboard = android.content.Context.CLIPBOARD_SERVICE
+                                val clip =
+                                    android.content.ClipData.newPlainText(
+                                        "Donation Address",
+                                        bitcoinAddress,
+                                    )
+                                (context.getSystemService(clipboard) as android.content.ClipboardManager).setPrimaryClip(
+                                    clip,
+                                )
+                                android.widget.Toast
+                                    .makeText(
+                                        context,
+                                        "Address copied!",
+                                        android.widget.Toast.LENGTH_SHORT,
+                                    ).show()
+                            }),
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Leaderboard feature coming soon!",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.secondary,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
 
             Button(
                 onClick = { intentLauncher.openLink(AppConfig.GITHUB_ISSUES_URL) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                    ),
             ) {
                 Icon(
                     imageVector = Icons.Default.BugReport,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.label_open_github_issue),
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
 
@@ -276,16 +296,17 @@ fun AboutScreen() {
                 text = stringResource(R.string.label_version_text, BuildConfig.VERSION_NAME),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp),
             )
             Text(
                 text = stringResource(R.string.label_apache_2_0_license),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
             )
         }
     }

@@ -1,14 +1,14 @@
 package com.nasahacker.convertit.di
 
 import com.nasahacker.convertit.data.repository.AppRepositoryImpl
-import com.nasahacker.convertit.data.repository.FileRepositoryImpl
-import com.nasahacker.convertit.data.repository.FileAccessRepositoryImpl
 import com.nasahacker.convertit.data.repository.AudioConverterRepositoryImpl
+import com.nasahacker.convertit.data.repository.FileAccessRepositoryImpl
+import com.nasahacker.convertit.data.repository.FileRepositoryImpl
 import com.nasahacker.convertit.data.repository.MetadataRepositoryImpl
 import com.nasahacker.convertit.domain.repository.AppRepository
-import com.nasahacker.convertit.domain.repository.FileRepository
-import com.nasahacker.convertit.domain.repository.FileAccessRepository
 import com.nasahacker.convertit.domain.repository.AudioConverterRepository
+import com.nasahacker.convertit.domain.repository.FileAccessRepository
+import com.nasahacker.convertit.domain.repository.FileRepository
 import com.nasahacker.convertit.domain.repository.MetadataRepository
 import dagger.Binds
 import dagger.Module
@@ -45,7 +45,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
     @Binds
     abstract fun bindUserRepository(impl: AppRepositoryImpl): AppRepository
 
@@ -60,5 +59,4 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindMetadataRepository(impl: MetadataRepositoryImpl): MetadataRepository
-
 }

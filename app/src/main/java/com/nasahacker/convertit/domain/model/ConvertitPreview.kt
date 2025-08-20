@@ -2,6 +2,7 @@ package com.nasahacker.convertit.domain.model
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -29,22 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
  * @license Apache-2.0
  */
 
-
 @Preview(
     name = "Light Preview",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showSystemUi = true, showBackground = true
+    showSystemUi = true,
+    showBackground = true,
 )
-
 annotation class ConvertitLightPreview
 
 @Preview(
     name = "Dark Preview",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showSystemUi = true, showBackground = true
+    showSystemUi = true,
+    showBackground = true,
 )
-
 annotation class ConvertitDarkPreview
-
-
-

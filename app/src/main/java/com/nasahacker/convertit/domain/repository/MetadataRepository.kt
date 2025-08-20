@@ -3,6 +3,7 @@ package com.nasahacker.convertit.domain.repository
 import android.graphics.Bitmap
 import android.net.Uri
 import com.nasahacker.convertit.domain.model.Metadata
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -32,6 +33,14 @@ import com.nasahacker.convertit.domain.model.Metadata
 
 interface MetadataRepository {
     suspend fun loadMetadata(audioUri: Uri): Metadata
-    suspend fun saveMetadata(audioUri: Uri, metadata: Metadata): Boolean
-    suspend fun saveCoverArt(audioUri: Uri, bitmap: Bitmap?): Boolean
+
+    suspend fun saveMetadata(
+        audioUri: Uri,
+        metadata: Metadata,
+    ): Boolean
+
+    suspend fun saveCoverArt(
+        audioUri: Uri,
+        bitmap: Bitmap?,
+    ): Boolean
 }

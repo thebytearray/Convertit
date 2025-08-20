@@ -7,6 +7,6 @@ interface AppRepository {
     val selectedCustomLocation: Flow<String>
 
     suspend fun saveIsDontShowAgain(value: Boolean)
-    suspend fun saveSelectedCustomLocation(value: String)
 
+    suspend fun saveSelectedCustomLocation(value: String)
 }

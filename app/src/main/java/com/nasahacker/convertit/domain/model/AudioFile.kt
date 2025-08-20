@@ -29,10 +29,9 @@ import java.io.File
  * @license Apache-2.0
  */
 
-
 data class AudioFile(
     val name: String,
     val size: String,
-    val format : String,
+    val format: String,
     val file: File,
 )

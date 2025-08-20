@@ -2,6 +2,7 @@ package com.nasahacker.convertit.domain.usecase
 
 import com.nasahacker.convertit.domain.repository.AppRepository
 import javax.inject.Inject
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -29,10 +30,10 @@ import javax.inject.Inject
  * @license Apache-2.0
  */
 
-class SaveDontShowAgainUseCase @Inject constructor(
-    private val repository: AppRepository
-) {
-    suspend operator fun invoke(value: Boolean) = repository.saveIsDontShowAgain(value)
-}
-
-
+class SaveDontShowAgainUseCase
+    @Inject
+    constructor(
+        private val repository: AppRepository,
+    ) {
+        suspend operator fun invoke(value: Boolean) = repository.saveIsDontShowAgain(value)
+    }

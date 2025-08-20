@@ -27,7 +27,6 @@ package com.nasahacker.convertit.domain.model
  * @license Apache-2.0
  */
 
-
 enum class AudioBitrate(
     val bitrate: String,
 ) {

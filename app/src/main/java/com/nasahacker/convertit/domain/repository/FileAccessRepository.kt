@@ -3,6 +3,7 @@ package com.nasahacker.convertit.domain.repository
 import android.net.Uri
 import com.nasahacker.convertit.domain.model.AudioFile
 import java.io.File
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -32,7 +33,10 @@ import java.io.File
 
 interface FileAccessRepository {
     fun getAudioFilesFromConvertedFolder(customSaveUri: Uri?): List<AudioFile>
+
     fun getFileFromUri(uri: Uri): File?
+
     fun getReadableFileSize(file: File): String
+
     fun getOutputDirectory(customSaveUri: Uri?): File
 }

@@ -12,38 +12,44 @@ import kotlinx.coroutines.flow.map
 import java.io.File
 import javax.inject.Inject
 
-class UserPreferencesDataSource @Inject constructor(
-    private val dataStore: DataStore<Preferences>
-) {
+class UserPreferencesDataSource
+    @Inject
+    constructor(
+        private val dataStore: DataStore<Preferences>,
+    ) {
+        private object Keys {
+            val PREF_DONT_SHOW_AGAIN = booleanPreferencesKey("pref_dont_show_again")
+            val PREF_CUSTOM_SAVE_LOCATION = stringPreferencesKey("pref_custom_save_location")
+        }
 
-    private object Keys {
-        val PREF_DONT_SHOW_AGAIN = booleanPreferencesKey("pref_dont_show_again")
-        val PREF_CUSTOM_SAVE_LOCATION = stringPreferencesKey("pref_custom_save_location")
-    }
+        val isDontShowAgain: Flow<Boolean> =
+            dataStore.data.map { prefs ->
+                prefs[Keys.PREF_DONT_SHOW_AGAIN] ?: false
+            }
 
-    val isDontShowAgain: Flow<Boolean> = dataStore.data.map { prefs ->
-        prefs[Keys.PREF_DONT_SHOW_AGAIN] ?: false
-    }
+        val selectedCustomSaveLocation: Flow<String> =
+            dataStore.data.map { prefs ->
+                val savedValue = prefs[Keys.PREF_CUSTOM_SAVE_LOCATION]
+                val defaultValue = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
+                    FOLDER_DIR,
+                ).absolutePath
+                val result = savedValue ?: defaultValue
+                android.util.Log.d("UserPreferencesDataSource", "Retrieved custom save location - saved: '$savedValue', default: '$defaultValue', returning: '$result'")
+                result
+            }
 
-    val selectedCustomSaveLocation: Flow<String> = dataStore.data.map { prefs ->
-        prefs[Keys.PREF_CUSTOM_SAVE_LOCATION] ?: File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-            FOLDER_DIR,
-        ).absolutePath
-    }
+        suspend fun saveIsDontShowAgain(value: Boolean) {
+            dataStore.edit { prefs ->
+                prefs[Keys.PREF_DONT_SHOW_AGAIN] = value
+            }
+        }
 
-
-    suspend fun saveIsDontShowAgain(value: Boolean) {
-        dataStore.edit { prefs ->
-            prefs[Keys.PREF_DONT_SHOW_AGAIN] = value
+        suspend fun saveSelectedCustomSaveLocation(value: String) {
+            android.util.Log.d("UserPreferencesDataSource", "Saving custom save location: '$value'")
+            dataStore.edit { prefs ->
+                prefs[Keys.PREF_CUSTOM_SAVE_LOCATION] = value
+                android.util.Log.d("UserPreferencesDataSource", "Successfully saved to DataStore")
+            }
         }
     }
-
-
-    suspend fun saveSelectedCustomSaveLocation(value: String) {
-        dataStore.edit { prefs ->
-            prefs[Keys.PREF_CUSTOM_SAVE_LOCATION] = value
-        }
-    }
-
-}

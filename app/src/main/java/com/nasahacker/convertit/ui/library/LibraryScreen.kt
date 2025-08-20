@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +16,7 @@ import com.nasahacker.convertit.domain.model.ConvertitLightPreview
 import com.nasahacker.convertit.ui.component.AudioItem
 import com.nasahacker.convertit.ui.component.NoFilesFoundCard
 import com.nasahacker.convertit.util.IntentLauncher
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -43,43 +44,17 @@ import com.nasahacker.convertit.util.IntentLauncher
  * @license Apache-2.0
  */
 
-
 @Composable
 fun LibraryScreen(viewModel: LibraryViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val intentLauncher = remember { IntentLauncher(context as Activity) }
-    val listState = rememberLazyListState()
+    val audioFiles by viewModel.audioFiles.collectAsStateWithLifecycle()
 
-    var currentPage by remember { mutableIntStateOf(0) }
-    val pageSize = 20
-    var isLoading by remember { mutableStateOf(false) }
-
-    val initialData = remember {
-        mutableStateListOf(*viewModel.getInitialAudioFiles(pageSize).toTypedArray())
-    }
-
-
-
-    LaunchedEffect(listState) {
-        if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == listState.layoutInfo.totalItemsCount - 1) {
-            if (!isLoading) {
-                isLoading = true
-                currentPage++
-                val newItems = viewModel.getAudioFilesPage(currentPage, pageSize)
-                if (newItems.isNotEmpty()) {
-                    initialData.addAll(newItems)
-                }
-                isLoading = false
-            }
-        }
-    }
-
-    if (initialData.isNotEmpty()) {
+    if (audioFiles.isNotEmpty()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            state = listState
         ) {
-            items(initialData) { item ->
+            items(audioFiles) { item ->
                 AudioItem(
                     fileName = item.name,
                     fileSize = item.size,
@@ -100,8 +75,6 @@ fun LibraryScreen(viewModel: LibraryViewModel = hiltViewModel()) {
     } else {
         NoFilesFoundCard()
     }
-
-
 }
 
 @ConvertitLightPreview

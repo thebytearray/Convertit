@@ -29,8 +29,6 @@ import com.kyant.taglib.Picture
  * @license Apache-2.0
  */
 
-
-
 data class Metadata(
     val title: String = "",
     val artist: String = "",
@@ -41,11 +39,11 @@ data class Metadata(
     val track: String = "",
     val comment: String = "",
     val pictures: List<Picture> = emptyList(),
-    val propertyMap: Map<String, Array<String>> = emptyMap()
+    val propertyMap: Map<String, Array<String>> = emptyMap(),
 ) {
     fun toPropertyMap(): Map<String, Array<String>> {
         val map = mutableMapOf<String, Array<String>>()
-        
+
         if (title.isNotBlank()) map["TITLE"] = arrayOf(title)
         if (artist.isNotBlank()) map["ARTIST"] = arrayOf(artist)
         if (album.isNotBlank()) map["ALBUM"] = arrayOf(album)
@@ -54,13 +52,16 @@ data class Metadata(
         if (year.isNotBlank()) map["DATE"] = arrayOf(year)
         if (track.isNotBlank()) map["TRACKNUMBER"] = arrayOf(track)
         if (comment.isNotBlank()) map["COMMENT"] = arrayOf(comment)
-        
+
         return map
     }
-    
+
     companion object {
-        fun fromPropertyMap(propertyMap: Map<String, Array<String>>, pictures: List<Picture> = emptyList()): Metadata {
-            return Metadata(
+        fun fromPropertyMap(
+            propertyMap: Map<String, Array<String>>,
+            pictures: List<Picture> = emptyList(),
+        ): Metadata =
+            Metadata(
                 title = propertyMap["TITLE"]?.firstOrNull() ?: "",
                 artist = propertyMap["ARTIST"]?.firstOrNull() ?: "",
                 album = propertyMap["ALBUM"]?.firstOrNull() ?: "",
@@ -70,8 +71,7 @@ data class Metadata(
                 track = propertyMap["TRACKNUMBER"]?.firstOrNull() ?: "",
                 comment = propertyMap["COMMENT"]?.firstOrNull() ?: "",
                 pictures = pictures,
-                propertyMap = propertyMap
+                propertyMap = propertyMap,
             )
-        }
     }
-} 
+}

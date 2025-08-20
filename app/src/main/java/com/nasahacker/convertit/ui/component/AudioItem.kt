@@ -62,13 +62,14 @@ fun AudioItem(
     onLongClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
-            .padding(16.dp)
-            .combinedClickable(onClick = {}, onLongClick = {
-                onLongClick()
-            }),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                .padding(16.dp)
+                .combinedClickable(onClick = {}, onLongClick = {
+                    onLongClick()
+                }),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -82,9 +83,10 @@ fun AudioItem(
                 Icon(
                     imageVector = Icons.Filled.Audiotrack,
                     contentDescription = stringResource(R.string.label_audio_icon),
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(end = 8.dp),
+                    modifier =
+                        Modifier
+                            .size(50.dp)
+                            .padding(end = 8.dp),
                 )
                 Column {
                     Text(
@@ -97,13 +99,13 @@ fun AudioItem(
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
-                            modifier = Modifier
-                                .border(
-                                    width = 1.dp,
-                                    color = MaterialTheme.colorScheme.outline,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier =
+                                Modifier
+                                    .border(
+                                        width = 1.dp,
+                                        color = MaterialTheme.colorScheme.outline,
+                                        shape = RoundedCornerShape(4.dp),
+                                    ).padding(horizontal = 8.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = fileSize,
@@ -115,13 +117,13 @@ fun AudioItem(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Box(
-                            modifier = Modifier
-                                .border(
-                                    width = 1.dp,
-                                    color = MaterialTheme.colorScheme.outline,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier =
+                                Modifier
+                                    .border(
+                                        width = 1.dp,
+                                        color = MaterialTheme.colorScheme.outline,
+                                        shape = RoundedCornerShape(4.dp),
+                                    ).padding(horizontal = 8.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = format,
@@ -131,7 +133,6 @@ fun AudioItem(
                         }
                     }
                 }
-
             }
 
             AnimatedVisibility(visible = isActionVisible) {
@@ -142,16 +143,18 @@ fun AudioItem(
                     Icon(
                         imageVector = Icons.Filled.PlayArrow,
                         contentDescription = stringResource(R.string.label_play_icon),
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable { onPlayClick() },
+                        modifier =
+                            Modifier
+                                .size(40.dp)
+                                .clickable { onPlayClick() },
                     )
                     Icon(
                         imageVector = Icons.Filled.Share,
                         contentDescription = stringResource(R.string.label_share_icon),
-                        modifier = Modifier
-                            .size(30.dp)
-                            .clickable { onShareClick() },
+                        modifier =
+                            Modifier
+                                .size(30.dp)
+                                .clickable { onShareClick() },
                     )
                 }
             }

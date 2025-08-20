@@ -11,7 +11,6 @@ package com.nasahacker.convertit.ui.component
  * ConvertIt offers a seamless conversion experience tailored to your needs.
  */
 
-import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -53,9 +52,6 @@ fun RatingDialog(
 ) {
     val context = LocalContext.current
 
-
-
-
     var selectedRating by remember { mutableIntStateOf(0) }
     val appPackageName = App.application.packageName
     var dontShowAgain by remember { mutableStateOf(dontShowAgainInitially) }
@@ -63,49 +59,53 @@ fun RatingDialog(
     if (showReviewDialog) {
         Dialog(onDismissRequest = onDismiss) {
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 8.dp
-                )
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                elevation =
+                    CardDefaults.cardElevation(
+                        defaultElevation = 8.dp,
+                    ),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     Box(
-                        modifier = Modifier
-                            .size(64.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primaryContainer),
-                        contentAlignment = Alignment.Center
+                        modifier =
+                            Modifier
+                                .size(64.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             Icons.Filled.Star,
                             contentDescription = stringResource(R.string.cd_star_icon),
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(32.dp),
                         )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-
                     Text(
                         text = stringResource(R.string.label_enjoying_app),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface
+                        style =
+                            MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 24.sp,
+                            ),
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -114,28 +114,35 @@ fun RatingDialog(
                         text = stringResource(R.string.label_feedback_help),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
+                        horizontalArrangement = Arrangement.Center,
                     ) {
                         repeat(5) { index ->
                             val scale by animateFloatAsState(
                                 targetValue = if (selectedRating > index) 1.2f else 1f,
-                                label = stringResource(R.string.label_star_scale)
+                                label = stringResource(R.string.label_star_scale),
                             )
                             IconButton(
-                                onClick = { selectedRating = index + 1 }
+                                onClick = { selectedRating = index + 1 },
                             ) {
                                 Icon(
                                     imageVector = if (selectedRating > index) Icons.Filled.Star else Icons.Filled.StarBorder,
                                     contentDescription = stringResource(R.string.label_rate_stars, index + 1),
-                                    tint = if (selectedRating > index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                                    modifier = Modifier.scale(scale)
+                                    tint =
+                                        if (selectedRating >
+                                            index
+                                        ) {
+                                            MaterialTheme.colorScheme.primary
+                                        } else {
+                                            MaterialTheme.colorScheme.outline
+                                        },
+                                    modifier = Modifier.scale(scale),
                                 )
                             }
                         }
@@ -143,47 +150,47 @@ fun RatingDialog(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-
                     AnimatedVisibility(
                         visible = selectedRating > 0,
                         enter = fadeIn() + expandVertically(),
-                        exit = fadeOut() + shrinkVertically()
+                        exit = fadeOut() + shrinkVertically(),
                     ) {
                         Text(
-                            text = when (selectedRating) {
-                                1 -> stringResource(R.string.label_feedback_1)
-                                2 -> stringResource(R.string.label_feedback_2)
-                                3 -> stringResource(R.string.label_feedback_3)
-                                4 -> stringResource(R.string.label_feedback_4)
-                                5 -> stringResource(R.string.label_feedback_5)
-                                else -> ""
-                            },
+                            text =
+                                when (selectedRating) {
+                                    1 -> stringResource(R.string.label_feedback_1)
+                                    2 -> stringResource(R.string.label_feedback_2)
+                                    3 -> stringResource(R.string.label_feedback_3)
+                                    4 -> stringResource(R.string.label_feedback_4)
+                                    5 -> stringResource(R.string.label_feedback_5)
+                                    else -> ""
+                                },
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Checkbox(
                             checked = dontShowAgain,
                             onCheckedChange = {
                                 dontShowAgain = it
                             },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = MaterialTheme.colorScheme.primary
-                            )
+                            colors =
+                                CheckboxDefaults.colors(
+                                    checkedColor = MaterialTheme.colorScheme.primary,
+                                ),
                         )
                         Text(
                             stringResource(R.string.label_dont_show_again),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
 
@@ -191,19 +198,19 @@ fun RatingDialog(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         TextButton(
                             onClick = {
                                 onSaveDontShowAgain(dontShowAgain)
                                 onDismiss()
                             },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         ) {
                             Text(
                                 text = stringResource(R.string.label_not_now),
                                 style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.secondary
+                                color = MaterialTheme.colorScheme.secondary,
                             )
                         }
 
@@ -211,20 +218,21 @@ fun RatingDialog(
 
                         Button(
                             onClick = {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    context.getString(R.string.label_google_play, appPackageName).toUri()
-                                )
+                                val intent =
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        context.getString(R.string.label_google_play, appPackageName).toUri(),
+                                    )
                                 context.startActivity(intent)
                                 onSaveDontShowAgain(dontShowAgain)
                                 onConfirm()
                             },
                             modifier = Modifier.weight(1f),
-                            enabled = selectedRating > 0
+                            enabled = selectedRating > 0,
                         ) {
                             Text(
                                 text = stringResource(R.string.label_rate_now),
-                                style = MaterialTheme.typography.labelLarge
+                                style = MaterialTheme.typography.labelLarge,
                             )
                         }
                     }

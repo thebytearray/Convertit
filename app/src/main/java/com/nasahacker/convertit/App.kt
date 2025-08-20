@@ -37,7 +37,6 @@ import dagger.hilt.android.HiltAndroidApp
  * @license Apache-2.0
  */
 
-
 @HiltAndroidApp
 class App : Application() {
     companion object {
@@ -57,17 +56,18 @@ class App : Application() {
 
     private fun initChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW,
-            ).apply {
-                description = "Notifications for audio conversion progress and completion"
-                setShowBadge(false)
-                enableLights(false)
-                enableVibration(false)
-                setSound(null, null)
-            }
+            val channel =
+                NotificationChannel(
+                    CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                ).apply {
+                    description = "Notifications for audio conversion progress and completion"
+                    setShowBadge(true)
+                    enableLights(false)
+                    enableVibration(false)
+                    setSound(null, null)
+                }
             NotificationManagerCompat.from(this).createNotificationChannel(channel)
         }
     }

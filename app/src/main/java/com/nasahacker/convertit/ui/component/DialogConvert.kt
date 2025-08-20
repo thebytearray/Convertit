@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.nasahacker.convertit.R
-import androidx.compose.runtime.CompositionLocalProvider
 
 /**
  * Convertit Android app
@@ -47,7 +46,6 @@ import androidx.compose.runtime.CompositionLocalProvider
  * @license Apache-2.0
  */
 
-
 @Composable
 fun DialogConvertAlertDialog(
     showDialog: Boolean,
@@ -67,16 +65,17 @@ fun DialogConvertAlertDialog(
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             },
             title = {
                 Text(
                     text = stringResource(R.string.label_conversion_settings),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = MaterialTheme.colorScheme.primary
+                    style =
+                        MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    color = MaterialTheme.colorScheme.primary,
                 )
             },
             text = {
@@ -104,43 +103,46 @@ fun DialogConvertAlertDialog(
                         )
                         onDismiss()
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                        ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Done,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(R.string.label_convert),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             },
             dismissButton = {
                 OutlinedButton(
                     onClick = onCancel,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(12.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(R.string.label_cancel),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             },
@@ -171,59 +173,61 @@ fun DialogConvertContent(
     val bitratesMka = stringArrayResource(R.array.bitrates_mka).toList()
     val bitratesSpx = stringArrayResource(R.array.bitrates_spx).toList()
     val bitratesArray = stringArrayResource(R.array.bitrates_array).toList()
-    
-    val bitrateOptions = remember(selectedFormat) {
-        when (selectedFormat) {
-            ".mp3" -> bitratesMp3
-            ".aac" -> bitratesAac
-            ".m4a" -> bitratesM4a
-            ".ogg" -> bitratesOgg
-            ".opus" -> bitratesOpus
-            ".wma" -> bitratesWma
-            ".mka" -> bitratesMka
-            ".spx" -> bitratesSpx
-            else -> bitratesArray
+
+    val bitrateOptions =
+        remember(selectedFormat) {
+            when (selectedFormat) {
+                ".mp3" -> bitratesMp3
+                ".aac" -> bitratesAac
+                ".m4a" -> bitratesM4a
+                ".ogg" -> bitratesOgg
+                ".opus" -> bitratesOpus
+                ".wma" -> bitratesWma
+                ".mka" -> bitratesMka
+                ".spx" -> bitratesSpx
+                else -> bitratesArray
+            }
         }
-    }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 4.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.AudioFile,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.label_format_options),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Medium,
+                                ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Spacer(modifier = Modifier.height(6.dp))
@@ -233,51 +237,52 @@ fun DialogConvertContent(
                         selectedOption = selectedFormat,
                         onOptionSelected = {
                             onFormatSelected(it)
-                            val validBitrates = when (it) {
-                                ".mp3" -> bitratesMp3
-                                ".aac" -> bitratesAac
-                                ".m4a" -> bitratesM4a
-                                ".ogg" -> bitratesOgg
-                                ".opus" -> bitratesOpus
-                                ".wma" -> bitratesWma
-                                ".mka" -> bitratesMka
-                                ".spx" -> bitratesSpx
-                                else -> bitratesArray
-                            }
+                            val validBitrates =
+                                when (it) {
+                                    ".mp3" -> bitratesMp3
+                                    ".aac" -> bitratesAac
+                                    ".m4a" -> bitratesM4a
+                                    ".ogg" -> bitratesOgg
+                                    ".opus" -> bitratesOpus
+                                    ".wma" -> bitratesWma
+                                    ".mka" -> bitratesMka
+                                    ".spx" -> bitratesSpx
+                                    else -> bitratesArray
+                                }
                             onBitrateSelected(validBitrates.first())
                         },
                     )
                 }
             }
 
-
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(bottom = 4.dp)
+                        modifier = Modifier.padding(bottom = 4.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.Speed,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.label_bitrate_options),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Medium
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style =
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Medium,
+                                ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Spacer(modifier = Modifier.height(6.dp))
@@ -291,34 +296,34 @@ fun DialogConvertContent(
             }
         }
 
-
         Card(
             modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
             shape = RoundedCornerShape(12.dp),
-
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(bottom = 4.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Timer,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = stringResource(R.string.label_slider),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Medium,
+                            ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Slider(
@@ -327,17 +332,18 @@ fun DialogConvertContent(
                     valueRange = 0.5f..2.0f,
                     steps = 30,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = SliderDefaults.colors(
-                        thumbColor = MaterialTheme.colorScheme.primary,
-                        activeTrackColor = MaterialTheme.colorScheme.primary,
-                        inactiveTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.24f)
-                    )
+                    colors =
+                        SliderDefaults.colors(
+                            thumbColor = MaterialTheme.colorScheme.primary,
+                            activeTrackColor = MaterialTheme.colorScheme.primary,
+                            inactiveTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.24f),
+                        ),
                 )
                 Text(
                     text = "Current: ${"%.2f".format(sliderValue)}x",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 )
             }
         }
@@ -371,9 +377,10 @@ fun DropdownField(
                 value = selectedOption,
                 onValueChange = {},
                 readOnly = true,
-                modifier = Modifier
-                    .menuAnchor(type = MenuAnchorType.PrimaryNotEditable,true)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .menuAnchor(type = MenuAnchorType.PrimaryNotEditable, true)
+                        .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },

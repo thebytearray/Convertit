@@ -6,9 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nasahacker.convertit.domain.model.BottomNavigation
-import com.nasahacker.convertit.ui.library.LibraryScreen
-import com.nasahacker.convertit.ui.home.HomeScreen
 import com.nasahacker.convertit.ui.about.AboutScreen
+import com.nasahacker.convertit.ui.home.HomeScreen
+import com.nasahacker.convertit.ui.library.LibraryScreen
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -36,13 +37,11 @@ import com.nasahacker.convertit.ui.about.AboutScreen
  * @license Apache-2.0
  */
 
-
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     controller: NavHostController,
 ) {
-
     NavHost(
         modifier = modifier,
         navController = controller,

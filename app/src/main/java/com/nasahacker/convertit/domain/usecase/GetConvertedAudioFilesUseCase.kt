@@ -4,6 +4,7 @@ import android.net.Uri
 import com.nasahacker.convertit.domain.model.AudioFile
 import com.nasahacker.convertit.domain.repository.FileAccessRepository
 import javax.inject.Inject
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -31,12 +32,10 @@ import javax.inject.Inject
  * @license Apache-2.0
  */
 
-class GetConvertedAudioFilesUseCase @Inject constructor(
-    private val fileAccessRepository: FileAccessRepository
-) {
-    operator fun invoke(customSaveUri: Uri?): List<AudioFile> {
-        return fileAccessRepository.getAudioFilesFromConvertedFolder(customSaveUri)
+class GetConvertedAudioFilesUseCase
+    @Inject
+    constructor(
+        private val fileAccessRepository: FileAccessRepository,
+    ) {
+        operator fun invoke(customSaveUri: Uri?): List<AudioFile> = fileAccessRepository.getAudioFilesFromConvertedFolder(customSaveUri)
     }
-}
-
-

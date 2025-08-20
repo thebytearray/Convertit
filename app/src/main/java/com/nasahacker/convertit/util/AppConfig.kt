@@ -27,10 +27,8 @@ package com.nasahacker.convertit.util
  * @license Apache-2.0
  */
 
-
 object AppConfig {
     const val GITHUB_ISSUES_URL = "https://github.com/TheByteArray/ConvertIt/issues"
-
 
     const val URI_LIST = "uri_list"
     const val BITRATE = "bitrate"

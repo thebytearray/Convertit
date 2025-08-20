@@ -27,7 +27,6 @@ package com.nasahacker.convertit.ui.component
  * @license Apache-2.0
  */
 
-
 import android.content.Context
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -43,24 +42,10 @@ import com.nasahacker.convertit.R
 
 @Composable
 fun AboutAppContent(context: Context) {
-    Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    ) {
-        Text(
-            text = context.getString(R.string.label_about_app),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(8.dp),
-            textAlign = TextAlign.Center,
-
-        )
-    }
     Text(
-        text = "Apache 2.0",
+        text = context.getString(R.string.label_about_app),
         style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier.padding(top = 4.dp),
+        modifier = Modifier.padding(8.dp),
+        textAlign = TextAlign.Center,
     )
 }

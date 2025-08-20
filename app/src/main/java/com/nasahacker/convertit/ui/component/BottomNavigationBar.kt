@@ -3,20 +3,15 @@ package com.nasahacker.convertit.ui.component
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Inventory2
-import androidx.compose.material.icons.filled.Store
-import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Inventory2
-import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.nasahacker.convertit.R
 import com.nasahacker.convertit.domain.model.BottomNavigation
 
 /**
@@ -45,7 +40,6 @@ import com.nasahacker.convertit.domain.model.BottomNavigation
  * @year 2025
  * @license Apache-2.0
  */
-
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {

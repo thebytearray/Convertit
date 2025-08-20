@@ -5,6 +5,7 @@ import com.nasahacker.convertit.domain.model.AudioBitrate
 import com.nasahacker.convertit.domain.model.AudioFormat
 import com.nasahacker.convertit.domain.repository.AudioConverterRepository
 import javax.inject.Inject
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
@@ -32,28 +33,30 @@ import javax.inject.Inject
  * @license Apache-2.0
  */
 
-class StartAudioConversionUseCase @Inject constructor(
-    private val audioConverterRepository: AudioConverterRepository
-) {
-    suspend operator fun invoke(
-        customSaveUri: Uri?,
-        playbackSpeed: String,
-        uris: List<Uri>,
-        outputFormat: AudioFormat,
-        bitrate: AudioBitrate,
-        onSuccess: (List<String>) -> Unit,
-        onFailure: (String) -> Unit,
-        onProgress: (Int) -> Unit,
+class StartAudioConversionUseCase
+    @Inject
+    constructor(
+        private val audioConverterRepository: AudioConverterRepository,
     ) {
-        audioConverterRepository.convertAudio(
-            customSaveUri = customSaveUri,
-            playbackSpeed = playbackSpeed,
-            uris = uris,
-            outputFormat = outputFormat,
-            bitrate = bitrate,
-            onSuccess = onSuccess,
-            onFailure = onFailure,
-            onProgress = onProgress
-        )
+        suspend operator fun invoke(
+            customSaveUri: Uri?,
+            playbackSpeed: String,
+            uris: List<Uri>,
+            outputFormat: AudioFormat,
+            bitrate: AudioBitrate,
+            onSuccess: (List<String>) -> Unit,
+            onFailure: (String) -> Unit,
+            onProgress: (Int) -> Unit,
+        ) {
+            audioConverterRepository.convertAudio(
+                customSaveUri = customSaveUri,
+                playbackSpeed = playbackSpeed,
+                uris = uris,
+                outputFormat = outputFormat,
+                bitrate = bitrate,
+                onSuccess = onSuccess,
+                onFailure = onFailure,
+                onProgress = onProgress,
+            )
+        }
     }
-}

@@ -1,4 +1,5 @@
 package com.nasahacker.convertit.domain.model
+
 /**
  * Convertit Android app
  * <a href="https://github.com/thebytearray/Convertit">GitHub Repository</a>
