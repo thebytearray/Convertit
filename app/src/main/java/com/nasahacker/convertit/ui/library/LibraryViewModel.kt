@@ -58,9 +58,19 @@ class LibraryViewModel
         val audioFiles: StateFlow<List<AudioFile>> =
             selectedCustomLocation.map { location ->
                 android.util.Log.d("LibraryViewModel", "Loading audio files from location: '$location'")
-                val uri = if (location.isNotBlank()) location.toUri() else null
+                val uri = if (location.isNotBlank()) {
+                    val parsedUri = location.toUri()
+                    android.util.Log.d("LibraryViewModel", "Parsed URI: $parsedUri (scheme: ${parsedUri.scheme}, path: ${parsedUri.path})")
+                    parsedUri
+                } else {
+                    android.util.Log.d("LibraryViewModel", "Using default location (null URI)")
+                    null
+                }
                 val files = getConvertedAudioFiles(uri)
                 android.util.Log.d("LibraryViewModel", "Found ${files.size} audio files")
+                if (files.isEmpty()) {
+                    android.util.Log.w("LibraryViewModel", "No files found - check if directory exists and has audio files")
+                }
                 files
             }.stateIn(
                 viewModelScope,

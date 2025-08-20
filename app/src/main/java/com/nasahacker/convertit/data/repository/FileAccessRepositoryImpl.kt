@@ -21,14 +21,28 @@ class FileAccessRepositoryImpl
         @ApplicationContext private val context: Context,
     ) : FileAccessRepository {
         override fun getAudioFilesFromConvertedFolder(customSaveUri: Uri?): List<AudioFile> {
+            android.util.Log.d("FileAccessRepositoryImpl", "getAudioFilesFromConvertedFolder called with URI: $customSaveUri")
             val convertedDir = getOutputDirectory(customSaveUri)
+            android.util.Log.d("FileAccessRepositoryImpl", "Resolved directory: ${convertedDir.absolutePath}")
+            android.util.Log.d("FileAccessRepositoryImpl", "Directory exists: ${convertedDir.exists()}, isDirectory: ${convertedDir.isDirectory}")
+            
             val formats = context.resources.getStringArray(R.array.format_array).toList()
+            android.util.Log.d("FileAccessRepositoryImpl", "Looking for formats: $formats")
 
-            return convertedDir
+            val allFiles = convertedDir
                 .takeIf { it.exists() && it.isDirectory }
                 ?.listFiles()
+            
+            android.util.Log.d("FileAccessRepositoryImpl", "Total files in directory: ${allFiles?.size ?: 0}")
+            allFiles?.forEach { file ->
+                android.util.Log.d("FileAccessRepositoryImpl", "Found file: ${file.name} (extension: ${file.extension})")
+            }
+
+            val audioFiles = allFiles
                 ?.filter { file ->
-                    formats.any { file.extension.equals(it.trimStart('.'), ignoreCase = true) }
+                    val isAudioFile = formats.any { file.extension.equals(it.trimStart('.'), ignoreCase = true) }
+                    android.util.Log.d("FileAccessRepositoryImpl", "File ${file.name} is audio file: $isAudioFile")
+                    isAudioFile
                 }?.map { file ->
                     AudioFile(
                         name = file.name,
@@ -37,6 +51,9 @@ class FileAccessRepositoryImpl
                         file = file,
                     )
                 } ?: emptyList()
+            
+            android.util.Log.d("FileAccessRepositoryImpl", "Returning ${audioFiles.size} audio files")
+            return audioFiles
         }
 
         override fun getFileFromUri(uri: Uri): File? {
@@ -86,6 +103,7 @@ class FileAccessRepositoryImpl
                     if (customPath != null && customPath.contains("/tree/primary:")) {
                         val actualPath = customPath.replace("/tree/primary:", "/storage/emulated/0/")
                         android.util.Log.d("FileAccessRepositoryImpl", "Converted to actual path: '$actualPath'")
+                        android.util.Log.d("FileAccessRepositoryImpl", "Original customPath was: '$customPath'")
                         val customDir = File(actualPath)
                         if (customDir.exists() || customDir.mkdirs()) {
                             if (customDir.canWrite()) {
