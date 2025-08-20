@@ -39,7 +39,8 @@ Download **ConvertIt** from multiple sources:
     <img alt="GitHub Releases" style="border-radius:10px" src="https://img.shields.io/github/v/release/thebytearray/Convertit?style=for-the-badge&logo=github&logoColor=white" width="200"/>
   </a>
 </p>
----
+
+
 
 # Certificate Fingerprints for Verification
 
