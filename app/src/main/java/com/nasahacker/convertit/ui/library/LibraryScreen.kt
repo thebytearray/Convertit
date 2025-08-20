@@ -49,6 +49,10 @@ fun LibraryScreen(viewModel: LibraryViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val intentLauncher = remember { IntentLauncher(context as Activity) }
     val audioFiles by viewModel.audioFiles.collectAsStateWithLifecycle()
+    
+    LaunchedEffect(Unit) {
+        viewModel.refreshFiles()
+    }
 
     if (audioFiles.isNotEmpty()) {
         LazyColumn(
@@ -67,7 +71,6 @@ fun LibraryScreen(viewModel: LibraryViewModel = hiltViewModel()) {
                         intentLauncher.shareMusicFile(item.file)
                     },
                     onLongClick = {
-                        // Long click functionality removed - users can manage files externally
                     },
                 )
             }

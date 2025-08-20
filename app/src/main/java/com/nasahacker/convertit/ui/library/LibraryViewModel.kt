@@ -8,8 +8,10 @@ import com.nasahacker.convertit.domain.model.AudioFile
 import com.nasahacker.convertit.domain.usecase.GetConvertedAudioFilesUseCase
 import com.nasahacker.convertit.domain.usecase.GetSelectedCustomLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -55,14 +57,15 @@ class LibraryViewModel
         val selectedCustomLocation: StateFlow<String> =
             getSelectedCustomLocationUseCase().stateIn(
                 viewModelScope,
-                SharingStarted.Lazily,
+                SharingStarted.WhileSubscribed(5000),
                 "",
             )
 
-        // Reactive audio files that update when custom location changes
+        private val _refreshTrigger = MutableStateFlow(0L)
+        
         val audioFiles: StateFlow<List<AudioFile>> =
-            selectedCustomLocation.map { location ->
-                Log.d(TAG, "Loading audio files from location: '$location'")
+            combine(selectedCustomLocation, _refreshTrigger) { location, trigger ->
+                Log.d(TAG, "Loading audio files from location: '$location' (trigger: $trigger)")
                 val uri = if (location.isNotBlank()) {
                     val parsedUri = location.toUri()
                     Log.d(TAG, "Parsed URI: $parsedUri (scheme: ${parsedUri.scheme}, path: ${parsedUri.path})")
@@ -79,11 +82,16 @@ class LibraryViewModel
                 files
             }.stateIn(
                 viewModelScope,
-                SharingStarted.Lazily,
+                SharingStarted.WhileSubscribed(5000),
                 emptyList()
             )
+        
+        // Function to manually refresh the file list
+        fun refreshFiles() {
+            Log.d(TAG, "Manual refresh triggered")
+            _refreshTrigger.value = System.currentTimeMillis()
+        }
 
-        // Kept for backward compatibility but now uses the reactive audioFiles
         fun getInitialAudioFiles(pageSize: Int): List<AudioFile> {
             return audioFiles.value.take(pageSize)
         }
