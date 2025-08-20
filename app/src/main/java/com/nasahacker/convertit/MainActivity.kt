@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -50,33 +51,39 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppTheme {
-                val navController = rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
-                Scaffold(
-                    topBar = {
-                        MainAppBar(
-                            onNavigateToAbout = { navController.navigate("about") },
-                            onNavigateBack = { navController.popBackStack() },
-                            isAboutScreen = currentRoute == "about",
-                        )
-                    },
-                    bottomBar = {
-                        if (currentRoute != "about") {
-                            BottomNavigationBar(navController = navController)
-                        }
-                    },
-                ) { innerPadding ->
-                    AppNavHost(
-                        modifier = Modifier.padding(innerPadding),
-                        controller = navController,
-                    )
-                }
-            }
+            MainScreen()
         }
 
         AppUtil.handleNotificationPermission(this)
+    }
+}
+
+
+@Composable
+fun MainScreen() {
+    AppTheme {
+        val navController = rememberNavController()
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
+        Scaffold(
+            topBar = {
+                MainAppBar(
+                    onNavigateToAbout = { navController.navigate("about") },
+                    onNavigateBack = { navController.popBackStack() },
+                    isAboutScreen = currentRoute == "about",
+                )
+            },
+            bottomBar = {
+                if (currentRoute != "about") {
+                    BottomNavigationBar(navController = navController)
+                }
+            },
+        ) { innerPadding ->
+            AppNavHost(
+                modifier = Modifier.padding(innerPadding),
+                controller = navController,
+            )
+        }
     }
 }

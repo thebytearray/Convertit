@@ -268,6 +268,6 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 @ConvertitLightPreview
 @ConvertitDarkPreview
 @Composable
-fun PreviewMainScreen() {
+fun PreviewHomeScreen() {
     HomeScreen()
 }
