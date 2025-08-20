@@ -41,6 +41,7 @@ enum class AudioCodec(
     WMA("wmav2"),
     MKA("libvorbis"),
     SPX("libspeex"),
+    AMR_WB("amr_wb"),
     ;
 
     companion object {
@@ -57,6 +58,7 @@ enum class AudioCodec(
                 AudioFormat.MKA -> MKA
                 AudioFormat.SPX -> SPX
                 AudioFormat.FLAC -> FLAC
+                AudioFormat.AMR_WB -> AMR_WB
             }
     }
 }

@@ -134,19 +134,16 @@ class AudioConverterRepositoryImpl
 
                         val mediaDuration = getAudioDuration(tempFile.absolutePath)
 
+                        val ffmpegArgs = buildFFmpegArgs(
+                            tempFile.absolutePath,
+                            outputFilePath,
+                            outputFormat,
+                            bitrate,
+                            playbackSpeed
+                        )
+                        
                         FFmpegKit.executeWithArgumentsAsync(
-                            arrayOf(
-                                "-y",
-                                "-i",
-                                tempFile.absolutePath,
-                                "-c:a",
-                                AudioCodec.fromFormat(outputFormat).codec,
-                                "-b:a",
-                                bitrate.bitrate,
-                                "-filter:a",
-                                "atempo=$playbackSpeed",
-                                outputFilePath,
-                            ),
+                            ffmpegArgs,
                             { session ->
                                 tempFile.delete()
 
@@ -192,6 +189,64 @@ class AudioConverterRepositoryImpl
 
             repeat(maxConcurrentConversions) {
                 processNextFile()
+            }
+        }
+
+        private fun buildFFmpegArgs(
+            inputPath: String,
+            outputPath: String,
+            outputFormat: AudioFormat,
+            bitrate: AudioBitrate,
+            playbackSpeed: String
+        ): Array<String> {
+            Log.d(TAG, "Building FFmpeg args for format: ${outputFormat.extension}, bitrate: ${bitrate.bitrate}")
+            return when (outputFormat) {
+                AudioFormat.AMR_WB -> {
+                    arrayOf(
+                        "-y",
+                        "-i", inputPath,
+                        "-ar", "16000",           
+                        "-ac", "1",             
+                        "-c:a", AudioCodec.fromFormat(outputFormat).codec,
+                        "-b:a", bitrate.bitrate,
+                        "-filter:a", "atempo=$playbackSpeed",
+                        outputPath
+                    )
+                }
+                AudioFormat.OPUS -> {
+
+                    if (bitrate.bitrate.replace("k", "").toIntOrNull()?.let { it <= 48 } == true) {
+                        arrayOf(
+                            "-y",
+                            "-i", inputPath,
+                            "-c:a", AudioCodec.fromFormat(outputFormat).codec,
+                            "-b:a", bitrate.bitrate,
+                            "-application", "voip",   
+                            "-filter:a", "atempo=$playbackSpeed",
+                            outputPath
+                        )
+                    } else {
+                       
+                        arrayOf(
+                            "-y",
+                            "-i", inputPath,
+                            "-c:a", AudioCodec.fromFormat(outputFormat).codec,
+                            "-b:a", bitrate.bitrate,
+                            "-filter:a", "atempo=$playbackSpeed",
+                            outputPath
+                        )
+                    }
+                }
+                else -> {
+                    arrayOf(
+                        "-y",
+                        "-i", inputPath,
+                        "-c:a", AudioCodec.fromFormat(outputFormat).codec,
+                        "-b:a", bitrate.bitrate,
+                        "-filter:a", "atempo=$playbackSpeed",
+                        outputPath
+                    )
+                }
             }
         }
 

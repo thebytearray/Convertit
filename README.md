@@ -7,9 +7,10 @@
 #### **ConvertIt** is an ad free audio/video converter and metadata editor app built using kotlin & compose and powered by ffmpeg and taglib
 ---
 
+
 ## Features
-- **Multiple Formats** : **FLAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX**, and more.
-- **Bitrate Options** : Choose from bitrates such as **64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
+- **Multiple Formats** : **FLAC, MP3, WAV, AAC, OGG, M4A, AIFF, OPUS, WMA, MKA, SPX, AMR WB**, and more.
+- **Bitrate Options** : Choose from bitrates such as **9k, 16k, 24k, 32k, 48k, 64k, 96k, 128k, 192k, 256k, 320k, 512k, 768k, and 1024k** for output quality.
 - **Modern Design** : Uses MaterialYou(aka Material3).
 - **Ad-Free** : Completely free and no annoying Ads.
 - **User-Friendly-UI** : The UI and Conversion flow is so simple that everyone can figure out with nearly zero effort.
