@@ -30,6 +30,14 @@ package com.nasahacker.convertit.domain.model
 enum class AudioBitrate(
     val bitrate: String,
 ) {
+    // voice optimized ones
+    BITRATE_9K("9k"),       
+    BITRATE_16K("16k"),     
+    BITRATE_24K("24k"),      
+    BITRATE_32K("32k"),     
+    BITRATE_48K("48k"),      
+    
+    // other standard
     BITRATE_64K("64k"),
     BITRATE_96K("96k"),
     BITRATE_128K("128k"),

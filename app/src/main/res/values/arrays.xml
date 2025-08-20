@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="bitrates_array">
+        <item>9k</item>
+        <item>16k</item>
+        <item>24k</item>
+        <item>32k</item>
+        <item>48k</item>
         <item>64k</item>
         <item>96k</item>
         <item>128k</item>
@@ -21,6 +26,7 @@
         <item>.wma</item>
         <item>.mka</item>
         <item>.spx</item>
+        <item>.amr</item>
     </string-array>
 
 
@@ -63,6 +69,10 @@
     </string-array>
 
     <string-array name="bitrates_opus">
+        <item>16k</item>
+        <item>24k</item>
+        <item>32k</item>
+        <item>48k</item>
         <item>64k</item>
         <item>96k</item>
         <item>128k</item>
@@ -97,6 +107,12 @@
         <item>96k</item>
         <item>128k</item>
         <item>192k</item>
+    </string-array>
+
+    <string-array name="bitrates_amr">
+        <item>9k</item>
+        <item>16k</item>
+        <item>24k</item>
     </string-array>
 
 </resources>
