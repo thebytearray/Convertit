@@ -98,6 +98,26 @@ class IntentLauncher(
         }
     }
 
+    fun openCueFilePicker(pickFileLauncher: ActivityResultLauncher<Intent>) {
+        if (isStoragePermissionGranted()) {
+            val intent =
+                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_MIME_TYPES, arrayOf(
+                        "text/plain",
+                        "text/*",
+                        "application/x-cue",
+                        "audio/x-cue",
+                        "application/octet-stream"
+                    ))
+                }
+            pickFileLauncher.launch(intent)
+        } else {
+            requestStoragePermissions()
+        }
+    }
+
     fun openMusicFileInPlayer(file: File) {
         if (file.exists()) {
             val uri =

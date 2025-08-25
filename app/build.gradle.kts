@@ -15,8 +15,8 @@ android {
         applicationId = packageName
         minSdk = 21
         targetSdk = 36
-        versionCode = 33
-        versionName = "1.3.2-lts"
+        versionCode = 34
+        versionName = "1.3.3-prerelease"
         multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -8,6 +8,13 @@
     <string name="label_converting_audio">পটভূমিতে প্রক্রিয়াকরণ হচ্ছে</string>
     <string name="label_storage_permissions_are_already_granted">স্টোরেজ অনুমতি দেওয়া হয়েছে</string>
     <string name="label_conversion_failed_for_file_with_return_code">ফাইলের রূপান্তর ব্যর্থ হয়েছে: %1$s (ত্রুটি কোড: %2$s)</string>
+    <string name="label_cue_file_detected">CUE ফাইল সনাক্ত করা হয়েছে - %1$d ট্র্যাকে বিভক্ত করা হচ্ছে</string>
+    <string name="label_cue_track_conversion_started">ট্র্যাক %1$d রূপান্তর করা হচ্ছে: %2$s</string>
+    <string name="label_embedded_cue_found">FLAC ফাইলে এমবেডেড CUE শীট পাওয়া গেছে</string>
+    <string name="label_cue_splitting">ট্র্যাক বিভাজন</string>
+    <string name="label_enable_track_splitting">পৃথক ট্র্যাকে বিভক্ত করুন</string>
+    <string name="label_select_cue_file">CUE ফাইল নির্বাচন করুন</string>
+    <string name="label_cue_file_selected">CUE ফাইল নির্বাচিত</string>
     <string name="label_metadata_update_failed_with_return_code">মেটাডেটা আপডেট ব্যর্থ হয়েছে (ত্রুটি কোড: %1$d)</string>
     <string name="label_no_app_found_to_open_the_file">এই ফাইলটি খুলতে কোনো অ্যাপ্লিকেশন পাওয়া যায়নি</string>
     <string name="label_file_does_not_exist">ফাইল পাওয়া যায়নি</string>
