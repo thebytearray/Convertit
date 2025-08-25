@@ -9,6 +9,14 @@
     <string name="label_converting_audio">Processing in Background</string>
     <string name="label_storage_permissions_are_already_granted">Storage permissions have been granted</string>
     <string name="label_conversion_failed_for_file_with_return_code">Conversion failed for file: %1$s (Error code: %2$s)</string>
+    <string name="label_cue_file_detected">CUE file detected - splitting into %1$d tracks</string>
+    <string name="label_cue_track_conversion_started">Converting track %1$d: %2$s</string>
+    <string name="label_embedded_cue_found">Found embedded CUE sheet in FLAC file</string>
+    <string name="label_cue_splitting">Track Splitting</string>
+    <string name="label_enable_track_splitting">Split into individual tracks</string>
+    <string name="label_select_cue_file">Select CUE File</string>
+    <string name="label_cue_file_selected">CUE File Selected</string>
+    <string name="label_invalid_cue_file">Please select a valid CUE file (.cue extension)</string>
     <string name="label_metadata_update_failed_with_return_code">Metadata update failed (Error code: %1$d)</string>
     <string name="label_no_app_found_to_open_the_file">No application found to open this file</string>
     <string name="label_file_does_not_exist">File not found</string>

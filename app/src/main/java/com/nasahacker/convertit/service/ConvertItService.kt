@@ -51,6 +51,7 @@ import com.nasahacker.convertit.util.AppConfig.AUDIO_PLAYBACK_SPEED
 import com.nasahacker.convertit.util.AppConfig.BITRATE
 import com.nasahacker.convertit.util.AppConfig.CHANNEL_ID
 import com.nasahacker.convertit.util.AppConfig.CONVERT_BROADCAST_ACTION
+import com.nasahacker.convertit.util.AppConfig.CUE_URI
 import com.nasahacker.convertit.util.AppConfig.IS_SUCCESS
 import com.nasahacker.convertit.util.AppConfig.URI_LIST
 import dagger.hilt.android.AndroidEntryPoint
@@ -133,6 +134,11 @@ class ConvertItService : Service() {
         val bitrate = AudioBitrate.fromBitrate(intent?.getStringExtra(BITRATE))
         val format = AudioFormat.fromExtension(intent?.getStringExtra(AUDIO_FORMAT))
         val speed = intent?.getStringExtra(AUDIO_PLAYBACK_SPEED) ?: "1.0"
+        val cueUri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent?.getParcelableExtra(CUE_URI, Uri::class.java)
+        } else {
+            intent?.getParcelableExtra(CUE_URI)
+        }
 
         Log.d(
             TAG,
@@ -142,6 +148,7 @@ class ConvertItService : Service() {
             - Bitrate: ${bitrate.bitrate}
             - Playback Speed: $speed
             - Number of files: ${uriList?.size ?: 0}
+            - CUE file: ${cueUri?.lastPathSegment ?: "None"}
             - Files: ${uriList?.joinToString { it.lastPathSegment ?: "unknown" }}
             """.trimIndent(),
         )
@@ -174,42 +181,85 @@ class ConvertItService : Service() {
                         null
                     }
                     
-                    audioConverterRepository.performConversion(
-                        customSaveUri = customSaveUri,
-                        playbackSpeed = speed,
-                        uris = uriList,
-                        outputFormat = format,
-                        bitrate = bitrate,
-                        onSuccess = {
-                            Log.i(
-                                TAG,
-                                "Conversion completed successfully for all files. startId: $startId",
-                            )
-                            showCompletionNotification(true)
-                            broadcastConversionResult(
-                                Intent().apply {
-                                    action = CONVERT_BROADCAST_ACTION
-                                },
-                                true,
-                            )
-                            stopForegroundService()
-                        },
-                        onFailure = { error ->
-                            Log.e(TAG, "Conversion failed with error: $error. startId: $startId")
-                            showCompletionNotification(false)
-                            broadcastConversionResult(
-                                Intent().apply {
-                                    action = CONVERT_BROADCAST_ACTION
-                                },
-                                false,
-                            )
-                            stopForegroundService()
-                        },
-                        onProgress = { progress ->
-                            Log.v(TAG, "Conversion progress: $progress%. startId: $startId")
-                            updateNotification(progress)
-                        },
-                    )
+                    if (cueUri != null && uriList.size == 1) {
+                        // CUE-based conversion
+                        Log.i(TAG, "Starting CUE-based conversion with CUE file: ${cueUri.lastPathSegment}")
+                        audioConverterRepository.convertWithManualCue(
+                            customSaveUri = customSaveUri,
+                            playbackSpeed = speed,
+                            audioUri = uriList.first(),
+                            cueUri = cueUri,
+                            outputFormat = format,
+                            bitrate = bitrate,
+                            onSuccess = {
+                                Log.i(
+                                    TAG,
+                                    "CUE-based conversion completed successfully. startId: $startId",
+                                )
+                                showCompletionNotification(true)
+                                broadcastConversionResult(
+                                    Intent().apply {
+                                        action = CONVERT_BROADCAST_ACTION
+                                    },
+                                    true,
+                                )
+                                stopForegroundService()
+                            },
+                            onFailure = { error ->
+                                Log.e(TAG, "CUE-based conversion failed with error: $error. startId: $startId")
+                                showCompletionNotification(false)
+                                broadcastConversionResult(
+                                    Intent().apply {
+                                        action = CONVERT_BROADCAST_ACTION
+                                    },
+                                    false,
+                                )
+                                stopForegroundService()
+                            },
+                            onProgress = { progress ->
+                                Log.v(TAG, "CUE conversion progress: $progress%. startId: $startId")
+                                updateNotification(progress)
+                            },
+                        )
+                    } else {
+                        // Regular conversion
+                        audioConverterRepository.performConversion(
+                            customSaveUri = customSaveUri,
+                            playbackSpeed = speed,
+                            uris = uriList,
+                            outputFormat = format,
+                            bitrate = bitrate,
+                            onSuccess = {
+                                Log.i(
+                                    TAG,
+                                    "Conversion completed successfully for all files. startId: $startId",
+                                )
+                                showCompletionNotification(true)
+                                broadcastConversionResult(
+                                    Intent().apply {
+                                        action = CONVERT_BROADCAST_ACTION
+                                    },
+                                    true,
+                                )
+                                stopForegroundService()
+                            },
+                            onFailure = { error ->
+                                Log.e(TAG, "Conversion failed with error: $error. startId: $startId")
+                                showCompletionNotification(false)
+                                broadcastConversionResult(
+                                    Intent().apply {
+                                        action = CONVERT_BROADCAST_ACTION
+                                    },
+                                    false,
+                                )
+                                stopForegroundService()
+                            },
+                            onProgress = { progress ->
+                                Log.v(TAG, "Conversion progress: $progress%. startId: $startId")
+                                updateNotification(progress)
+                            },
+                        )
+                    }
                 } catch (e: Exception) {
                     Log.e(TAG, "Exception during conversion: ${e.message}. startId: $startId")
                     showCompletionNotification(false)

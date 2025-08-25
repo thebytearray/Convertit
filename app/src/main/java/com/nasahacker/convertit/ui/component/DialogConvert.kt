@@ -53,10 +53,14 @@ fun DialogConvertAlertDialog(
     onDismiss: () -> Unit,
     onCancel: () -> Unit,
     onStartConversion: (speed: String, uris: ArrayList<Uri>, bitrate: String, format: String) -> Unit = { _, _, _, _ -> },
+    onStartConversionWithCue: (speed: String, audioUri: Uri, cueUri: Uri, bitrate: String, format: String) -> Unit = { _, _, _, _, _ -> },
+    onSelectCueFile: () -> Unit = {},
+    selectedCueUri: Uri? = null,
 ) {
     var selectedFormat by remember { mutableStateOf(".mp3") }
     var selectedBitrate by remember { mutableStateOf("256k") }
     var sliderValue by remember { mutableFloatStateOf(1.0f) }
+    var enableCueSplitting by remember { mutableStateOf(false) }
 
     if (showDialog) {
         AlertDialog(
@@ -86,21 +90,47 @@ fun DialogConvertAlertDialog(
                     onBitrateSelected = { selectedBitrate = it },
                     sliderValue = sliderValue,
                     onSliderValueChanged = { sliderValue = it },
+                    enableCueSplitting = enableCueSplitting,
+                    onCueSplittingChanged = { enableCueSplitting = it },
+                    selectedCueUri = selectedCueUri,
+                    onSelectCueFile = onSelectCueFile,
+                    hasFlacOrWavFiles = uris.any { uri ->
+                        val fileName = (uri.lastPathSegment ?: uri.toString()).lowercase()
+                        val isFlacOrWav = fileName.contains(".flac") || fileName.contains(".wav")
+                        Log.d("CueDebug", "URI: $uri, FileName: $fileName, IsFlacOrWav: $isFlacOrWav")
+                        isFlacOrWav
+                    }.also { hasFlac ->
+                        Log.d("CueDebug", "Total URIs: ${uris.size}, HasFlacOrWav: $hasFlac")
+                    }
                 )
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        Log.d(
-                            "ZERO_DOLLAR",
-                            "Starting Service with Format $selectedFormat And Bitrate $selectedBitrate",
-                        )
-                        onStartConversion(
-                            sliderValue.toString(),
-                            uris,
-                            selectedBitrate,
-                            selectedFormat,
-                        )
+                        if (enableCueSplitting && selectedCueUri != null && uris.isNotEmpty()) {
+                            Log.d(
+                                "ZERO_DOLLAR",
+                                "Starting CUE-based conversion with Format $selectedFormat And Bitrate $selectedBitrate",
+                            )
+                            onStartConversionWithCue(
+                                sliderValue.toString(),
+                                uris.first(),
+                                selectedCueUri,
+                                selectedBitrate,
+                                selectedFormat,
+                            )
+                        } else {
+                            Log.d(
+                                "ZERO_DOLLAR",
+                                "Starting Service with Format $selectedFormat And Bitrate $selectedBitrate",
+                            )
+                            onStartConversion(
+                                sliderValue.toString(),
+                                uris,
+                                selectedBitrate,
+                                selectedFormat,
+                            )
+                        }
                         onDismiss()
                     },
                     modifier =
@@ -162,6 +192,11 @@ fun DialogConvertContent(
     onBitrateSelected: (String) -> Unit,
     sliderValue: Float,
     onSliderValueChanged: (Float) -> Unit,
+    enableCueSplitting: Boolean = false,
+    onCueSplittingChanged: (Boolean) -> Unit = {},
+    selectedCueUri: Uri? = null,
+    onSelectCueFile: () -> Unit = {},
+    hasFlacOrWavFiles: Boolean = false,
 ) {
     val allFormats = stringArrayResource(R.array.format_array).toList()
     val bitratesMp3 = stringArrayResource(R.array.bitrates_mp3).toList()
@@ -345,6 +380,96 @@ fun DialogConvertContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.align(Alignment.End),
                 )
+            }
+        }
+
+        // Temporarily always show for debugging
+        Log.d("CueDebug", "Rendering CUE section - hasFlacOrWavFiles: $hasFlacOrWavFiles")
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.LibraryMusic,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp),
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = stringResource(R.string.label_cue_splitting),
+                        style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Medium,
+                            ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Switch(
+                        checked = enableCueSplitting,
+                        onCheckedChange = onCueSplittingChanged,
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                        ),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.label_enable_track_splitting),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+
+                if (enableCueSplitting) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedButton(
+                        onClick = onSelectCueFile,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        enabled = enableCueSplitting,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AttachFile,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (selectedCueUri != null) {
+                                stringResource(R.string.label_cue_file_selected)
+                            } else {
+                                stringResource(R.string.label_select_cue_file)
+                            },
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+
+                    if (selectedCueUri != null) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = selectedCueUri.lastPathSegment ?: stringResource(R.string.label_cue_file_selected),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                        )
+                    }
+                }
             }
         }
     }

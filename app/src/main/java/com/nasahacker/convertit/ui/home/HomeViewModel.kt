@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,8 @@ import com.nasahacker.convertit.domain.usecase.SaveDontShowAgainUseCase
 import com.nasahacker.convertit.domain.usecase.SaveMetadataUseCase
 import com.nasahacker.convertit.domain.usecase.SaveSelectedCustomLocationUseCase
 import com.nasahacker.convertit.domain.usecase.StartAudioConversionUseCase
+import com.nasahacker.convertit.domain.repository.AudioConverterRepository
+import com.nasahacker.convertit.service.ConvertItService
 import com.nasahacker.convertit.util.AppConfig
 import com.nasahacker.convertit.util.AppUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,6 +75,7 @@ class HomeViewModel
         private val startAudioConversion: StartAudioConversionUseCase,
         private val loadMetadata: LoadMetadataUseCase,
         private val saveMetadata: SaveMetadataUseCase,
+        private val audioConverterRepository: AudioConverterRepository,
     ) : ViewModel() {
         private val _uriList = MutableStateFlow<ArrayList<Uri>>(ArrayList())
         val uriList: StateFlow<ArrayList<Uri>> = _uriList
@@ -223,6 +227,55 @@ class HomeViewModel
                         _conversionProgress.value = progress
                     },
                 )
+            }
+        }
+
+        fun startConversionWithCue(
+            speed: String,
+            audioUri: Uri,
+            cueUri: Uri,
+            bitrate: String,
+            format: String,
+        ) {
+            viewModelScope.launch {
+                _isConversionInProgress.value = true
+                _conversionProgress.value = 0
+
+                startCueConversionService(arrayListOf(audioUri), bitrate, speed, format, cueUri)
+            }
+        }
+
+        private fun startCueConversionService(
+            uris: ArrayList<Uri>,
+            bitrate: String,
+            playbackSpeed: String,
+            outputFormat: String,
+            cueUri: Uri,
+        ) {
+            Log.d(
+                "HomeViewModel",
+                "Starting CUE conversion service with the following details:\n" + 
+                "URI List Size: ${uris.size}\n" +
+                "Bitrate: $bitrate\n" +
+                "Format: $outputFormat\n" +
+                "CUE URI: ${cueUri.lastPathSegment}",
+            )
+
+            val intent =
+                Intent(App.application, ConvertItService::class.java).apply {
+                    putParcelableArrayListExtra(AppConfig.URI_LIST, uris)
+                    putExtra(AppConfig.BITRATE, bitrate)
+                    putExtra(AppConfig.AUDIO_PLAYBACK_SPEED, playbackSpeed)
+                    putExtra(AppConfig.AUDIO_FORMAT, outputFormat)
+                    putExtra(AppConfig.CUE_URI, cueUri)
+                }
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+                Log.d("HomeViewModel", "Starting foreground service for CUE conversion...")
+                App.application.startForegroundService(intent)
+            } else {
+                Log.d("HomeViewModel", "Starting regular service for CUE conversion...")
+                App.application.startService(intent)
             }
         }
 

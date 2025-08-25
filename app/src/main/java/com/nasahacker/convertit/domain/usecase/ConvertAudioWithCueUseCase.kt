@@ -1,8 +1,10 @@
-package com.nasahacker.convertit.domain.repository
+package com.nasahacker.convertit.domain.usecase
 
 import android.net.Uri
 import com.nasahacker.convertit.domain.model.AudioBitrate
 import com.nasahacker.convertit.domain.model.AudioFormat
+import com.nasahacker.convertit.domain.repository.AudioConverterRepository
+import javax.inject.Inject
 
 /**
  * Convertit Android app
@@ -30,31 +32,11 @@ import com.nasahacker.convertit.domain.model.AudioFormat
  * @year 2025
  * @license Apache-2.0
  */
-
-interface AudioConverterRepository {
-    suspend fun convertAudio(
-        customSaveUri: Uri?,
-        playbackSpeed: String,
-        uris: List<Uri>,
-        outputFormat: AudioFormat,
-        bitrate: AudioBitrate,
-        onSuccess: (List<String>) -> Unit,
-        onFailure: (String) -> Unit,
-        onProgress: (Int) -> Unit,
-    )
-
-    suspend fun performConversion(
-        customSaveUri: Uri?,
-        playbackSpeed: String,
-        uris: List<Uri>,
-        outputFormat: AudioFormat,
-        bitrate: AudioBitrate,
-        onSuccess: (List<String>) -> Unit,
-        onFailure: (String) -> Unit,
-        onProgress: (Int) -> Unit,
-    )
-
-    suspend fun convertWithCueSplitting(
+class ConvertAudioWithCueUseCase @Inject constructor(
+    private val audioConverterRepository: AudioConverterRepository
+) {
+    
+    suspend operator fun invoke(
         customSaveUri: Uri?,
         playbackSpeed: String,
         uri: Uri,
@@ -63,17 +45,16 @@ interface AudioConverterRepository {
         onSuccess: (List<String>) -> Unit,
         onFailure: (String) -> Unit,
         onProgress: (Int) -> Unit,
-    )
-
-    suspend fun convertWithManualCue(
-        customSaveUri: Uri?,
-        playbackSpeed: String,
-        audioUri: Uri,
-        cueUri: Uri,
-        outputFormat: AudioFormat,
-        bitrate: AudioBitrate,
-        onSuccess: (List<String>) -> Unit,
-        onFailure: (String) -> Unit,
-        onProgress: (Int) -> Unit,
-    )
+    ) {
+        audioConverterRepository.convertWithCueSplitting(
+            customSaveUri = customSaveUri,
+            playbackSpeed = playbackSpeed,
+            uri = uri,
+            outputFormat = outputFormat,
+            bitrate = bitrate,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+            onProgress = onProgress
+        )
+    }
 }

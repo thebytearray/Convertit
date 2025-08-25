@@ -68,6 +68,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var showMetadataDialog by rememberSaveable { mutableStateOf(false) }
     var showReviewDialog by rememberSaveable { mutableStateOf(false) }
+    var selectedCueUri by remember { mutableStateOf<Uri?>(null) }
 
     val pickFileLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -126,6 +127,15 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             if (result.resultCode == Activity.RESULT_OK) {
                 viewModel.updateMetadataUri(result.data)
                 showMetadataDialog = true
+            }
+        }
+
+    val cuePickFileLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    selectedCueUri = uri
+                }
             }
         }
 
@@ -240,14 +250,25 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
     DialogConvertAlertDialog(
         showDialog = showDialog,
-        onDismiss = { showDialog = false },
+        onDismiss = { 
+            showDialog = false
+            selectedCueUri = null
+        },
         onCancel = {
             viewModel.clearUriList()
             showDialog = false
+            selectedCueUri = null
         },
         uris = uriList,
+        selectedCueUri = selectedCueUri,
         onStartConversion = { speed, uris, bitrate, format ->
             viewModel.startConversion(speed, uris, bitrate, format)
+        },
+        onStartConversionWithCue = { speed, audioUri, cueUri, bitrate, format ->
+            viewModel.startConversionWithCue(speed, audioUri, cueUri, bitrate, format)
+        },
+        onSelectCueFile = {
+            intentLauncher.openCueFilePicker(cuePickFileLauncher)
         },
     )
 

@@ -20,7 +20,12 @@ import com.nasahacker.convertit.util.AppConfig.AUDIO_FORMAT
 import com.nasahacker.convertit.util.AppConfig.AUDIO_PLAYBACK_SPEED
 import com.nasahacker.convertit.util.AppConfig.BITRATE
 import com.nasahacker.convertit.util.AppConfig.URI_LIST
+import com.nasahacker.convertit.util.CueParser
+import com.nasahacker.convertit.domain.model.CueFile
+import com.nasahacker.convertit.domain.model.CueTrack
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
@@ -86,6 +91,24 @@ class AudioConverterRepositoryImpl
             onFailure: (String) -> Unit,
             onProgress: (Int) -> Unit,
         ) {
+
+            for (uri in uris) {
+                val fileName = getFileName(context.contentResolver, uri)
+                val isFlacOrWav = fileName.endsWith(".flac", ignoreCase = true) || 
+                                fileName.endsWith(".wav", ignoreCase = true)
+                
+                if (isFlacOrWav) {
+                    val cueFile = findCueFileForUri(uri)
+                    if (cueFile != null) {
+                        Log.d(TAG, "Found CUE file for $fileName, using cue-based splitting")
+                        // Use cue-based conversion for this file
+                        convertWithCueSplitting(customSaveUri, playbackSpeed, uri, outputFormat, bitrate, onSuccess, onFailure, onProgress)
+                        return
+                    }
+                }
+            }
+            
+
             val musicDir = fileAccessRepository.getOutputDirectory(customSaveUri)
             val outputPaths = mutableListOf<String>()
             val totalFiles = uris.size
@@ -268,6 +291,335 @@ class AudioConverterRepositoryImpl
                 Log.e("AudioConverter", "Error getting audio duration: ${e.message}")
                 0L
             }
+
+        override suspend fun convertWithCueSplitting(
+            customSaveUri: Uri?,
+            playbackSpeed: String,
+            uri: Uri,
+            outputFormat: AudioFormat,
+            bitrate: AudioBitrate,
+            onSuccess: (List<String>) -> Unit,
+            onFailure: (String) -> Unit,
+            onProgress: (Int) -> Unit,
+        ) {
+            val musicDir = fileAccessRepository.getOutputDirectory(customSaveUri)
+            val outputPaths = mutableListOf<String>()
+            
+            onProgress(0)
+            
+            try {
+
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val tempAudioFile = File(context.cacheDir, "temp_audio_${System.currentTimeMillis()}")
+                    FileOutputStream(tempAudioFile).use { outputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
+                    
+
+                    val cueFile = findCueFileForUri(uri)
+                    if (cueFile == null) {
+
+                        Log.d(TAG, "No CUE file found, performing regular conversion")
+                        performConversion(customSaveUri, playbackSpeed, listOf(uri), outputFormat, bitrate, onSuccess, onFailure, onProgress)
+                        tempAudioFile.delete()
+                        return
+                    }
+                    
+                    val parsedCue = CueParser.parseCueFile(cueFile)
+                    if (parsedCue == null || !parsedCue.hasValidTracks()) {
+                        Log.w(TAG, "Invalid or empty CUE file, performing regular conversion")
+                        performConversion(customSaveUri, playbackSpeed, listOf(uri), outputFormat, bitrate, onSuccess, onFailure, onProgress)
+                        tempAudioFile.delete()
+                        return
+                    }
+                    
+                    Log.d(TAG, "Found CUE file with ${parsedCue.tracks.size} tracks")
+                    
+                    val tracks = parsedCue.getTracksWithEndTimes()
+                    val totalTracks = tracks.size
+                    var processedTracks = 0
+                    
+
+                    for ((index, track) in tracks.withIndex()) {
+                        val baseProgress = ((processedTracks.toFloat() / totalTracks) * 100).toInt()
+                        onProgress(baseProgress)
+                        
+                        val trackFileName = sanitizeFileName("${track.trackNumber.toString().padStart(2, '0')} - ${track.title}")
+                        var outputFileName = "$trackFileName${outputFormat.extension}"
+                        var outputFilePath = File(musicDir, outputFileName).absolutePath
+                        
+
+                        var counter = 1
+                        while (File(outputFilePath).exists()) {
+                            outputFileName = "$trackFileName($counter)${outputFormat.extension}"
+                            outputFilePath = File(musicDir, outputFileName).absolutePath
+                            counter++
+                        }
+                        
+                        val ffmpegArgs = buildFFmpegArgsForTrack(
+                            tempAudioFile.absolutePath,
+                            outputFilePath,
+                            outputFormat,
+                            bitrate,
+                            playbackSpeed,
+                            track
+                        )
+                        
+                        try {
+                            val session = FFmpegKit.executeWithArguments(ffmpegArgs)
+                            
+                            if (ReturnCode.isSuccess(session.returnCode)) {
+                                outputPaths.add(outputFilePath)
+                                processedTracks++
+                                
+                                val progress = ((processedTracks.toFloat() / totalTracks) * 100).toInt()
+                                onProgress(progress)
+                                
+                                Log.d(TAG, "Successfully converted track ${track.trackNumber}: ${track.title}")
+                            } else {
+                                Log.e(TAG, "Failed to convert track ${track.trackNumber}: ${session.failStackTrace}")
+                                onFailure("Failed to convert track ${track.trackNumber}: ${track.title}")
+                                tempAudioFile.delete()
+                                return
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error converting track ${track.trackNumber}: ${e.message}")
+                            onFailure("Error converting track ${track.trackNumber}: ${e.message}")
+                            tempAudioFile.delete()
+                            return
+                        }
+                    }
+                    
+                    tempAudioFile.delete()
+                    
+
+                    if (cueFile.name.endsWith("_embedded.cue")) {
+                        cueFile.delete()
+                    }
+                    
+                    onSuccess(outputPaths)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in CUE-based conversion: ${e.message}")
+                onFailure("Error in CUE-based conversion: ${e.message}")
+            }
+        }
+        
+        private fun findCueFileForUri(audioUri: Uri): File? {
+            try {
+
+                val fileName = getFileName(context.contentResolver, audioUri)
+                val fileNameWithoutExt = fileName.substringBeforeLast(".")
+                val isFlac = fileName.endsWith(".flac", ignoreCase = true)
+                
+
+                val possibleLocations = listOf(
+                    context.getExternalFilesDir(null),
+                    context.filesDir,
+                    File("/storage/emulated/0/Download"),
+                    File("/storage/emulated/0/Music")
+                )
+                
+
+                for (dir in possibleLocations) {
+                    if (dir?.exists() == true) {
+                        val cueFile = File(dir, "$fileNameWithoutExt.cue")
+                        if (cueFile.exists()) {
+                            return cueFile
+                        }
+                    }
+                }
+                
+
+                if (isFlac) {
+
+                    context.contentResolver.openInputStream(audioUri)?.use { inputStream ->
+                        val tempFlacFile = File(context.cacheDir, "temp_flac_${System.currentTimeMillis()}.flac")
+                        FileOutputStream(tempFlacFile).use { outputStream ->
+                            inputStream.copyTo(outputStream)
+                        }
+                        
+                        val embeddedCue = CueParser.extractEmbeddedCueFromFlac(tempFlacFile)
+                        tempFlacFile.delete()
+                        
+                        if (embeddedCue != null) {
+                            Log.d(TAG, "Found embedded CUE sheet in FLAC file")
+                            return embeddedCue
+                        }
+                    }
+                }
+                
+                return null
+            } catch (e: Exception) {
+                Log.e(TAG, "Error finding CUE file: ${e.message}")
+                return null
+            }
+        }
+        
+        private fun buildFFmpegArgsForTrack(
+            inputPath: String,
+            outputPath: String,
+            outputFormat: AudioFormat,
+            bitrate: AudioBitrate,
+            playbackSpeed: String,
+            track: CueTrack
+        ): Array<String> {
+            val args = mutableListOf<String>()
+            
+            args.addAll(arrayOf("-y", "-i", inputPath))
+            
+
+            args.addAll(arrayOf("-ss", CueParser.formatSecondsForFFmpeg(track.startTimeSeconds)))
+            
+
+            track.endTimeSeconds?.let { endTime ->
+                val duration = endTime - track.startTimeSeconds
+                args.addAll(arrayOf("-t", CueParser.formatSecondsForFFmpeg(duration)))
+            }
+            
+
+            args.addAll(arrayOf("-c:a", AudioCodec.fromFormat(outputFormat).codec))
+            args.addAll(arrayOf("-b:a", bitrate.bitrate))
+            
+
+            if (playbackSpeed != "1.0") {
+                args.addAll(arrayOf("-filter:a", "atempo=$playbackSpeed"))
+            }
+            
+
+            when (outputFormat) {
+                AudioFormat.AMR_WB -> {
+                    args.addAll(arrayOf("-ar", "16000", "-ac", "1"))
+                }
+                AudioFormat.OPUS -> {
+                    if (bitrate.bitrate.replace("k", "").toIntOrNull()?.let { it <= 48 } == true) {
+                        args.addAll(arrayOf("-application", "voip"))
+                    }
+                }
+                else -> {
+
+                }
+            }
+            
+            args.add(outputPath)
+            
+            Log.d(TAG, "FFmpeg args for track ${track.trackNumber}: ${args.joinToString(" ")}")
+            return args.toTypedArray()
+        }
+        
+        private fun sanitizeFileName(fileName: String): String {
+            return fileName.replace(Regex("[^a-zA-Z0-9._\\-\\s]"), "_")
+                .replace(Regex("\\s+"), " ")
+                .trim()
+        }
+
+        override suspend fun convertWithManualCue(
+            customSaveUri: Uri?,
+            playbackSpeed: String,
+            audioUri: Uri,
+            cueUri: Uri,
+            outputFormat: AudioFormat,
+            bitrate: AudioBitrate,
+            onSuccess: (List<String>) -> Unit,
+            onFailure: (String) -> Unit,
+            onProgress: (Int) -> Unit,
+        ) {
+            val musicDir = fileAccessRepository.getOutputDirectory(customSaveUri)
+            val outputPaths = mutableListOf<String>()
+            
+            onProgress(0)
+            
+            try {
+                context.contentResolver.openInputStream(audioUri)?.use { audioInputStream ->
+                    val tempAudioFile = File(context.cacheDir, "temp_audio_${System.currentTimeMillis()}")
+                    FileOutputStream(tempAudioFile).use { outputStream ->
+                        audioInputStream.copyTo(outputStream)
+                    }
+                    
+                    context.contentResolver.openInputStream(cueUri)?.use { cueInputStream ->
+                        val cueFileName = getFileName(context.contentResolver, cueUri)
+                        if (!cueFileName.lowercase().endsWith(".cue")) {
+                            Log.w(TAG, "Selected file is not a CUE file: $cueFileName")
+                            onFailure(context.getString(R.string.label_invalid_cue_file))
+                            tempAudioFile.delete()
+                            return
+                        }
+                        
+                        val parsedCue = CueParser.parseCueFile(cueInputStream)
+                        if (parsedCue == null || !parsedCue.hasValidTracks()) {
+                            Log.w(TAG, "Invalid or empty CUE file, performing regular conversion")
+                            performConversion(customSaveUri, playbackSpeed, listOf(audioUri), outputFormat, bitrate, onSuccess, onFailure, onProgress)
+                            tempAudioFile.delete()
+                            return
+                        }
+                        
+                        Log.d(TAG, "Manual CUE file with ${parsedCue.tracks.size} tracks")
+                        
+                        val tracks = parsedCue.getTracksWithEndTimes()
+                        val totalTracks = tracks.size
+                        var processedTracks = 0
+                        
+                        for ((index, track) in tracks.withIndex()) {
+                            val baseProgress = ((processedTracks.toFloat() / totalTracks) * 100).toInt()
+                            onProgress(baseProgress)
+                            
+                            val trackFileName = sanitizeFileName("${track.trackNumber.toString().padStart(2, '0')} - ${track.title}")
+                            var outputFileName = "$trackFileName${outputFormat.extension}"
+                            var outputFilePath = File(musicDir, outputFileName).absolutePath
+                            
+                            Log.d(TAG, "Track ${track.trackNumber}: '$trackFileName' -> '$outputFilePath'")
+                            
+                            var counter = 1
+                            while (File(outputFilePath).exists()) {
+                                outputFileName = "$trackFileName($counter)${outputFormat.extension}"
+                                outputFilePath = File(musicDir, outputFileName).absolutePath
+                                counter++
+                            }
+                            
+                            val ffmpegArgs = buildFFmpegArgsForTrack(
+                                tempAudioFile.absolutePath,
+                                outputFilePath,
+                                outputFormat,
+                                bitrate,
+                                playbackSpeed,
+                                track
+                            )
+                            
+                            try {
+                                Log.d(TAG, "FFmpeg command: ${ffmpegArgs.joinToString(" ")}")
+                                val session = FFmpegKit.executeWithArguments(ffmpegArgs)
+                                
+                                if (ReturnCode.isSuccess(session.returnCode)) {
+                                    outputPaths.add(outputFilePath)
+                                    processedTracks++
+                                    
+                                    val progress = ((processedTracks.toFloat() / totalTracks) * 100).toInt()
+                                    onProgress(progress)
+                                    
+                                    Log.d(TAG, "Successfully converted track ${track.trackNumber}: ${track.title}")
+                                } else {
+                                    Log.e(TAG, "Failed to convert track ${track.trackNumber}: ${session.failStackTrace}")
+                                    onFailure("Failed to convert track ${track.trackNumber}: ${track.title}")
+                                    tempAudioFile.delete()
+                                    return
+                                }
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Error converting track ${track.trackNumber}: ${e.message}")
+                                onFailure("Error converting track ${track.trackNumber}: ${e.message}")
+                                tempAudioFile.delete()
+                                return
+                            }
+                        }
+                        
+                        tempAudioFile.delete()
+                        onSuccess(outputPaths)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in manual CUE-based conversion: ${e.message}")
+                onFailure("Error in manual CUE-based conversion: ${e.message}")
+            }
+        }
 
         private fun getFileName(
             contentResolver: android.content.ContentResolver,
