@@ -1,5 +1,6 @@
 package com.nasahacker.convertit
 
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 /**
